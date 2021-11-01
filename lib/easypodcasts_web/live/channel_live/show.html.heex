@@ -1,0 +1,45 @@
+<section class="text-gray-600 body-font overflow-hidden">
+  <div class="container px-5 py-24 mx-auto">
+    <div class="lg:w-4/5 mx-auto flex flex-wrap">
+      <img alt="ecommerce" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src={@channel.image_url} style="display: inline-block; min-width: 20px !important; min-height: 20px !important; border: 1px solid rgba(0, 0, 0, 0.1) !important;">
+      <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
+        <h1 class="text-gray-900 text-3xl title-font font-medium mb-1"> <%= @channel.title %></h1>
+        <p class="leading-relaxed"> <%= @channel.description %></p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="text-gray-600 body-font overflow-hidden">
+  <div class="container px-20 py-10 mx-auto">
+    <div class="-my-8 divide-y-2 divide-gray-300">
+      <%= for episode <- @channel.episodes do %>
+        <div class="py-8 flex flex-wrap md:flex-nowrap">
+          <div class="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
+            <span class="text-sm text-gray-500">Fetched: <%= episode.inserted_at %></span>
+            <%= if episode.processed do %>
+            <span class="text-sm text-gray-500">Original Size: <%= episode.original_size %></span>
+            <span class="text-sm text-gray-500">Processed Size: <%= episode.processed_size %></span>
+            <% end %>
+          </div>
+          <div class="md:flex-grow">
+            <h2 class="text-2xl font-medium text-gray-900 title-font mb-2"> <%= episode.title %></h2>
+            <p class="leading-relaxed"> <%= episode.description %></p>
+            <%= if episode.processed do %>
+              <div class="flex items-center">
+                <a class="text-indigo-500 inline-flex items-center mt-4 lg:ml-auto" href={"#{Routes.channel_index_path(@socket, :index)}download/#{episode.processed_audio_url}"}}>Get Episode
+                  <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"></path>
+                    <path d="M12 5l7 7-7 7"></path>
+                  </svg>
+                </a>
+              </div>
+            <% else %>
+              <button class="flex text-white bg-indigo-500 border-0 py-2 px-2 focus:outline-none hover:bg-indigo-600 rounded text-sm lg:ml-auto" phx-click="process_episode" phx-value-episode_id={episode.id}>Process Episode</button>
+            <% end %>
+
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

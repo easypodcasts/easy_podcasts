@@ -1,0 +1,15 @@
+app.js	/home/roig/prj/easypodcasts/assets/js/app.js	1;"	F	epoch:1635601991
+autoprefixer	/home/roig/prj/easypodcasts/assets/postcss.config.js	/^    autoprefixer: {},$/;"	p	class:module.exports.plugins
+csrfToken	/home/roig/prj/easypodcasts/assets/js/app.js	/^let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")$/;"	v
+exports	/home/roig/prj/easypodcasts/assets/postcss.config.js	/^module.exports = {$/;"	c	class:module
+exports	/home/roig/prj/easypodcasts/assets/tailwind.config.js	/^module.exports = {$/;"	c	class:module
+liveSocket	/home/roig/prj/easypodcasts/assets/js/app.js	/^let liveSocket = new LiveSocket("\/live", Socket, {params: {_csrf_token: csrfToken}})$/;"	v
+mode	/home/roig/prj/easypodcasts/assets/tailwind.config.js	/^  mode: "jit",$/;"	p	class:module.exports
+plugins	/home/roig/prj/easypodcasts/assets/postcss.config.js	/^  plugins: {$/;"	c	class:module.exports
+plugins	/home/roig/prj/easypodcasts/assets/tailwind.config.js	/^  plugins: [],$/;"	p	class:module.exports
+postcss.config.js	/home/roig/prj/easypodcasts/assets/postcss.config.js	1;"	F	epoch:1635602558
+purge	/home/roig/prj/easypodcasts/assets/tailwind.config.js	/^  purge: [".\/js\/**\/*.js", "..\/lib\/*_web\/**\/*.*ex"],$/;"	p	class:module.exports
+tailwind.config.js	/home/roig/prj/easypodcasts/assets/tailwind.config.js	1;"	F	epoch:1635602617
+tailwindcss	/home/roig/prj/easypodcasts/assets/postcss.config.js	/^    tailwindcss: {},$/;"	p	class:module.exports.plugins
+theme	/home/roig/prj/easypodcasts/assets/tailwind.config.js	/^  theme: {},$/;"	p	class:module.exports
+variants	/home/roig/prj/easypodcasts/assets/tailwind.config.js	/^  variants: {},$/;"	p	class:module.exports
