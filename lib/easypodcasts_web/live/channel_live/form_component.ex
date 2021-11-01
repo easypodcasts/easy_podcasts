@@ -19,6 +19,7 @@ defmodule EasypodcastsWeb.ChannelLive.FormComponent do
       {:ok, _channel} ->
         {:noreply,
          socket
+         |> Phoenix.LiveView.assign(socket, :channels, Channels.list_channels())
          |> put_flash(:success, "Channel created successfully")
          |> push_redirect(to: socket.assigns.return_to)}
 
