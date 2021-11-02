@@ -14,7 +14,7 @@ defmodule Easypodcasts.Channels.Scheduler do
 
   def handle_info(:work, state) do
     process_new_episodes = true
-    Easypodcasts.Channels.DataProcess.update_all_channels(process_new_episodes)
+    DataProcess.update_all_channels(process_new_episodes)
     # Reschedule once more
     schedule_work()
     {:noreply, state}

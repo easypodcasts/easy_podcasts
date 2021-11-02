@@ -94,7 +94,8 @@ defmodule Easypodcasts.Channels.DataProcess do
     tmp_channel_dir =
       Path.join([tmp_dir, "easypodcasts", to_string(episode.channel_id), to_string(episode.id)])
 
-    channel_dir = Path.join(["priv/static/podcasts", to_string(episode.channel_id), to_string(episode.id)])
+    channel_dir =
+      Path.join(["priv/static/podcasts", to_string(episode.channel_id), to_string(episode.id)])
 
     File.mkdir_p!(tmp_channel_dir)
     File.mkdir_p!(channel_dir)
@@ -103,7 +104,9 @@ defmodule Easypodcasts.Channels.DataProcess do
     base_file_name = episode_file_name |> String.split(".") |> hd
     tmp_episode_file = Path.join(tmp_channel_dir, episode_file_name)
     episode_file = "#{Path.join(channel_dir, base_file_name)}.opus"
-    processed_audio_url = Path.join([to_string(episode.channel_id), to_string(episode.id), "#{base_file_name}.opus"])
+
+    processed_audio_url =
+      Path.join([to_string(episode.channel_id), to_string(episode.id), "#{base_file_name}.opus"])
 
     {:ok, :saved_to_file} =
       :httpc.request(:get, {String.to_charlist(episode.original_audio_url), []}, [],
@@ -131,6 +134,8 @@ defmodule Easypodcasts.Channels.DataProcess do
 
     File.rm!(tmp_episode_file)
 
-    episode |> change(%{processed: true, processed_audio_url: processed_audio_url}) |> Repo.update()
+    episode
+    |> change(%{processed: true, processed_audio_url: processed_audio_url})
+    |> Repo.update()
   end
 end
