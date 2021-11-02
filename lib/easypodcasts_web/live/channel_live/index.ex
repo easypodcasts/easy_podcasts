@@ -35,7 +35,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
       {:ok, _channel} ->
         {:noreply,
          socket
-         |> put_flash(:success, "Channel created successfully")
+         |> put_flash(:success, "Channel created successfully. Fetching episodes now")
          |> push_redirect(to: Routes.channel_index_path(socket, :index))}
 
       {:error, %Ecto.Changeset{} = changeset} ->
