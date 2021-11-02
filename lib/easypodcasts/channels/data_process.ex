@@ -24,7 +24,7 @@ defmodule Easypodcasts.Channels.DataProcess do
   def handle_cast({:process, episode_id}, state) do
     episode = Easypodcasts.Channels.get_episode!(episode_id)
 
-    if not episode.processed do
+    if episode.status == :new do
       process_episode_file(episode)
     end
 
@@ -148,7 +148,7 @@ defmodule Easypodcasts.Channels.DataProcess do
     File.rm!(tmp_episode_file)
 
     episode
-    |> change(%{processed: true, processed_audio_url: processed_audio_url})
+    |> change(%{status: :done, processed_audio_url: processed_audio_url})
     |> Repo.update()
   end
 end
