@@ -1,5 +1,5 @@
 
-<%= if @live_action in [:new, :edit] do %>
+<%= if @live_action == :new do %>
   <%= live_form EasypodcastsWeb.ChannelLive.FormComponent,
     id: @channel.id || :new,
     title: @page_title,
