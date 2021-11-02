@@ -12,8 +12,8 @@
         <%= error_tag f, :link %>
         <div class="flex">
           <%= url_input f, :link, placeholder: "https://example.podcast.com/rss", class: "w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" %>
-          <%= submit "Save", phx_disable_with: "Saving...", class: "text-white bg-indigo-500 border-0 ml-1 px-4 focus:outline-none hover:bg-indigo-600 rounded text-sm" %>
-          <%= live_patch "Back", to: Routes.channel_index_path(@socket, :index), class: "align-middle text-white bg-gray-500 border-0 ml-1 px-4 focus:outline-none hover:bg-gray-600 rounded text-sm inline-flex items-center" %>
+          <%= submit "Save", phx_disable_with: "Saving...", class: "text-white bg-indigo-500 border-0 ml-1 px-4 focus:outline-none rounded text-sm" %>
+          <%= live_patch "Back", to: Routes.channel_index_path(@socket, :index), class: "align-middle text-white bg-gray-500 border-0 ml-1 px-4 focus:outline-none rounded text-sm inline-flex items-center" %>
         </div>
       </div>
     </.form>
