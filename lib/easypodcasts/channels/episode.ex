@@ -10,6 +10,7 @@ defmodule Easypodcasts.Channels.Episode do
     field :processed_audio_url, :string
     field :processed_size, :integer
     field :title, :string
+    field :publication_date, :utc_datetime
     belongs_to :channel, Easypodcasts.Channels.Channel
 
     timestamps()
