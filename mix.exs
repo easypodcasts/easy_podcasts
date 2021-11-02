@@ -49,7 +49,8 @@ defmodule Easypodcasts.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:elixir_feed_parser, "~> 2.1"}
+      {:elixir_feed_parser, "~> 2.1"},
+      {:phoenix_html_sanitizer, "~> 1.1"}
     ]
   end
 

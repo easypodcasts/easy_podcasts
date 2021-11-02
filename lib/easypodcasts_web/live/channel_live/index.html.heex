@@ -25,17 +25,16 @@
   <div class="container px-3 py-10 mx-auto">
     <div class="flex flex-wrap -m-4">
       <%= for channel <- @channels do %>
-      <div class="p-4 md:w-1/4">
-        <div class="h-full border-2 border-gray-300 border-opacity-60 rounded-lg">
-          <img class="lg:h-48 md:h-36 w-auto object-cover object-center mx-auto" src={channel.image_url} alt={channel.title} loading="lazy">
-          <div class="p-2">
-            <h1 class="title-font text-lg font-medium text-gray-900 mb-3"> <%= channel.title %></h1>
-            <p class="leading-relaxed mb-3 overflow-ellipsis"> <%= String.slice(channel.description, 0, 150) %>...</p>
+      <div class="p-4 md:w-1/5">
+        <div class="h-full border-2 border-gray-300 border-opacity-60 rounded-lg flex flex-col justify-between">
+          <img class="lg:h-auto w-auto object-cover object-center mx-auto rounded-lg mb-2" src={channel.image_url} alt={channel.title} loading="lazy">
+            <h1 class="title-font text-sm font-medium text-gray-900 mb-3"> <%= channel.title %></h1>
+            <p class="line-clamp-5 text-sm mb-3"> <%= channel.description %></p>
             <div class="flex items-center">
-              <span class="text-gray-600">
+              <span class="text-gray-600 text-sm">
                 <%= channel.episodes %> Episodes
               </span>
-              <%= live_redirect to: Routes.channel_show_path(@socket, :show, channel), class: "text-indigo-500 inline-flex items-center lg:mb-0 lg:ml-auto" do %>
+              <%= live_redirect to: Routes.channel_show_path(@socket, :show, channel), class: "text-indigo-500 text-sm inline-flex items-center lg:mb-0 lg:ml-auto" do %>
                 View
                 <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M5 12h14"></path>
@@ -43,7 +42,6 @@
                 </svg>
               <% end %>
             </div>
-          </div>
         </div>
       </div>
       <% end %>

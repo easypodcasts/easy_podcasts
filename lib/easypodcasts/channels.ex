@@ -20,10 +20,9 @@ defmodule Easypodcasts.Channels do
 
   """
   def list_channels do
-    # Repo.all(Channel)
     Repo.all(
       from(c in Channel,
-        join: e in Episode,
+        left_join: e in Episode,
         on: c.id == e.channel_id,
         group_by: c.id,
         select_merge: %{episodes: count(e.id)},

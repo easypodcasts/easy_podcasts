@@ -4,6 +4,8 @@ defmodule Easypodcasts.Channels.DataProcess do
   import Ecto.Changeset
   alias Easypodcasts.Repo
   alias Easypodcasts.Channels.Episode
+  alias ElixirFeedParser.Parsers.ITunesRSS2
+  alias ElixirFeedParser.XmlNode
 
   def start_link(_opts) do
     GenServer.start_link(
@@ -51,7 +53,7 @@ defmodule Easypodcasts.Channels.DataProcess do
   def get_channel_data(url) do
     case :httpc.request(url) do
       {:ok, {{'HTTP/1.1', 200, 'OK'}, _headers, body}} ->
-        case ElixirFeedParser.parse(List.to_string(body)) do
+        case parse_feed(List.to_string(body)) do
           {:ok, feed} -> {:ok, feed}
           {:error, _} -> {:error, "The feed is invalid"}
         end
@@ -61,6 +63,16 @@ defmodule Easypodcasts.Channels.DataProcess do
 
       {:error, _} ->
         {:error, "Error while fetching the url"}
+    end
+  end
+
+  defp parse_feed(xml_string) do
+    case XmlNode.parse_string(xml_string) do
+      {:ok, xml} -> case ElixirFeedParser.determine_feed_parser(xml) do
+        {:ok, ITunesRSS2, xml} -> {:ok, ITunesRSS2.parse(xml)}
+        _ -> {:error, "The feed is invalid"}
+      end
+      error -> error
     end
   end
 
