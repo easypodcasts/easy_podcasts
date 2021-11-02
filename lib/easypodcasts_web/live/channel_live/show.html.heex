@@ -15,7 +15,7 @@
       <%= for episode <- @channel.episodes do %>
         <div class="py-8 flex flex-wrap md:flex-nowrap">
           <div class="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
-            <span class="text-sm text-gray-500">Fetched: <%= episode.inserted_at %></span>
+            <span class="text-sm text-gray-500">Published: <%= format_date(episode.publication_date) %></span>
             <%= if episode.processed do %>
             <span class="text-sm text-gray-500">Original Size: <%= episode.original_size %></span>
             <span class="text-sm text-gray-500">Processed Size: <%= episode.processed_size %></span>

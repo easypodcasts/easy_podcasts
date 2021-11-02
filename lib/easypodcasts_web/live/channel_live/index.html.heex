@@ -1,11 +1,24 @@
 
 <%= if @live_action == :new do %>
-  <%= live_form EasypodcastsWeb.ChannelLive.FormComponent,
-    id: @channel.id || :new,
-    title: @page_title,
-    action: @live_action,
-    channel: @channel,
-    return_to: Routes.channel_index_path(@socket, :index) %>
+  <div class="relative">
+    <.form
+      let={f}
+      for={@changeset}
+      id="channel-form"
+      phx-submit="save"
+      phx-page-loading>
+
+      <div class="lg:w-1/3 md:w-1/2 flex flex-col md:mx-auto w-full md:py-8 mt-8 md:mt-0">
+        <%= error_tag f, :link %>
+        <div class="flex">
+          <%= url_input f, :link, placeholder: "https://example.podcast.com/rss", class: "w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" %>
+          <%= submit "Save", phx_disable_with: "Saving...", class: "text-white bg-indigo-500 border-0 ml-1 px-4 focus:outline-none hover:bg-indigo-600 rounded text-sm" %>
+          <%= live_patch "Back", to: Routes.channel_index_path(@socket, :index), class: "align-middle text-white bg-gray-500 border-0 ml-1 px-4 focus:outline-none hover:bg-gray-600 rounded text-sm inline-flex items-center" %>
+        </div>
+      </div>
+    </.form>
+  </div>
+
 <% end %>
 
 <section class="text-gray-600 body-font">

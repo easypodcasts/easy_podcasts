@@ -11,6 +11,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
+    IO.puts "HANDLE PARAMS"
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
@@ -25,4 +26,8 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   end
 
   defp page_title(:show), do: "Show Channel"
+  defp format_date(date) do
+    localized = DateTime.shift_zone!(date, "America/Havana")
+    "#{localized.year}/#{localized.month}/#{localized.day} #{localized.hour}:#{localized.minute}"
+  end
 end

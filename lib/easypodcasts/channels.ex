@@ -27,6 +27,7 @@ defmodule Easypodcasts.Channels do
         on: c.id == e.channel_id,
         group_by: c.id,
         select_merge: %{episodes: count(e.id)},
+        order_by: [desc: c.inserted_at]
       )
     )
   end
@@ -48,7 +49,7 @@ defmodule Easypodcasts.Channels do
   def get_channel!(id),
     do:
       Repo.get!(Channel, id)
-      |> Repo.preload(episodes: from(e in Episode, order_by: [{:desc, e.inserted_at}]))
+      |> Repo.preload(episodes: from(e in Episode, order_by: [{:desc, e.publication_date}]))
 
   @doc """
   Creates a channel.
