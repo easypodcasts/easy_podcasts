@@ -25,9 +25,9 @@ import topbar from "../vendor/topbar";
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, { params: { _csrf_token: csrfToken } });
 
-liveSocket.onError((error, transport, establishedConnections) => {
+liveSocket.socket.onError((error, transport, establishedConnections) => {
   if (transport === WebSocket && establishedConnections === 0) {
-    liveSocket.replaceTransport(LongPoll);
+    liveSocket.socket.replaceTransport(LongPoll);
     liveSocket.connect();
   }
 });
