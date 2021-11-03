@@ -91,7 +91,8 @@ defmodule Easypodcasts.Channels.DataProcess do
           original_audio_url: entry.enclosure.url,
           original_size: String.to_integer(entry.enclosure.length),
           channel_id: channel.id,
-          publication_date: DateTime.shift_zone!(entry."rss2:pubDate", "Etc/UTC")
+          publication_date: DateTime.shift_zone!(entry."rss2:pubDate", "Etc/UTC"),
+          feed_data: entry
         }
       end)
 
