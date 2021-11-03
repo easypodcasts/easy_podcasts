@@ -89,6 +89,7 @@ defmodule Easypodcasts.Channels.DataProcess do
           title: entry.title,
           link: entry.url,
           original_audio_url: entry.enclosure.url,
+          original_size: String.to_integer(entry.enclosure.length),
           channel_id: channel.id,
           publication_date: DateTime.shift_zone!(entry."rss2:pubDate", "Etc/UTC")
         }
@@ -145,10 +146,13 @@ defmodule Easypodcasts.Channels.DataProcess do
         episode_file
       ])
 
+
     File.rm!(tmp_episode_file)
 
+    {:ok, %{size: size}} = File.stat(episode_file)
+
     episode
-    |> change(%{status: :done, processed_audio_url: processed_audio_url})
+    |> change(%{status: :done, processed_audio_url: processed_audio_url, processed_size: size})
     |> Repo.update()
   end
 end
