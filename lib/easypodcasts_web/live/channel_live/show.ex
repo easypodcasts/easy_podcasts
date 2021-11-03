@@ -13,7 +13,6 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
-    IO.puts("HANDLE PARAMS")
 
     {:noreply,
      socket
