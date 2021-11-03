@@ -15,10 +15,10 @@
       <%= for episode <- @channel.episodes do %>
         <div class="py-8 flex flex-wrap md:flex-nowrap">
           <div class="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
-            <span class="text-sm text-gray-500">Published: <%= format_date(episode.publication_date) %></span>
-            <%= if episode.status == :processed do %>
-            <span class="text-sm text-gray-500">Original Size: <%= episode.original_size %></span>
-            <span class="text-sm text-gray-500">Processed Size: <%= episode.processed_size %></span>
+            <span class="text-sm text-gray-500 mb-3">Published: <%= format_date(episode.publication_date) %></span>
+            <span class="text-sm text-gray-500 mb-3">Original Size: <%= Float.floor(episode.original_size  / 1_000_000, 2) %> MB</span>
+            <%= if episode.status == :done do %>
+            <span class="text-sm text-gray-500">Processed Size: <%= Float.floor(episode.processed_size / 1_000_000, 2) %> MB</span>
             <% end %>
           </div>
           <div class="md:flex-grow">
