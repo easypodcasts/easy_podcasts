@@ -1,7 +1,7 @@
 <section class="text-gray-600 body-font overflow-hidden">
-  <div class="container px-5 py-24 mx-auto">
+  <div class="container px-5 py-10 mx-auto">
     <div class="lg:w-4/5 mx-auto flex flex-wrap">
-      <img alt={@channel.title} class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src={@channel.image_url} style="display: inline-block; min-width: 20px !important; min-height: 20px !important; border: 1px solid rgba(0, 0, 0, 0.1) !important;">
+      <img alt={@channel.title} class="w-1/2 h-auto mx-auto object-cover object-center rounded" src={@channel.image_url}/>
       <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
         <p class="leading-relaxed"> <%= sanitize(@channel.description) %></p>
       </div>
@@ -13,14 +13,14 @@
     <div class="-my-8 divide-y-2 divide-gray-300">
       <%= for episode <- @channel.episodes do %>
         <div class="py-8 flex flex-wrap md:flex-nowrap">
-          <div class="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
+          <div class="md:w-64 md:mb-0 mb-2 mt-6 mb:mt-0 flex-shrink-0 flex flex-col order-2 md:order-1">
             <span class="text-sm text-gray-500 mb-3">Published: <%= format_date(episode.publication_date) %></span>
             <span class="text-sm text-gray-500 mb-3">Original Size: <%= Float.floor(episode.original_size  / 1_000_000, 2) %> MB</span>
             <%= if episode.status == :done do %>
             <span class="text-sm text-gray-500">Processed Size: <%= Float.floor(episode.processed_size / 1_000_000, 2) %> MB</span>
             <% end %>
           </div>
-          <div class="flex flex-col w-full">
+          <div class="flex flex-col w-full order-1 md:order-2">
             <h2 class="text-2xl font-medium text-gray-900 title-font mb-2"> <%= episode.title %></h2>
             <p class="line-clamp-6"> <%= sanitize(episode.description) %></p>
             <%= if episode.status == :done do %>

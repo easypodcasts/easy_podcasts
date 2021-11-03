@@ -30,12 +30,10 @@
           <%= live_redirect to: Routes.channel_show_path(@socket, :show, channel) do %>
             <img class="lg:h-auto w-auto object-cover object-center mx-auto rounded-t mb-2" src={channel.image_url} alt={channel.title} loading="lazy">
           <% end %>
-            <p class="line-clamp-5 text-sm px-2 pt-2 mb-2 text-center"> <%= channel.description %></p>
-            <div class="flex">
+            <p class="line-clamp-5 text-sm px-2 pt-2 pb-1 mb-2 text-center border-b-2"> <%= channel.description %></p>
               <span class="text-gray-600 text-sm mx-auto mb-2">
                 <%= channel.episodes %> Episodes
               </span>
-            </div>
         </div>
       </div>
       <% end %>
