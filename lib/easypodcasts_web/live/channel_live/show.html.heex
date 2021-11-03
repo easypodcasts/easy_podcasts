@@ -1,16 +1,15 @@
 <section class="text-gray-600 body-font overflow-hidden">
   <div class="container px-5 py-24 mx-auto">
     <div class="lg:w-4/5 mx-auto flex flex-wrap">
-      <img alt="ecommerce" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src={@channel.image_url} style="display: inline-block; min-width: 20px !important; min-height: 20px !important; border: 1px solid rgba(0, 0, 0, 0.1) !important;">
+      <img alt={@channel.title} class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src={@channel.image_url} style="display: inline-block; min-width: 20px !important; min-height: 20px !important; border: 1px solid rgba(0, 0, 0, 0.1) !important;">
       <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
-        <h1 class="text-gray-900 text-3xl title-font font-medium mb-1"> <%= @channel.title %></h1>
         <p class="leading-relaxed"> <%= sanitize(@channel.description) %></p>
       </div>
     </div>
   </div>
 </section>
 <section class="text-gray-600 body-font overflow-hidden">
-  <div class="container md:px-20 md:py-10 px-2 py-4 mx-auto">
+  <div class="container md:px-52 md:py-10 px-2 py-4 mx-auto">
     <div class="-my-8 divide-y-2 divide-gray-300">
       <%= for episode <- @channel.episodes do %>
         <div class="py-8 flex flex-wrap md:flex-nowrap">
@@ -21,17 +20,12 @@
             <span class="text-sm text-gray-500">Processed Size: <%= Float.floor(episode.processed_size / 1_000_000, 2) %> MB</span>
             <% end %>
           </div>
-          <div class="flex flex-col">
+          <div class="flex flex-col w-full">
             <h2 class="text-2xl font-medium text-gray-900 title-font mb-2"> <%= episode.title %></h2>
             <p class="line-clamp-6"> <%= sanitize(episode.description) %></p>
             <%= if episode.status == :done do %>
               <div class="flex items-center self-end">
-                <a class="text-indigo-500 inline-flex items-center mt-4 lg:ml-auto" href={"#{Routes.channel_index_path(@socket, :index)}download/#{episode.processed_audio_url}"}}>Get Episode
-                  <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 12h14"></path>
-                    <path d="M12 5l7 7-7 7"></path>
-                  </svg>
-                </a>
+                <a class="text-white bg-purple-900 border-0 ml-1 px-5 py-2 text-sm rounded text-sm mt-4 ml-auto" href={"#{Routes.channel_index_path(@socket, :index)}download/#{episode.processed_audio_url}"}}>Get Episode</a>
               </div>
             <% end %>
             <%= if episode.status == :processing do %>

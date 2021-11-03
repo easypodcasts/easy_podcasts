@@ -5,7 +5,7 @@
     <% end %>
     <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
     <%= if @live_action != :new do %>
-      <%= live_redirect "New Channel", to: Routes.channel_index_path(@socket, :new), class: "mr-5 hover:text-gray-900" %>
+      <%= live_redirect "New Channel", to: Routes.channel_index_path(@socket, :new), class: "align-middle text-white bg-indigo-500 border-0 ml-1 px-4 py-2 focus:outline-none rounded text-sm inline-flex items-center" %>
     <% end %>
     </nav>
   </div>
