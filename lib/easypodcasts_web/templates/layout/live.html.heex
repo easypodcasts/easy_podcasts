@@ -4,7 +4,6 @@
       <span class="ml-3 text-xl">Easy Podcasts</span>
     <% end %>
     <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
-
     <%= if @live_action != :new do %>
       <%= live_redirect "New Channel", to: Routes.channel_index_path(@socket, :new), class: "mr-5 hover:text-gray-900" %>
     <% end %>
@@ -13,20 +12,20 @@
 </header>
 <main class="container mx-auto px-4">
   <%= if live_flash(@flash, :success) do %>
-    <div class="bg-green-100 rounded-lg p-4 mb-4 mt-4 text-sm text-green-700 max-w-md mx-auto" role="alert" phx-click="lv:clear-flash" phx-value-key="success">
+    <div class="fixed bg-green-100 rounded-lg p-4 text-sm text-green-700 max-w-md mx-auto inset-x-0" role="alert" phx-click="lv:clear-flash" phx-value-key="success">
       <span class="font-medium">Success! </span> <%= live_flash(@flash, :success) %>
     </div>
   <% end %>
 
   <%= if live_flash(@flash, :info) do %>
-    <div class="bg-blue-100 rounded-lg p-4 mb-4 mt-4 text-sm text-blue-700 max-w-md mx-auto" role="alert" phx-click="lv:clear-flash" phx-value-key="info">
+    <div class="fixed bg-blue-100 rounded-lg p-4 text-sm text-blue-700 max-w-md mx-auto inset-x-0" role="alert" phx-click="lv:clear-flash" phx-value-key="info">
       <span class="font-medium">Info! </span> <%= live_flash(@flash, :info) %>
     </div>
   <% end %>
 
   <%= if live_flash(@flash, :error) do %>
-    <div class="bg-red-100 rounded-lg p-4 mb-4 mt-4 text-sm text-red-700 max-w-md mx-auto" role="alert" phx-click="lv:clear-flash" phx-value-key="error">
-      <span class="font-medium">error! </span> <%= live_flash(@flash, :error) %>
+    <div class="fixed bg-red-100 rounded-lg p-4 mb-4 text-sm text-red-700 max-w-md mx-auto inset-x-0" role="alert" phx-click="lv:clear-flash" phx-value-key="error">
+      <span class="font-medium">Error! </span> <%= live_flash(@flash, :error) %>
     </div>
   <% end %>
 
