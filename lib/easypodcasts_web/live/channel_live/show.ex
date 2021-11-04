@@ -13,7 +13,6 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
-
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
@@ -43,5 +42,17 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   defp format_date(date) do
     localized = DateTime.shift_zone!(date, "America/Havana")
     "#{localized.year}/#{localized.month}/#{localized.day} #{localized.hour}:#{localized.minute}"
+  end
+
+  defp format_duration(duration) when is_binary(duration) do
+    cond do
+      String.contains?(duration, ":") -> duration
+      true -> format_duration(String.to_integer(duration))
+    end
+  end
+
+  defp format_duration(duration) when is_integer(duration) do
+    time = Time.new!(0, 0, 0) |> Time.add(duration)
+    "#{time.hour}:#{time.minute}:#{time.second}"
   end
 end
