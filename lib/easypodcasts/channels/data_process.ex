@@ -6,6 +6,7 @@ defmodule Easypodcasts.Channels.DataProcess do
   alias Easypodcasts.Channels.Episode
   alias ElixirFeedParser.Parsers.ITunesRSS2
   alias ElixirFeedParser.XmlNode
+  alias Phoenix.PubSub
 
   def start_link(_opts) do
     GenServer.start_link(
@@ -158,5 +159,11 @@ defmodule Easypodcasts.Channels.DataProcess do
     episode
     |> change(%{status: :done, processed_audio_url: processed_audio_url, processed_size: size})
     |> Repo.update()
+
+    PubSub.broadcast(
+      Easypodcasts.PubSub,
+      "channel#{episode.channel_id}",
+      {:episode_processed, %{channel_id: episode.channel_id, episode_title: episode.title}}
+    )
   end
 end

@@ -1,13 +1,15 @@
 defmodule EasypodcastsWeb.ChannelLive.Show do
   use EasypodcastsWeb, :live_view
   import Ecto.Changeset
+  alias Phoenix.PubSub
   alias Easypodcasts.Channels.DataProcess
   alias Easypodcasts.Repo
 
   alias Easypodcasts.Channels
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(%{"id" => id}, _session, socket) do
+    if connected?(socket), do: PubSub.subscribe(Easypodcasts.PubSub, "channel#{id}")
     {:ok, socket}
   end
 
@@ -42,6 +44,19 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   defp format_date(date) do
     localized = DateTime.shift_zone!(date, "America/Havana")
     "#{localized.year}/#{localized.month}/#{localized.day} #{localized.hour}:#{localized.minute}"
+  end
+
+  @impl true
+  def handle_info(
+        {:episode_processed, %{channel_id: channel_id, episode_title: episode_title}},
+        socket
+      ) do
+    socket =
+      socket
+      |> put_flash(:success, "The episode '#{episode_title}' was processed successfully")
+      |> update(:channel, fn _ -> Channels.get_channel!(channel_id) end)
+
+    {:noreply, socket}
   end
 
   defp format_duration(duration) when is_binary(duration) do
