@@ -50,7 +50,8 @@ defmodule Easypodcasts.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:elixir_feed_parser, "~> 2.1"},
-      {:phoenix_html_sanitizer, "~> 1.1"}
+      {:phoenix_html_sanitizer, "~> 1.1"},
+      {:finch, "~> 0.9"}
     ]
   end
 
