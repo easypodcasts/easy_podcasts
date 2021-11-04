@@ -1,7 +1,7 @@
 <header class="text-gray-600 body-font">
   <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center border-b-2 border-gray-300">
     <%= live_redirect to: Routes.channel_index_path(@socket, :index), class: "flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0" do %>
-      <span class="ml-3 text-xl">Easy Podcasts</span>
+      <img class="ml-3 h-16" src={Routes.static_path(@socket, "/images/easypodcasts.svg")} alt="Easy Podcasts"/>
     <% end %>
     <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
     <%= if @live_action == :new do %>
@@ -23,7 +23,7 @@
         </.form>
       </div>
     <% else %>
-      <%= live_redirect "New Channel", to: Routes.channel_index_path(@socket, :new), class: "align-middle text-white bg-indigo-500 border-0 ml-1 px-4 py-2.5 focus:outline-none rounded text-sm inline-flex items-center" %>
+      <%= live_redirect "New Channel", to: Routes.channel_index_path(@socket, :new), class: "align-middle text-white bg-indigo-500 dark:bg-blue-400 border-0 ml-1 px-4 py-2.5 focus:outline-none rounded text-sm inline-flex items-center" %>
     <% end %>
 
     </nav>
