@@ -1,7 +1,7 @@
 <section class="text-gray-600 body-font overflow-hidden">
   <div class="container px-5 py-10 mx-auto">
     <div class="lg:w-4/5 mx-auto flex flex-wrap">
-      <img alt={@channel.title} class="w-1/2 h-auto mx-auto object-cover object-center rounded" src={@channel.image_url}/>
+      <img alt={@channel.title} class="md:w-1/2 w-full h-auto mx-auto object-cover object-center rounded" src={@channel.image_url}/>
       <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
         <p class="leading-relaxed"> <%= sanitize(@channel.description) %></p>
       </div>
@@ -32,7 +32,7 @@
               <button class="flex text-white bg-gray-400 border-0 py-2 px-2 focus:outline-none rounded text-sm mt-4 cursor-wait self-start" disabled>Processing...</button>
             <% end %>
             <%= if episode.status == :new do %>
-              <button class="flex text-white bg-indigo-500 disabled:bg-gray-400 disabled:cursor-wait border-0 py-2 px-2 focus:outline-none rounded text-sm lg: mt-4 self-start" phx-click="process_episode" phx-value-episode_id={episode.id} phx-disable-with="Processing...">Process Episode</button>
+              <button class="flex text-white bg-indigo-500 dark:bg-blue-400 disabled:bg-gray-400 disabled:cursor-wait border-0 py-2 px-2 focus:outline-none rounded text-sm lg: mt-4 self-start" phx-click="process_episode" phx-value-episode_id={episode.id} phx-disable-with="Processing...">Process Episode</button>
             <% end %>
           </div>
         </div>

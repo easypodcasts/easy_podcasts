@@ -7,8 +7,10 @@
             <img class="lg:h-auto w-auto object-cover object-center mx-auto rounded-t mb-2" src={channel.image_url} alt={channel.title} loading="lazy">
           <% end %>
             <p class="line-clamp-5 text-sm px-2 mb-2 text-center flex-1"> <%= channel.description %></p>
-            <span class="text-gray-600 text-sm w-full mb-2 pt-1 border-t-2 text-center self-end">
-              <%= channel.episodes %> Episodes
+            <span class="text-white text-sm w-full pt-1 border-t-2 pb-2 rounded-b-lg bg-indigo-500 dark:bg-blue-400 text-center self-end">
+              <%= live_redirect to: Routes.channel_show_path(@socket, :show, channel) do %>
+                <%= channel.episodes %> Episodes
+              <% end %>
             </span>
         </div>
       </div>
