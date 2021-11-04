@@ -2,7 +2,7 @@
   <div class="container px-5 py-10 mx-auto">
     <div class="lg:w-4/5 mx-auto flex flex-wrap">
       <img alt={@channel.title} class="md:w-1/2 w-full h-auto mx-auto object-cover object-center rounded" src={@channel.image_url}/>
-      <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
+      <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0 text-lg">
         <p class="leading-relaxed"> <%= sanitize(@channel.description) %></p>
       </div>
     </div>
@@ -18,9 +18,9 @@
             <span class="text-sm text-gray-500 dark:text-gray-100 mb-3"><%= format_duration(Map.get(episode.feed_data, "itunes_duration")) %></span>
             <span class="text-sm text-gray-500 dark:text-gray-100 mb-3">
             <%= if episode.status == :done do %>
-              <%= Float.floor(episode.processed_size / 1_000_000, 2) %> MB
+              <%= Float.floor(episode.processed_size  / 1_000_000, 2) %> MB (<%= Float.floor((episode.original_size - episode.processed_size)  / 1_000_000, 2) %> MB less)
             <% else %>
-              <%= Float.floor(episode.original_size  / 1_000_000, 2) %> MB
+              <%= Float.floor(episode.original_size / 1_000_000, 2) %> MB
             <% end %>
             </span>
           </div>
