@@ -30,26 +30,28 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
     # TODO: Move this from here
     episode = Channels.get_episode!(episode_id)
 
-    if episode.status == :new do
-      episode
-      |> change(%{status: :processing})
-      |> Repo.update()
+    socket =
+      if episode.status == :new do
+        episode
+        |> change(%{status: :processing})
+        |> Repo.update()
 
-      DataProcess.process_episode(episode_id)
+        DataProcess.process_episode(episode_id)
 
-      msg =
-        Enum.random([
-          "Sit and relax",
-          "Go grab a drink",
-          "Do some stretching"
-        ])
+        msg =
+          Enum.random([
+            "Sit and relax",
+            "Go grab a drink",
+            "Do some stretching"
+          ])
 
-      socket =
         socket
         # TODO: Don't fetch the channel again, just the episode that changed
         |> update(:channel, fn _ -> Channels.get_channel!(socket.assigns.channel.id) end)
         |> put_flash(:info, "The episode is in queue. #{msg}")
-    end
+      else
+        put_flash(socket, :error, "Sorry. That episode can't be processed right now")
+      end
 
     {:noreply, socket}
   end
