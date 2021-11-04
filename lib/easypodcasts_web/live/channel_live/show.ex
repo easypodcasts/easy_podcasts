@@ -27,25 +27,29 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
   @impl true
   def handle_event("process_episode", %{"episode_id" => episode_id}, socket) do
-    DataProcess.process_episode(episode_id)
-
     # TODO: Move this from here
-    Channels.get_episode!(episode_id)
-    |> change(%{status: :processing})
-    |> Repo.update()
+    episode = Channels.get_episode!(episode_id)
 
-    msg =
-      Enum.random([
-        "Sit and relax",
-        "Go grab a drink",
-        "Do some stretching"
-      ])
+    if episode.status == :new do
+      episode
+      |> change(%{status: :processing})
+      |> Repo.update()
 
-    socket =
-      socket
-      # TODO: Don't fetch the channel again, just the episode that changed
-      |> update(:channel, fn _ -> Channels.get_channel!(socket.assigns.channel.id) end)
-      |> put_flash(:info, "The episode is in queue. #{msg}")
+      DataProcess.process_episode(episode_id)
+
+      msg =
+        Enum.random([
+          "Sit and relax",
+          "Go grab a drink",
+          "Do some stretching"
+        ])
+
+      socket =
+        socket
+        # TODO: Don't fetch the channel again, just the episode that changed
+        |> update(:channel, fn _ -> Channels.get_channel!(socket.assigns.channel.id) end)
+        |> put_flash(:info, "The episode is in queue. #{msg}")
+    end
 
     {:noreply, socket}
   end
@@ -72,7 +76,6 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
   @impl true
   def handle_info(:queue_changed, socket) do
-    IO.inspect "HANDLE INFO"
     {:noreply, update(socket, :queue_len, fn _ -> DataProcess.get_queue_len() end)}
   end
 

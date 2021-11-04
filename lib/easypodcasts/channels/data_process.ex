@@ -23,9 +23,10 @@ defmodule Easypodcasts.Channels.DataProcess do
 
   @impl true
   def handle_cast({:process, episode_id}, state) do
+    queue_changed()
     episode = Easypodcasts.Channels.get_episode!(episode_id)
 
-    if episode.status == :new do
+    if episode.status == :processing do
       process_episode_file(episode)
     end
 
@@ -110,7 +111,6 @@ defmodule Easypodcasts.Channels.DataProcess do
   end
 
   def process_episode_file(episode) do
-    queue_changed()
     tmp_dir = System.tmp_dir!()
 
     tmp_channel_dir =
@@ -166,11 +166,7 @@ defmodule Easypodcasts.Channels.DataProcess do
   end
 
   defp queue_changed do
-    PubSub.broadcast(
-      Easypodcasts.PubSub,
-      "queue_state",
-      :queue_changed
-    )
+    PubSub.broadcast(Easypodcasts.PubSub, "queue_state", :queue_changed)
   end
 
   def get_queue_len do
