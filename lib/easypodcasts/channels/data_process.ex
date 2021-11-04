@@ -51,28 +51,30 @@ defmodule Easypodcasts.Channels.DataProcess do
   end
 
   def get_channel_data(url) do
-    case :httpc.request(url) do
-      {:ok, {{'HTTP/1.1', 200, 'OK'}, _headers, body}} ->
-        case parse_feed(List.to_string(body)) do
-          {:ok, feed} -> {:ok, feed}
-          {:error, _} -> {:error, "The feed is invalid"}
-        end
+    with {:ok, %Finch.Response{body: body} = response} <- request(url),
+         {:ok, feed} <- parse_feed(body),
+         do: {:ok, feed}
+  end
 
-      {:ok, {{'HTTP/1.1', _, _}, _headers, _body}} ->
-        {:error, "Error while fetching the url"}
+  defp request(url) do
+    response = Finch.build(:get, url) |> Finch.request(FinchRequests)
 
-      {:error, _} ->
-        {:error, "Error while fetching the url"}
+    case response do
+      {:ok, %Finch.Response{}} -> response
+      {:error, _} -> {:error, "Error while fetching the url"}
     end
   end
 
   defp parse_feed(xml_string) do
-    case XmlNode.parse_string(xml_string) do
-      {:ok, xml} -> case ElixirFeedParser.determine_feed_parser(xml) do
-        {:ok, ITunesRSS2, xml} -> {:ok, ITunesRSS2.parse(xml)}
-        _ -> {:error, "The feed is invalid"}
-      end
-      error -> error
+    with {:ok, xml} <- XmlNode.parse_string(xml_string),
+         {:ok, ITunesRSS2, xml} <- determine_feed_parser(xml),
+         do: {:ok, ITunesRSS2.parse(xml)}
+  end
+
+  defp determine_feed_parser(xml) do
+    case ElixirFeedParser.determine_feed_parser(xml) do
+      {:ok, ITunesRSS2, xml} -> {:ok, ITunesRSS2.parse(xml)}
+      _ -> {:error, "The feed is invalid"}
     end
   end
 
@@ -146,7 +148,6 @@ defmodule Easypodcasts.Channels.DataProcess do
         "voip",
         episode_file
       ])
-
 
     File.rm!(tmp_episode_file)
 
