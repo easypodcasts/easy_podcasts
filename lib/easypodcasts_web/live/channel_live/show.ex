@@ -30,11 +30,18 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
     |> change(%{status: :processing})
     |> Repo.update()
 
+    msg =
+      Enum.random([
+        "Sit and relax",
+        "Go grab a drink",
+        "Do some stretching"
+      ])
+
     socket =
       socket
       # TODO: Don't fetch the channel again, just the episode that changed
       |> update(:channel, fn _ -> Channels.get_channel!(socket.assigns.channel.id) end)
-      |> put_flash(:info, "The episode is in queue")
+      |> put_flash(:info, "The episode is in queue. #{msg}")
 
     {:noreply, socket}
   end
