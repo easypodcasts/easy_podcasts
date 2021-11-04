@@ -51,7 +51,7 @@ defmodule Easypodcasts.Channels.DataProcess do
   end
 
   def get_channel_data(url) do
-    with {:ok, %Finch.Response{body: body} = response} <- request(url),
+    with {:ok, %Finch.Response{body: body} = _response} <- request(url),
          {:ok, feed} <- parse_feed(body),
          do: {:ok, feed}
   end
@@ -79,12 +79,14 @@ defmodule Easypodcasts.Channels.DataProcess do
   end
 
   def process_channel_data(channel, new_data, process_episodes \\ false) do
-    episode_links =
-      Repo.all(from e in Episode, where: e.channel_id == ^channel.id, select: e.link)
+    episode_audio_urls =
+      Repo.all(
+        from e in Episode, where: e.channel_id == ^channel.id, select: e.original_audio_url
+      )
 
     new_episodes =
       new_data.entries
-      |> Enum.filter(fn entry -> entry.url not in episode_links end)
+      |> Enum.filter(fn entry -> entry.enclosure.url not in episode_audio_urls end)
       |> Enum.map(fn entry ->
         %{
           description: entry.description,
