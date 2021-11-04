@@ -9,8 +9,12 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
   @impl true
   def mount(%{"id" => id}, _session, socket) do
-    if connected?(socket), do: PubSub.subscribe(Easypodcasts.PubSub, "channel#{id}")
-    {:ok, socket}
+    if connected?(socket) do
+      PubSub.subscribe(Easypodcasts.PubSub, "queue_state")
+      PubSub.subscribe(Easypodcasts.PubSub, "channel#{id}")
+    end
+
+    {:ok, assign(socket, :queue_len, DataProcess.get_queue_len())}
   end
 
   @impl true
@@ -64,6 +68,12 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
       |> update(:channel, fn _ -> Channels.get_channel!(channel_id) end)
 
     {:noreply, socket}
+  end
+
+  @impl true
+  def handle_info(:queue_changed, socket) do
+    IO.inspect "HANDLE INFO"
+    {:noreply, update(socket, :queue_len, fn _ -> DataProcess.get_queue_len() end)}
   end
 
   defp format_duration(duration) when is_binary(duration) do

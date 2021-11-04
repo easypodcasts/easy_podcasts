@@ -33,6 +33,7 @@ defmodule Easypodcasts.Channels.DataProcess do
   end
 
   def process_episode(episode_id) do
+    queue_changed()
     GenServer.cast(__MODULE__, {:process, episode_id})
   end
 
@@ -109,6 +110,7 @@ defmodule Easypodcasts.Channels.DataProcess do
   end
 
   def process_episode_file(episode) do
+    queue_changed()
     tmp_dir = System.tmp_dir!()
 
     tmp_channel_dir =
@@ -160,10 +162,27 @@ defmodule Easypodcasts.Channels.DataProcess do
     |> change(%{status: :done, processed_audio_url: processed_audio_url, processed_size: size})
     |> Repo.update()
 
+    episode_processed(episode.channel_id, episode.title)
+  end
+
+  defp queue_changed do
     PubSub.broadcast(
       Easypodcasts.PubSub,
-      "channel#{episode.channel_id}",
-      {:episode_processed, %{channel_id: episode.channel_id, episode_title: episode.title}}
+      "queue_state",
+      :queue_changed
+    )
+  end
+
+  def get_queue_len do
+    {:message_queue_len, len} = Process.info(Process.whereis(__MODULE__), :message_queue_len)
+    len
+  end
+
+  defp episode_processed(channel_id, episode_title) do
+    PubSub.broadcast(
+      Easypodcasts.PubSub,
+      "channel#{channel_id}",
+      {:episode_processed, %{channel_id: channel_id, episode_title: episode_title}}
     )
   end
 end
