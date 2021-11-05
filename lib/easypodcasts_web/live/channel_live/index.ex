@@ -60,4 +60,12 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   defp list_channels do
     Channels.list_channels()
   end
+
+  def slugify_channel(channel) do
+    slug = channel.title
+      |> String.downcase
+      |> String.replace(~r/[^a-z0-9\s-]/, "")
+      |> String.replace(~r/(\s|-)+/, "-")
+    "#{channel.id}-#{slug}"
+  end
 end

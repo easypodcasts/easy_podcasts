@@ -20,7 +20,7 @@ defmodule EasypodcastsWeb.Router do
     live "/", ChannelLive.Index, :index
     live "/channels", ChannelLive.Index, :index
     live "/channels/new", ChannelLive.Index, :new
-    live "/channels/:id", ChannelLive.Show, :show
+    live "/channels/:slug", ChannelLive.Show, :show
   end
 
   # Other scopes may use custom stacks.
