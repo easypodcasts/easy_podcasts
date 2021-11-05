@@ -150,6 +150,8 @@ defmodule Easypodcasts.Channels.DataProcess do
       System.cmd("ffmpeg", [
         "-i",
         tmp_episode_file,
+        "-ac",
+        "1",
         "-c:a",
         "libopus",
         "-b:a",
