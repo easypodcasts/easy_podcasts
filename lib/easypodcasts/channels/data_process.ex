@@ -155,7 +155,7 @@ defmodule Easypodcasts.Channels.DataProcess do
         "-c:a",
         "libopus",
         "-b:a",
-        "32k",
+        "24k",
         "-vbr",
         "on",
         "-compression_level",
