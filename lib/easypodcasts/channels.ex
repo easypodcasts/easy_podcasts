@@ -31,6 +31,17 @@ defmodule Easypodcasts.Channels do
     )
   end
 
+  def paginate_channels(params \\ []) do
+    from(c in Channel,
+      left_join: e in Episode,
+      on: c.id == e.channel_id,
+      group_by: c.id,
+      select_merge: %{episodes: count(e.id)},
+      order_by: [desc: c.inserted_at]
+    )
+    |> Repo.paginate(params)
+  end
+
   @doc """
   Gets a single channel.
 

@@ -10,12 +10,45 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   def mount(_params, _session, socket) do
     if connected?(socket), do: PubSub.subscribe(Easypodcasts.PubSub, "queue_state")
 
-    socket =
-      socket
-      |> assign(:channels, list_channels())
-      |> assign(:queue_len, DataProcess.get_queue_len())
+    %{
+      entries: entries,
+      page_number: page_number,
+      page_size: page_size,
+      total_entries: total_entries,
+      total_pages: total_pages
+    } = Channels.paginate_channels()
 
-    {:ok, socket}
+    assigns = [
+      channels: entries,
+      page_number: page_number || 0,
+      page_size: page_size || 0,
+      total_entries: total_entries || 0,
+      total_pages: total_pages || 0,
+      queue_len: DataProcess.get_queue_len()
+    ]
+
+    {:ok, assign(socket, assigns)}
+  end
+
+  @impl true
+  def handle_params(%{"page" => page}, _, socket) do
+    %{
+      entries: entries,
+      page_number: page_number,
+      page_size: page_size,
+      total_entries: total_entries,
+      total_pages: total_pages
+    } = Channels.paginate_channels(page: page)
+
+    assigns = [
+      channels: entries,
+      page_number: page_number || 0,
+      page_size: page_size || 0,
+      total_entries: total_entries || 0,
+      total_pages: total_pages || 0
+    ]
+
+    {:noreply, assign(socket, assigns)}
   end
 
   @impl true
@@ -57,15 +90,13 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
     {:noreply, update(socket, :queue_len, fn _ -> DataProcess.get_queue_len() end)}
   end
 
-  defp list_channels do
-    Channels.list_channels()
-  end
-
   def slugify_channel(channel) do
-    slug = channel.title
-      |> String.downcase
+    slug =
+      channel.title
+      |> String.downcase()
       |> String.replace(~r/[^a-z0-9\s-]/, "")
       |> String.replace(~r/(\s|-)+/, "-")
+
     "#{channel.id}-#{slug}"
   end
 end
