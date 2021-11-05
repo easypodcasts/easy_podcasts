@@ -33,9 +33,14 @@ defmodule Easypodcasts.Channels.DataProcess do
     {:noreply, state}
   end
 
-  def process_episode(episode_id) do
+  def process_episode(episode) do
     queue_changed()
-    GenServer.cast(__MODULE__, {:process, episode_id})
+
+    episode
+    |> change(%{status: :processing})
+    |> Repo.update()
+
+    GenServer.cast(__MODULE__, {:process, episode.id})
   end
 
   def update_all_channels(process_new_episodes \\ false) do

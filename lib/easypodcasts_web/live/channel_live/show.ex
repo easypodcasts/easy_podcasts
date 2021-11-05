@@ -3,12 +3,13 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   import Ecto.Changeset
   alias Phoenix.PubSub
   alias Easypodcasts.Channels.DataProcess
-  alias Easypodcasts.Repo
 
   alias Easypodcasts.Channels
 
   @impl true
-  def mount(%{"id" => id}, _session, socket) do
+  def mount(%{"slug" => slug}, _session, socket) do
+    [id | _] = String.split(slug, "-")
+
     if connected?(socket) do
       PubSub.subscribe(Easypodcasts.PubSub, "queue_state")
       PubSub.subscribe(Easypodcasts.PubSub, "channel#{id}")
@@ -18,7 +19,9 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   end
 
   @impl true
-  def handle_params(%{"id" => id}, _, socket) do
+  def handle_params(%{"slug" => slug}, _, socket) do
+    [id | _] = String.split(slug, "-")
+
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
@@ -27,16 +30,12 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
   @impl true
   def handle_event("process_episode", %{"episode_id" => episode_id}, socket) do
-    # TODO: Move this from here
     episode = Channels.get_episode!(episode_id)
 
     socket =
       if episode.status == :new do
-        episode
-        |> change(%{status: :processing})
-        |> Repo.update()
-
-        DataProcess.process_episode(episode_id)
+        # TODO: Move this from here
+        DataProcess.process_episode(episode)
 
         msg =
           Enum.random([
