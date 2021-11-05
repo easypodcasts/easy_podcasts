@@ -50,7 +50,9 @@
 
   <%= @inner_content %>
 
-  <div class="fixed bottom-6 right-6 rounded-lg bg-gray-200 px-3 py-1 text-xl">
-    <%= @queue_len %> episodes in queue
-  </div>
+  <%= if @queue_len > 0 do %>
+    <div class="fixed bottom-6 right-6 rounded-lg bg-gray-200 px-3 py-1 text-xl">
+      <%= @queue_len %> episodes in queue
+    </div>
+  <% end %>
 </main>
