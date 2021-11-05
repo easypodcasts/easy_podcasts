@@ -10,23 +10,22 @@ defmodule EasypodcastsWeb.Router do
     plug :put_secure_browser_headers
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
+  pipeline :feed do
+    plug :accepts, ["xml"]
   end
 
   scope "/", EasypodcastsWeb do
     pipe_through :browser
-
-    live "/", ChannelLive.Index, :index
-    live "/channels", ChannelLive.Index, :index
     live "/channels/new", ChannelLive.Index, :new
     live "/channels/:slug", ChannelLive.Show, :show
+    live "/channels", ChannelLive.Index, :index
+    live "/", ChannelLive.Index, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", EasypodcastsWeb do
-  #   pipe_through :api
-  # end
+  scope "/feeds", EasypodcastsWeb do
+    pipe_through :feed
+    get "/:slug", ChannelController, :feed
+  end
 
   # Enables LiveDashboard only for development
   #

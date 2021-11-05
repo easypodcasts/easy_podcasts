@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+  xmlns:podcast="https://podcastindex.org/namespace/1.0"
+>
+<channel>
+    <title> <%= @title %></title>
+    <copyright><%= Map.get(@feed_data,"copyright")%></copyright>
+    <link>https://changelog.com/shipit</link>
+    <atom:link href="<%= Map.get(@feed_data, "atom:link") %>" rel="self" type="application/rss+xml" />
+    <atom:link href="<%= Map.get(@feed_data, "url") %>" rel="alternate" type="text/html" />
+    <language><%= Map.get(@feed_data, "language") %></language>
+    <description> <%= @description %></description>
+    <itunes:author> <%= @author %></itunes:author>
+    <itunes:summary><%= Map.get(@feed_data, "itunes_summary") %></itunes:summary>
+    <itunes:explicit><%= Map.get(@feed_data, "explicit") %></itunes:explicit>
+    <itunes:image href="<%= Map.get(@feed_data, "itunes_image") %>"/>
+    <itunes:keywords><%= Map.get(@feed_data, "itunes_keywords") %></itunes:keywords>
+    <itunes:owner>
+      <itunes:name><%= Map.get(@feed_data, "itunes_name") %></itunes:name>
+      <itunes:email><%= Map.get(@feed_data, "itunes_email") %></itunes:email>
+    </itunes:owner>
+
+    <%= for episode <- @episodes do %>
+    <item>
+      <title> <%= episode.title %></title>
+      <link> <%= episode.link %></link>
+      <guid isPermaLink="false"><%= Map.get(episode.feed_data, "rss2:guid") %></guid>
+      <pubDate><%= Map.get(episode.feed_data, "rss2:pubDate") %></pubDate>
+      <enclosure url="<%= "https://roig.is-a.dev/podcasts/download/#{episode.processed_audio_url}"  %>" length="84210899" type="audio/mpeg" />
+      <description> <%= episode.description %></description>
+      <content:encoded><![CDATA[ <%= Map.get(episode.feed_data, "content") %>
+]]>
+</content:encoded>
+
+      <itunes:image href="<%= Map.get(episode.feed_data, "itunes_image")  %>"/>
+      <itunes:duration><%= Map.get(episode.feed_data, "itunes_duration") %></itunes:duration>
+      <itunes:explicit><%= Map.get(episode.feed_data, "itunes_explicit") %></itunes:explicit>
+      <itunes:keywords><%= Map.get(episode.feed_data, "itunes_keywords") %></itunes:keywords>
+      <itunes:subtitle><%= Map.get(episode.feed_data, "itunes_subtitle") %></itunes:subtitle>
+      <itunes:summary><%= Map.get(episode.feed_data, "itunes_subtitle") %></itunes:summary>
+      <dc:creator><%= Map.get(episode.feed_data, "rss2:dc:creator") %></dc:creator>
+      <itunes:author><%= Map.get(episode.feed_data, "itunes_author") %></itunes:author>
+    </item>
+    <% end %>
+</channel>
+</rss>

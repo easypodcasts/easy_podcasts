@@ -34,7 +34,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Listing Channels")
+    |> assign(:page_title, "Home")
     |> assign(:channel, nil)
   end
 

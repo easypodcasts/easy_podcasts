@@ -21,10 +21,9 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   def handle_params(%{"slug" => slug}, _, socket) do
     [id | _] = String.split(slug, "-")
 
-    {:noreply,
-     socket
-     |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:channel, Channels.get_channel!(id))}
+    channel = Channels.get_channel!(id)
+    socket = socket |> assign(:channel, channel) |> assign(:page_title, "#{channel.title}")
+    {:noreply, socket}
   end
 
   @impl true
@@ -53,8 +52,6 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
     {:noreply, socket}
   end
-
-  defp page_title(:show), do: "Show Channel"
 
   defp format_date(date) do
     localized = DateTime.shift_zone!(date, "America/Havana")
