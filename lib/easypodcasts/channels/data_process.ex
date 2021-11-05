@@ -111,7 +111,7 @@ defmodule Easypodcasts.Channels.DataProcess do
     {_, episodes} = Repo.insert_all(Episode, new_episodes, returning: true)
 
     if process_episodes do
-      episodes |> Enum.each(fn episode -> process_episode(episode.id) end)
+      episodes |> Enum.each(fn episode -> process_episode(episode) end)
     end
   end
 
