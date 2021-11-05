@@ -52,6 +52,7 @@ defmodule Easypodcasts.MixProject do
       {:elixir_feed_parser, "~> 2.1"},
       {:phoenix_html_sanitizer, "~> 1.1"},
       {:finch, "~> 0.9"},
+      {:scrivener_ecto, "~> 2.0"}
     ]
   end
 
