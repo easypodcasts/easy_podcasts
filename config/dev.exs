@@ -2,10 +2,10 @@ import Config
 
 # Configure your database
 config :easypodcasts, Easypodcasts.Repo,
-  username: "postgres",
-  password: "thepostgrespassword",
-  database: "easypodcasts_dev",
-  hostname: "localhost",
+  username: System.get_env("POSTGRES_USER", "postgres"),
+  password: System.get_env("POSTGRES_PASSWORD", "thepostgrespassword"),
+  database: System.get_env("POSTGRES_DB", "easypodcasts_dev"),
+  hostname: System.get_env("PGHOST", "localhost"),
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
@@ -18,7 +18,7 @@ config :easypodcasts, Easypodcasts.Repo,
 config :easypodcasts, EasypodcastsWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}, port: 4000],
+  http: [ip: {0, 0, 0, 0}, port: 4000],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
