@@ -7,7 +7,7 @@
             <img class="lg:h-auto w-auto object-cover object-center mx-auto rounded-t mb-2" src={channel.image_url} alt={channel.title} loading="lazy">
           <% end %>
             <p class="line-clamp-5 text-sm px-2 mb-2 text-center flex-1"> <%= sanitize(channel.description) %></p>
-            <span class="text-white text-sm w-full pt-1 border-t-2 pb-2 rounded-b-lg bg-indigo-500 dark:bg-blue-400 text-center self-end">
+            <span class="text-white text-sm pt-1 border-t-2 pb-2 rounded-b-lg bg-indigo-500 dark:bg-blue-400 self-end flex w-full justify-center">
               <%= live_redirect to: Routes.channel_show_path(@socket, :show, slugify_channel(channel)) do %>
                 <%= channel.episodes %> Episodes
               <% end %>
