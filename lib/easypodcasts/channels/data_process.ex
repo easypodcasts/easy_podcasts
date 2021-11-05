@@ -127,13 +127,19 @@ defmodule Easypodcasts.Channels.DataProcess do
     File.mkdir_p!(tmp_channel_dir)
     File.mkdir_p!(channel_dir)
 
-    episode_file_name = episode.original_audio_url |> String.split("/") |> List.last()
-    base_file_name = episode_file_name |> String.split(".") |> hd
+    episode_file_name =
+      episode.original_audio_url
+      |> String.split("/")
+      |> List.last()
+      |> String.downcase()
+      |> String.replace(~r/[^a-z0-9\s-.]/, "")
+      |> String.replace(~r/(\s|-)+/, "-")
+
     tmp_episode_file = Path.join(tmp_channel_dir, episode_file_name)
-    episode_file = "#{Path.join(channel_dir, base_file_name)}.opus"
+    episode_file = "#{Path.join(channel_dir, episode_file_name)}.opus"
 
     processed_audio_url =
-      Path.join([to_string(episode.channel_id), to_string(episode.id), "#{base_file_name}.opus"])
+      Path.join([to_string(episode.channel_id), to_string(episode.id), "#{episode_file_name}.opus"])
 
     {:ok, :saved_to_file} =
       :httpc.request(:get, {String.to_charlist(episode.original_audio_url), []}, [],
