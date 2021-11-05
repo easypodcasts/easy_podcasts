@@ -45,10 +45,19 @@ defmodule Easypodcasts.Channels do
       ** (Ecto.NoResultsError)
 
   """
-  def get_channel!(id),
-    do:
-      Repo.get!(Channel, id)
-      |> Repo.preload(episodes: from(e in Episode, order_by: [{:desc, e.publication_date}]))
+  def get_channel!(id) do
+    Repo.get!(Channel, id)
+    |> Repo.preload(episodes: from(e in Episode, order_by: [{:desc, e.publication_date}]))
+  end
+
+  def get_channel_for_feed!(id) do
+    Repo.get!(Channel, id)
+    |> Repo.preload(
+      episodes:
+        from(e in Episode, where: e.status == :done, order_by: [{:desc, e.publication_date}])
+    )
+    |> Map.from_struct()
+  end
 
   @doc """
   Creates a channel.

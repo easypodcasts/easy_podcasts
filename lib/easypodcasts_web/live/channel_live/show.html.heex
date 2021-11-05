@@ -29,7 +29,7 @@
             <p class="line-clamp-6"> <%= sanitize(episode.description) %></p>
             <%= if episode.status == :done do %>
               <div class="flex items-center self-start">
-                <a class="text-white bg-purple-900 border-0 ml-1 px-5 py-2 text-sm rounded text-sm mt-4 " href={"#{Routes.channel_index_path(@socket, :index)}download/#{episode.processed_audio_url}"}}>Get Episode</a>
+                <a class="text-white bg-purple-900 border-0 ml-1 px-5 py-2 text-sm rounded text-sm mt-4 " href={"download/#{episode.processed_audio_url}"}}>Get Episode</a>
               </div>
             <% end %>
             <%= if episode.status == :processing do %>
