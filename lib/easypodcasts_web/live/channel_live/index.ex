@@ -90,7 +90,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
     search = String.replace(search, ~r/[^0-9a-zA-Z ]/, "")
 
     case search do
-      "" -> {:noreply, socket}
+      "" -> {:noreply, assign(socket, :channels, Channels.paginate_channels().entries)}
       _ -> {:noreply, assign(socket, :channels, Channels.search_channels(search))}
     end
   end
