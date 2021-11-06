@@ -4,7 +4,7 @@
       <img alt={@channel.title} class="md:w-1/2 w-full h-auto mx-auto object-cover object-center rounded" src={@channel.image_url}/>
       <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0 text-xl">
         <p class="leading-relaxed"> <%= sanitize(@channel.description) %></p>
-          <%= link to: Routes.channel_path(@socket, :feed, EasypodcastsWeb.ChannelLive.Index.slugify_channel(@channel)) do %>
+          <%= link to: Routes.channel_path(@socket, :feed, Channels.slugify_channel(@channel)) do %>
             <button class="flex justify-between text-white bg-indigo-500 dark:bg-blue-400 border-0 py-2 px-2 focus:outline-none rounded text-sm mt-4 self-start">
               <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32" class="pt-2">
               <title>feed11</title>
