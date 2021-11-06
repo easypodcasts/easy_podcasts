@@ -86,6 +86,11 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   end
 
   @impl true
+  def handle_event("search", %{"search-podcasts" => search}, socket) do
+    {:noreply, assign(socket, :channels, Channels.search_channels(search))}
+  end
+
+  @impl true
   def handle_info(:queue_changed, socket) do
     {:noreply, update(socket, :queue_len, fn _ -> DataProcess.get_queue_len() end)}
   end

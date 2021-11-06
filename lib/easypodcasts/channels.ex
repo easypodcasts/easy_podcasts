@@ -42,6 +42,21 @@ defmodule Easypodcasts.Channels do
     |> Repo.paginate(params)
   end
 
+  alias Easypodcasts.Helpers.Search
+
+  def search_channels(query) do
+    query = Channel |> Search.search(query)
+
+    from(c in query,
+      left_join: e in Episode,
+      on: c.id == e.channel_id,
+      group_by: c.id,
+      select_merge: %{episodes: count(e.id)},
+      order_by: [desc: c.inserted_at]
+    )
+    |> Repo.all()
+  end
+
   @doc """
   Gets a single channel.
 
