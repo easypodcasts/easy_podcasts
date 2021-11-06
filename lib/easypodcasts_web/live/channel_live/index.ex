@@ -99,14 +99,4 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   def handle_info(:queue_changed, socket) do
     {:noreply, update(socket, :queue_len, fn _ -> DataProcess.get_queue_len() end)}
   end
-
-  def slugify_channel(channel) do
-    slug =
-      channel.title
-      |> String.downcase()
-      |> String.replace(~r/[^a-z0-9\s-]/, "")
-      |> String.replace(~r/(\s|-)+/, "-")
-
-    "#{channel.id}-#{slug}"
-  end
 end

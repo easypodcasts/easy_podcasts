@@ -7,8 +7,9 @@ defmodule Easypodcasts.Channels do
   import Easypodcasts.Channels.Query
   alias Easypodcasts.Repo
 
-  alias Easypodcasts.Channels.Channel
-  alias Easypodcasts.Channels.Episode
+  import Easypodcasts.Helpers
+  alias Easypodcasts.Helpers.Search
+  alias Easypodcasts.Channels.{Channel, Episode}
   alias Easypodcasts.Channels.DataProcess
 
   @doc """
@@ -27,8 +28,6 @@ defmodule Easypodcasts.Channels do
   def paginate_channels(params \\ []) do
     Channel |> channels_with_episode_count() |> Repo.paginate(params)
   end
-
-  alias Easypodcasts.Helpers.Search
 
   def search_channels(query) do
     Channel
@@ -66,6 +65,8 @@ defmodule Easypodcasts.Channels do
     |> Map.from_struct()
   end
 
+  def slugify_channel(channel), do: "#{channel.id}-#{slugify(channel.title)}"
+
   @doc """
   Creates a channel.
 
@@ -79,15 +80,13 @@ defmodule Easypodcasts.Channels do
 
   """
   def create_channel(attrs \\ %{}) do
-    result =
+    {:ok, channel} =
+      result =
       %Channel{}
       |> Channel.changeset(attrs)
       |> Repo.insert()
 
     DataProcess.update_channel(channel)
-    result
-    end
-
     result
   end
 
@@ -119,8 +118,6 @@ defmodule Easypodcasts.Channels do
   def change_channel(%Channel{} = channel, attrs \\ %{}) do
     Channel.changeset(channel, attrs)
   end
-
-  alias Easypodcasts.Channels.Episode
 
   @doc """
   Gets a single episode.
