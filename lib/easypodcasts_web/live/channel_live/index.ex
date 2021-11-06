@@ -87,7 +87,12 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
 
   @impl true
   def handle_event("search", %{"search-podcasts" => search}, socket) do
-    {:noreply, assign(socket, :channels, Channels.search_channels(search))}
+    search = String.replace(search, ~r/[^0-9a-zA-Z ]/, "")
+
+    case search do
+      "" -> {:noreply, socket}
+      _ -> {:noreply, assign(socket, :channels, Channels.search_channels(search))}
+    end
   end
 
   @impl true
