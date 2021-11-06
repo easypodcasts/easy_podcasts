@@ -4,6 +4,7 @@ defmodule Easypodcasts.Channels do
   """
 
   import Ecto.Query, warn: false
+  import Easypodcasts.Channels.Query
   alias Easypodcasts.Repo
 
   alias Easypodcasts.Channels.Channel
@@ -20,40 +21,19 @@ defmodule Easypodcasts.Channels do
 
   """
   def list_channels do
-    Repo.all(
-      from(c in Channel,
-        left_join: e in Episode,
-        on: c.id == e.channel_id,
-        group_by: c.id,
-        select_merge: %{episodes: count(e.id)},
-        order_by: [desc: c.inserted_at]
-      )
-    )
+    Channel |> channels_with_episode_count() |> Repo.all()
   end
 
   def paginate_channels(params \\ []) do
-    from(c in Channel,
-      left_join: e in Episode,
-      on: c.id == e.channel_id,
-      group_by: c.id,
-      select_merge: %{episodes: count(e.id)},
-      order_by: [desc: c.inserted_at]
-    )
-    |> Repo.paginate(params)
+    Channel |> channels_with_episode_count() |> Repo.paginate(params)
   end
 
   alias Easypodcasts.Helpers.Search
 
   def search_channels(query) do
-    query = Channel |> Search.search(query)
-
-    from(c in query,
-      left_join: e in Episode,
-      on: c.id == e.channel_id,
-      group_by: c.id,
-      select_merge: %{episodes: count(e.id)},
-      order_by: [desc: c.inserted_at]
-    )
+    Channel
+    |> Search.search(query)
+    |> channels_with_episode_count()
     |> Repo.all()
   end
 
@@ -77,11 +57,12 @@ defmodule Easypodcasts.Channels do
   end
 
   def get_channel_for_feed!(id) do
-    Repo.get!(Channel, id)
-    |> Repo.preload(
-      episodes:
-        from(e in Episode, where: e.status == :done, order_by: [{:desc, e.publication_date}])
-    )
+    episodes =
+      from(e in Episode, where: e.status == :done, order_by: [{:desc, e.publication_date}])
+
+    Channel
+    |> Repo.get!(id)
+    |> Repo.preload(episodes: episodes)
     |> Map.from_struct()
   end
 
@@ -103,9 +84,8 @@ defmodule Easypodcasts.Channels do
       |> Channel.changeset(attrs)
       |> Repo.insert()
 
-    case result do
-      {:ok, channel} -> DataProcess.update_channel(channel)
-      _ -> nil
+    DataProcess.update_channel(channel)
+    result
     end
 
     result
