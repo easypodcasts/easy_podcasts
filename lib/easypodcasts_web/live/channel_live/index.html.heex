@@ -26,6 +26,6 @@
     <% end %>
     </div>
 </section>
-<%= if @total_pages > 1 @total_entries > 0 do %>
+<%= if @total_pages > 1 and @total_entries > 0 do %>
 <.pagination socket={@socket} page_number={@page_number} total_pages={@total_pages} is_top={false}/>
 <% end %>
