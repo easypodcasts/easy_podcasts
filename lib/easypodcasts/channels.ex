@@ -29,11 +29,19 @@ defmodule Easypodcasts.Channels do
     Channel |> channels_with_episode_count() |> Repo.paginate(params)
   end
 
-  def search_channels(query) do
-    Channel
-    |> Search.search(query)
-    |> channels_with_episode_count()
-    |> Repo.all()
+  def search_channels(search) do
+    %{search_phrase: search}
+    |> Search.search_changeset()
+    |> case do
+      %{valid?: true, changes: %{search_phrase: search_phrase}} ->
+        Channel
+        |> Search.search(search_phrase)
+        |> channels_with_episode_count()
+        |> Repo.all()
+
+      _ ->
+        :noop
+    end
   end
 
   @doc """
