@@ -1,15 +1,11 @@
 defmodule EasypodcastsWeb.ChannelLive.Index do
   use EasypodcastsWeb, :live_view
-  alias Phoenix.PubSub
 
   alias Easypodcasts.Channels
   alias Easypodcasts.Channels.Channel
-  alias Easypodcasts.Channels.DataProcess
 
   @impl true
   def mount(_params, _session, socket) do
-    if connected?(socket), do: PubSub.subscribe(Easypodcasts.PubSub, "queue_state")
-
     %{
       entries: entries,
       page_number: page_number,
@@ -23,8 +19,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
       page_number: page_number || 0,
       page_size: page_size || 0,
       total_entries: total_entries || 0,
-      total_pages: total_pages || 0,
-      queue_len: DataProcess.get_queue_len()
+      total_pages: total_pages || 0
     ]
 
     {:ok, assign(socket, assigns)}
@@ -97,6 +92,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
 
   @impl true
   def handle_info(:queue_changed, socket) do
-    {:noreply, update(socket, :queue_len, fn _ -> DataProcess.get_queue_len() end)}
+    send_update(EasypodcastsWeb.QueueComponent, id: "queue_state")
+    {:noreply, socket}
   end
 end

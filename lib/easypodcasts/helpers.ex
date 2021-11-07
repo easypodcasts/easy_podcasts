@@ -5,4 +5,5 @@ defmodule Easypodcasts.Helpers do
     |> String.replace(~r/[^a-z0-9\s-]/, "")
     |> String.replace(~r/(\s|-)+/, "-")
   end
+
 end
