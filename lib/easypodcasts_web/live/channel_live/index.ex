@@ -7,44 +7,12 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    %{
-      entries: entries,
-      page_number: page_number,
-      page_size: page_size,
-      total_entries: total_entries,
-      total_pages: total_pages
-    } = Channels.paginate_channels()
-
-    assigns = [
-      channels: entries,
-      page_number: page_number || 0,
-      page_size: page_size || 0,
-      total_entries: total_entries || 0,
-      total_pages: total_pages || 0
-    ]
-
-    {:ok, assign(socket, assigns)}
+    {:ok, assign(socket, get_pagination_assigns())}
   end
 
   @impl true
   def handle_params(%{"page" => page}, _, socket) do
-    %{
-      entries: entries,
-      page_number: page_number,
-      page_size: page_size,
-      total_entries: total_entries,
-      total_pages: total_pages
-    } = Channels.paginate_channels(page: page)
-
-    assigns = [
-      channels: entries,
-      page_number: page_number || 0,
-      page_size: page_size || 0,
-      total_entries: total_entries || 0,
-      total_pages: total_pages || 0
-    ]
-
-    {:noreply, assign(socket, assigns)}
+    {:noreply, assign(socket, get_pagination_assigns())}
   end
 
   @impl true
@@ -53,18 +21,13 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   end
 
   defp apply_action(socket, :new, _params) do
-    changeset = Channels.change_channel(%Channel{})
-
     socket
     |> assign(:page_title, "New Channel")
-    |> assign(:channel, nil)
-    |> assign(:changeset, changeset)
+    |> assign(:changeset, Channels.change_channel(%Channel{}))
   end
 
   defp apply_action(socket, :index, _params) do
-    socket
-    |> assign(:page_title, "Home")
-    |> assign(:channel, nil)
+    assign(socket, :page_title, "Home")
   end
 
   @impl true
@@ -95,5 +58,23 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   def handle_info(:queue_changed, socket) do
     send_update(EasypodcastsWeb.QueueComponent, id: "queue_state")
     {:noreply, socket}
+  end
+
+  defp get_pagination_assigns(page \\ nil) do
+    %{
+      entries: entries,
+      page_number: page_number,
+      page_size: page_size,
+      total_entries: total_entries,
+      total_pages: total_pages
+    } = Channels.paginate_channels(page: page)
+
+    assigns = [
+      channels: entries,
+      page_number: page_number || 0,
+      page_size: page_size || 0,
+      total_entries: total_entries || 0,
+      total_pages: total_pages || 0
+    ]
   end
 end
