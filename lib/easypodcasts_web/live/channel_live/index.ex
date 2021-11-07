@@ -12,7 +12,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
 
   @impl true
   def handle_params(%{"page" => page}, _, socket) do
-    {:noreply, assign(socket, get_pagination_assigns())}
+    {:noreply, assign(socket, get_pagination_assigns(page))}
   end
 
   @impl true
@@ -45,12 +45,10 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   end
 
   @impl true
-  def handle_event("search", %{"search-podcasts" => search}, socket) do
-    search = search |> String.replace(~r/[^0-9a-zA-Z ]/, "") |> String.trim()
-
-    case search do
-      "" -> {:noreply, assign(socket, :channels, Channels.paginate_channels().entries)}
-      _ -> {:noreply, assign(socket, :channels, Channels.search_channels(search))}
+  def handle_event("search", %{"search" => search}, socket) do
+    case Channels.search_channels(search) do
+      :noop -> {:noreply, socket}
+      channels -> {:noreply, assign(socket, :channels, channels)}
     end
   end
 
@@ -69,7 +67,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
       total_pages: total_pages
     } = Channels.paginate_channels(page: page)
 
-    assigns = [
+    [
       channels: entries,
       page_number: page_number || 0,
       page_size: page_size || 0,
