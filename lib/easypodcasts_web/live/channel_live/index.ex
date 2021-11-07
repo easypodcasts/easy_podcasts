@@ -53,6 +53,10 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   end
 
   @impl true
+  def handle_event("search", %{"search" => ""}, socket),
+    do: {:noreply, assign(socket, get_pagination_assigns())}
+
+  @impl true
   def handle_info(:queue_changed, socket) do
     send_update(EasypodcastsWeb.QueueComponent, id: "queue_state")
     {:noreply, socket}
