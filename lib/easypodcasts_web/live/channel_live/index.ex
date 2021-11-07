@@ -3,6 +3,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
 
   alias Easypodcasts.Channels
   alias Easypodcasts.Channels.Channel
+  import EasypodcastsWeb.PaginationComponent
 
   @impl true
   def mount(_params, _session, socket) do
