@@ -1,25 +1,31 @@
-<%= if @total_pages > 1 do %>
+<%= if @total_pages > 1 and @total_entries > 0 do %>
   <.pagination socket={@socket} page_number={@page_number} total_pages={@total_pages} is_top={true}/>
 <% end %>
 <section class="text-gray-600 dark:text-gray-100 body-font px-3 py-10 mx-auto">
     <div class="flex flex-wrap -m-4">
-      <%= for channel <- @channels do %>
-      <div class="p-4 md:w-1/5">
-        <div class="h-full border-2 border-gray-300 dark:border-gray-50 border-opacity-60 flex flex-col rounded-lg">
-          <%= live_redirect to: Routes.channel_show_path(@socket, :show, Channels.slugify_channel(channel)) do %>
-            <img class="lg:h-auto w-auto object-cover object-center mx-auto rounded-t mb-2" src={channel.image_url} alt={channel.title} loading="lazy">
-          <% end %>
-            <p class="line-clamp-5 text-sm px-2 mb-2 text-center flex-1"> <%= sanitize(channel.description) %></p>
-            <span class="text-white text-sm pt-1 border-t-2 pb-2 rounded-b-lg bg-indigo-500 dark:bg-blue-400 self-end flex w-full justify-center">
-              <%= live_redirect to: Routes.channel_show_path(@socket, :show, Channels.slugify_channel(channel)) do %>
-                <%= channel.episodes %> Episodes
-              <% end %>
-            </span>
+      <%= if @total_entries > 0 do %>
+        <%= for channel <- @channels do %>
+        <div class="p-4 md:w-1/5">
+          <div class="h-full border-2 border-gray-300 dark:border-gray-50 border-opacity-60 flex flex-col rounded-lg">
+            <%= live_redirect to: Routes.channel_show_path(@socket, :show, Channels.slugify_channel(channel)) do %>
+              <img class="lg:h-auto w-auto object-cover object-center mx-auto rounded-t mb-2" src={channel.image_url} alt={channel.title} loading="lazy">
+            <% end %>
+              <p class="line-clamp-5 text-sm px-2 mb-2 text-center flex-1"> <%= sanitize(channel.description) %></p>
+              <span class="text-white text-sm pt-1 border-t-2 pb-2 rounded-b-lg bg-indigo-500 dark:bg-blue-400 self-end flex w-full justify-center">
+                <%= live_redirect to: Routes.channel_show_path(@socket, :show, Channels.slugify_channel(channel)) do %>
+                  <%= channel.episodes %> Episodes
+                <% end %>
+              </span>
+          </div>
         </div>
-      </div>
       <% end %>
+    <% else %>
+      <div class="text-center lg:w-2/3 w-full">
+            <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">No podcasts to show</h1>
+      </div>
+    <% end %>
     </div>
 </section>
-<%= if @total_pages > 1 do %>
+<%= if @total_pages > 1 @total_entries > 0 do %>
 <.pagination socket={@socket} page_number={@page_number} total_pages={@total_pages} is_top={false}/>
 <% end %>
