@@ -45,16 +45,16 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   end
 
   @impl true
+  def handle_event("search", %{"search" => ""}, socket),
+    do: {:noreply, assign(socket, get_pagination_assigns())}
+
+  @impl true
   def handle_event("search", %{"search" => search}, socket) do
     case Channels.search_channels(search) do
       :noop -> {:noreply, socket}
       channels -> {:noreply, assign(socket, :channels, channels)}
     end
   end
-
-  @impl true
-  def handle_event("search", %{"search" => ""}, socket),
-    do: {:noreply, assign(socket, get_pagination_assigns())}
 
   @impl true
   def handle_info(:queue_changed, socket) do
