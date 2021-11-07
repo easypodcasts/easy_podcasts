@@ -1,28 +1,25 @@
 defmodule EasypodcastsWeb.ChannelLive.Show do
   use EasypodcastsWeb, :live_view
-  alias Phoenix.PubSub
   alias Easypodcasts.Channels.DataProcess
 
   alias Easypodcasts.Channels
 
-  @impl true
-  def mount(%{"slug" => slug}, _session, socket) do
-    [id | _] = String.split(slug, "-")
-
-    if connected?(socket) do
-      PubSub.subscribe(Easypodcasts.PubSub, "queue_state")
-      PubSub.subscribe(Easypodcasts.PubSub, "channel#{id}")
-    end
-
-    {:ok, assign(socket, :queue_len, DataProcess.get_queue_len())}
-  end
+  # @impl true
+  # def mount(_params, _session, socket) do
+  #   {:ok, socket}
+  # end
 
   @impl true
   def handle_params(%{"slug" => slug}, _, socket) do
     [id | _] = String.split(slug, "-")
 
     channel = Channels.get_channel!(id)
-    socket = socket |> assign(:channel, channel) |> assign(:page_title, "#{channel.title}")
+
+    socket =
+      socket
+      |> assign(:channel, channel)
+      |> assign(:page_title, "#{channel.title}")
+
     {:noreply, socket}
   end
 
@@ -53,11 +50,6 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
     {:noreply, socket}
   end
 
-  defp format_date(date) do
-    localized = DateTime.shift_zone!(date, "America/Havana")
-    "#{localized.year}/#{localized.month}/#{localized.day} #{localized.hour}:#{localized.minute}"
-  end
-
   @impl true
   def handle_info(
         {:episode_processed, %{channel_id: channel_id, episode_title: episode_title}},
@@ -73,7 +65,13 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
   @impl true
   def handle_info(:queue_changed, socket) do
-    {:noreply, update(socket, :queue_len, fn _ -> DataProcess.get_queue_len() end)}
+    send_update(EasypodcastsWeb.QueueComponent, id: "queue_state")
+    {:noreply, socket}
+  end
+
+  defp format_date(date) do
+    localized = DateTime.shift_zone!(date, "America/Havana")
+    "#{localized.year}/#{localized.month}/#{localized.day} #{localized.hour}:#{localized.minute}"
   end
 
   defp format_duration(duration) when is_binary(duration) do
