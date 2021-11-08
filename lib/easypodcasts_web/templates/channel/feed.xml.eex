@@ -28,7 +28,7 @@
     <item>
       <title> <%= episode.title %></title>
       <link> <%= episode.link %></link>
-      <guid isPermaLink="false"><%= Map.get(episode.feed_data, "rss2:guid") %></guid>
+      <guid isPermaLink="false"><%= episode.feed_data |> Map.get("rss2:guid") |> URI.encode_www_form %></guid>
       <pubDate><%= Map.get(episode.feed_data, "rss2:pubDate") %></pubDate>
       <enclosure url="<%= "https://roig.is-a.dev/podcasts/download/#{episode.processed_audio_url}"  %>" length="<%= episode.processed_size %>" type="audio/ogg" />
       <description><![CDATA[<%= episode.description %>]]></description>
