@@ -34,10 +34,11 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   def handle_event("save", %{"channel" => channel_params}, socket) do
     case Channels.create_channel(channel_params) do
       {:ok, _channel} ->
+        Process.send_after(self(), :clear_flash, 5000)
         {:noreply,
          socket
          |> put_flash(:success, "Channel created successfully")
-         |> push_redirect(to: Routes.channel_index_path(socket, :index))}
+         |> push_patch(to: Routes.channel_index_path(socket, :index))}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
@@ -60,6 +61,10 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   def handle_info({:queue_changed, queue_len}, socket) do
     send_update(EasypodcastsWeb.QueueComponent, id: "queue_state", queue_len: queue_len)
     {:noreply, socket}
+  end
+
+  def handle_info(:clear_flash, socket) do
+    {:noreply, clear_flash(socket)}
   end
 
   defp get_pagination_assigns(page \\ nil) do
