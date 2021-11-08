@@ -5,6 +5,7 @@ defmodule EasypodcastsWeb.QueueComponent do
 
   alias Phoenix.PubSub
   alias Easypodcasts.Processing.Queue
+  require Logger
 
   @impl true
   def mount(socket) do
@@ -13,7 +14,12 @@ defmodule EasypodcastsWeb.QueueComponent do
   end
 
   @impl true
-  def update(assigns, socket) do
+  def update(%{queue_len: queue_len} = _assigns, socket) do
+    {:ok, assign(socket, :queue_len, queue_len)}
+  end
+
+  @impl true
+  def update(_assigns, socket) do
     {:ok, assign(socket, :queue_len, Queue.get_queue_len())}
   end
 
@@ -29,5 +35,4 @@ defmodule EasypodcastsWeb.QueueComponent do
     </div>
     """
   end
-
 end
