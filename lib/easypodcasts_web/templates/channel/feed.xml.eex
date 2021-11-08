@@ -13,7 +13,7 @@
     <atom:link href="<%= Map.get(@feed_data, "atom:link") %>" rel="self" type="application/rss+xml" />
     <atom:link href="<%= Map.get(@feed_data, "url") %>" rel="alternate" type="text/html" />
     <language><%= Map.get(@feed_data, "language") %></language>
-    <description> <%= @description %></description>
+    <description><![CDATA[<%= @description %>]]></description>
     <itunes:author> <%= @author %></itunes:author>
     <itunes:summary><%= Map.get(@feed_data, "itunes_summary") %></itunes:summary>
     <itunes:explicit><%= Map.get(@feed_data, "explicit") %></itunes:explicit>
@@ -31,7 +31,7 @@
       <guid isPermaLink="false"><%= Map.get(episode.feed_data, "rss2:guid") %></guid>
       <pubDate><%= Map.get(episode.feed_data, "rss2:pubDate") %></pubDate>
       <enclosure url="<%= "https://roig.is-a.dev/podcasts/download/#{episode.processed_audio_url}"  %>" length="<%= episode.processed_size %>" type="audio/ogg" />
-      <description> <%= episode.description %></description>
+      <description><![CDATA[<%= episode.description %>]]></description>
       <content:encoded><![CDATA[ <%= Map.get(episode.feed_data, "content") %>
 ]]>
 </content:encoded>
