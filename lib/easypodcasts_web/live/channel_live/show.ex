@@ -1,14 +1,22 @@
 defmodule EasypodcastsWeb.ChannelLive.Show do
   use EasypodcastsWeb, :live_view
-  alias Easypodcasts.Channels.DataProcess
 
   alias Easypodcasts.Channels
+  alias Phoenix.PubSub
 
   # @impl true
   # def mount(_params, _session, socket) do
   #   {:ok, socket}
   # end
 
+  @impl true
+  def mount(%{"slug" => slug}, _session, socket) do
+    [id | _] = String.split(slug, "-")
+
+    if connected?(socket), do: PubSub.subscribe(Easypodcasts.PubSub, "channel#{id}")
+
+    {:ok, socket}
+  end
   @impl true
   def handle_params(%{"slug" => slug}, _, socket) do
     [id | _] = String.split(slug, "-")
@@ -28,23 +36,22 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
     episode = Channels.get_episode!(episode_id)
 
     socket =
-      if episode.status == :new do
-        # TODO: Move this from here
-        DataProcess.process_episode(episode)
+      case Channels.enqueue_episode(episode) do
+        :ok ->
+          msg =
+            Enum.random([
+              "Sit and relax",
+              "Go grab a drink",
+              "Do some stretching"
+            ])
 
-        msg =
-          Enum.random([
-            "Sit and relax",
-            "Go grab a drink",
-            "Do some stretching"
-          ])
+          socket
+          # TODO: Don't fetch the channel again, just the episode that changed
+          |> update(:channel, fn _ -> Channels.get_channel!(socket.assigns.channel.id) end)
+          |> put_flash(:info, "The episode is in queue. #{msg}")
 
-        socket
-        # TODO: Don't fetch the channel again, just the episode that changed
-        |> update(:channel, fn _ -> Channels.get_channel!(socket.assigns.channel.id) end)
-        |> put_flash(:info, "The episode is in queue. #{msg}")
-      else
-        put_flash(socket, :error, "Sorry. That episode can't be processed right now")
+        :error ->
+          put_flash(socket, :error, "Sorry. That episode can't be processed right now")
       end
 
     {:noreply, socket}
@@ -64,8 +71,8 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   end
 
   @impl true
-  def handle_info(:queue_changed, socket) do
-    send_update(EasypodcastsWeb.QueueComponent, id: "queue_state")
+  def handle_info({:queue_changed, queue_len}, socket) do
+    send_update(EasypodcastsWeb.QueueComponent, id: "queue_state", queue_len: queue_len)
     {:noreply, socket}
   end
 

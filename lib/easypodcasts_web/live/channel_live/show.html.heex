@@ -40,11 +40,14 @@
                 <a class="text-white bg-purple-900 border-0 ml-1 px-5 py-2 text-sm rounded text-sm mt-4 " href={"/podcasts/download/#{episode.processed_audio_url}"}} target="_blank">Get Episode</a>
               </div>
             <% end %>
+            <%= if episode.status == :queued do %>
+              <button class="flex text-white bg-gray-400 dark:bg-gray-200 border-0 py-2 px-2 focus:outline-none rounded text-sm mt-4 cursor-wait self-start" disabled>Queued...</button>
+            <% end %>
             <%= if episode.status == :processing do %>
               <button class="flex text-white bg-gray-400 dark:bg-gray-200 border-0 py-2 px-2 focus:outline-none rounded text-sm mt-4 cursor-wait self-start" disabled>Processing...</button>
             <% end %>
             <%= if episode.status == :new do %>
-              <button class="flex text-white bg-indigo-500 dark:bg-blue-400 disabled:bg-gray-400 dark:disabled:bg-gray-200 disabled:cursor-wait border-0 py-2 px-2 focus:outline-none rounded text-sm lg: mt-4 self-start" phx-click="process_episode" phx-value-episode_id={episode.id} phx-disable-with="Processing...">Process Episode</button>
+              <button class="flex text-white bg-indigo-500 dark:bg-blue-400 disabled:bg-gray-400 dark:disabled:bg-gray-200 disabled:cursor-wait border-0 py-2 px-2 focus:outline-none rounded text-sm lg: mt-4 self-start" phx-click="process_episode" phx-value-episode_id={episode.id} phx-disable-with="Queuing...">Process Episode</button>
             <% end %>
           </div>
         </div>

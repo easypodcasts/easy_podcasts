@@ -4,7 +4,7 @@ defmodule EasypodcastsWeb.QueueComponent do
   use EasypodcastsWeb, :live_component
 
   alias Phoenix.PubSub
-  alias Easypodcasts.Channels.DataProcess
+  alias Easypodcasts.Processing.Queue
 
   @impl true
   def mount(socket) do
@@ -13,8 +13,8 @@ defmodule EasypodcastsWeb.QueueComponent do
   end
 
   @impl true
-  def update(_assigns, socket) do
-    {:ok, assign(socket, :queue_len, DataProcess.get_queue_len())}
+  def update(assigns, socket) do
+    {:ok, assign(socket, :queue_len, Queue.get_queue_len())}
   end
 
   @impl true
