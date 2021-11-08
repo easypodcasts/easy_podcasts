@@ -6,7 +6,7 @@ defmodule Easypodcasts.Channels.Episode do
     field :link, :string
     field :original_audio_url, :string
     field :original_size, :integer
-    field :status, Ecto.Enum, values: [:new, :processing, :done], default: :new
+    field :status, Ecto.Enum, values: [:new, :queued, :processing, :done], default: :new
     field :processed_audio_url, :string
     field :processed_size, :integer
     field :title, :string
@@ -16,5 +16,4 @@ defmodule Easypodcasts.Channels.Episode do
 
     timestamps()
   end
-
 end

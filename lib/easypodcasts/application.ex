@@ -19,8 +19,9 @@ defmodule Easypodcasts.Application do
       EasypodcastsWeb.Endpoint,
       # Start a worker by calling: Easypodcasts.Worker.start_link(arg)
       # {Easypodcasts.Worker, arg}
-      Easypodcasts.Channels.DataProcess,
-      Easypodcasts.Channels.Scheduler
+      {Task.Supervisor, name: Easypodcasts.TaskSupervisor},
+      Easypodcasts.Processing.Queue,
+      Easypodcasts.Processing.Scheduler
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

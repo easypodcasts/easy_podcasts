@@ -36,7 +36,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
       {:ok, _channel} ->
         {:noreply,
          socket
-         |> put_flash(:success, "Channel created successfully. Fetching episodes now")
+         |> put_flash(:success, "Channel created successfully")
          |> push_redirect(to: Routes.channel_index_path(socket, :index))}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -57,8 +57,8 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   end
 
   @impl true
-  def handle_info(:queue_changed, socket) do
-    send_update(EasypodcastsWeb.QueueComponent, id: "queue_state")
+  def handle_info({:queue_changed, queue_len}, socket) do
+    send_update(EasypodcastsWeb.QueueComponent, id: "queue_state", queue_len: queue_len)
     {:noreply, socket}
   end
 

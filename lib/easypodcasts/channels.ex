@@ -4,13 +4,16 @@ defmodule Easypodcasts.Channels do
   """
 
   import Ecto.Query, warn: false
-  import Easypodcasts.Channels.Query
+  import Ecto.Changeset
+
   alias Easypodcasts.Repo
 
   import Easypodcasts.Helpers
+  import Easypodcasts.Channels.Query
   alias Easypodcasts.Helpers.Search
   alias Easypodcasts.Channels.{Channel, Episode}
-  alias Easypodcasts.Channels.DataProcess
+  alias Easypodcasts.Processing
+  alias Easypodcasts.Processing.Queue
 
   @doc """
   Returns the list of channels.
@@ -75,6 +78,11 @@ defmodule Easypodcasts.Channels do
 
   def slugify_channel(channel), do: "#{channel.id}-#{slugify(channel.title)}"
 
+  def get_episodes_url_from_channel(id),
+    do:
+      from(e in Episode, where: e.channel_id == ^id, select: e.original_audio_url)
+      |> Repo.all()
+
   @doc """
   Creates a channel.
 
@@ -94,7 +102,8 @@ defmodule Easypodcasts.Channels do
       |> Channel.changeset(attrs)
       |> Repo.insert()
 
-    DataProcess.update_channel(channel)
+    # TODO do something when this fails
+    Processing.process_channel(channel)
     result
   end
 
@@ -142,4 +151,23 @@ defmodule Easypodcasts.Channels do
 
   """
   def get_episode!(id), do: Repo.get!(Episode, id)
+
+  def create_episodes(episodes), do: Repo.insert_all(Episode, episodes, returning: true)
+
+  def update_episode(%Episode{} = episode, attrs \\ %{}) do
+    episode
+    |> change(attrs)
+    |> Repo.update()
+  end
+
+  def enqueue_episode(episode) do
+    case episode.status do
+      :new ->
+        Queue.add_episode(episode)
+        :ok
+
+      _ ->
+        :error
+    end
+  end
 end
