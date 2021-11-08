@@ -17,6 +17,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
     {:ok, socket}
   end
+
   @impl true
   def handle_params(%{"slug" => slug}, _, socket) do
     [id | _] = String.split(slug, "-")
@@ -34,6 +35,8 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   @impl true
   def handle_event("process_episode", %{"episode_id" => episode_id}, socket) do
     episode = Channels.get_episode!(episode_id)
+
+    Process.send_after(self(), :clear_flash, 5000)
 
     socket =
       case Channels.enqueue_episode(episode) do
@@ -62,6 +65,8 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
         {:episode_processed, %{channel_id: channel_id, episode_title: episode_title}},
         socket
       ) do
+    Process.send_after(self(), :clear_flash, 5000)
+
     socket =
       socket
       |> put_flash(:success, "The episode '#{episode_title}' was processed successfully")
@@ -74,6 +79,10 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   def handle_info({:queue_changed, queue_len}, socket) do
     send_update(EasypodcastsWeb.QueueComponent, id: "queue_state", queue_len: queue_len)
     {:noreply, socket}
+  end
+
+  def handle_info(:clear_flash, socket) do
+    {:noreply, clear_flash(socket)}
   end
 
   defp format_date(date) do
