@@ -21,6 +21,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   @impl true
   def handle_params(%{"slug" => slug}, _, socket) do
     [id | _] = String.split(slug, "-")
+    IO.inspect "handle_params"
 
     channel = Channels.get_channel!(id)
 

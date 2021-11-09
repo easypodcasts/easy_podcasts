@@ -25,7 +25,26 @@ import topbar from "../vendor/topbar";
 let Hooks = {};
 Hooks.PlayerHook = {
   async mounted() {
-    console.log("player mounted");
+    const { Howl } = await import("howler");
+    this.Howl = Howl;
+    const audioUrl = this.el.dataset.audioUrl;
+    this.player = new this.Howl({
+      src: [audioUrl],
+      html5: true,
+    });
+    this.player.play();
+  },
+  updated() {
+    this.player.unload();
+    const audioUrl = this.el.dataset.audioUrl;
+    this.player = new this.Howl({
+      src: [audioUrl],
+      html5: true,
+    });
+    this.player.play();
+  },
+  destroyed() {
+    this.player.unload();
   },
 };
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
