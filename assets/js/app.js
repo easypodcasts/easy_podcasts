@@ -30,6 +30,7 @@ Hooks.PlayerHook = {
     const audioUrl = this.el.dataset.audioUrl;
     this.player = new this.Howl({
       src: [audioUrl],
+      html5: true,
     });
     this.player.play();
   },
@@ -38,6 +39,7 @@ Hooks.PlayerHook = {
     const audioUrl = this.el.dataset.audioUrl;
     this.player = new this.Howl({
       src: [audioUrl],
+      html5: true,
     });
     this.player.play();
   },
