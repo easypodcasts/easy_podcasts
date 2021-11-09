@@ -22,8 +22,14 @@ import { Socket, LongPoll } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
 
+let Hooks = {};
+Hooks.PlayerHook = {
+  async mounted() {
+    console.log("player mounted");
+  },
+};
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
-let liveSocket = new LiveSocket("/live", Socket, { params: { _csrf_token: csrfToken } });
+let liveSocket = new LiveSocket("/live", Socket, { params: { _csrf_token: csrfToken }, hooks: Hooks });
 
 liveSocket.socket.onError((error, transport, establishedConnections) => {
   if (transport === WebSocket && establishedConnections === 0) {

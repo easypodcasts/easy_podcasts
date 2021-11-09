@@ -28,7 +28,7 @@
         </.form>
       </div>
     <% else %>
-      <%= live_redirect "New Podcast", to: Routes.channel_index_path(@socket, :new), class: "align-middle text-white bg-indigo-500 dark:bg-blue-400 border-0 ml-1 px-4 py-2.5 focus:outline-none rounded text-sm inline-flex items-center" %>
+      <%= live_redirect "New Podcast", to: Routes.channel_index_path(@socket, :new), class: "align-middle font-semibold text-white bg-indigo-500 dark:bg-blue-400 border-0 ml-1 px-4 py-2 focus:outline-none rounded text-md inline-flex items-center" %>
     <% end %>
 
     </nav>
