@@ -27,6 +27,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
     socket =
       socket
       |> assign(:channel, channel)
+      |> assign(:show_player, false)
       |> assign(:page_title, "#{channel.title}")
 
     {:noreply, socket}
@@ -57,6 +58,17 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
           put_flash(socket, :error, "Sorry. That episode can't be processed right now")
       end
 
+    {:noreply, socket}
+  end
+
+  def handle_event("play_episode", %{"episode_id" => episode_id}, socket) do
+    episode = Channels.get_episode!(episode_id)
+    socket = socket |> assign(:show_player, true) |> assign(:playing_episode, episode)
+    {:noreply, socket}
+  end
+
+  def handle_event("stop_playing", _params, socket) do
+    socket = socket |> assign(:show_player, false) |> assign(:playing_episode, nil)
     {:noreply, socket}
   end
 
