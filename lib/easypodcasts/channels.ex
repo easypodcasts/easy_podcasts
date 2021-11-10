@@ -61,10 +61,7 @@ defmodule Easypodcasts.Channels do
       ** (Ecto.NoResultsError)
 
   """
-  def get_channel!(id) do
-    Repo.get!(Channel, id)
-    |> Repo.preload(episodes: from(e in Episode, order_by: [{:desc, e.publication_date}]))
-  end
+  def get_channel!(id), do: Repo.get!(Channel, id)
 
   def get_channel_for_feed!(id) do
     episodes =
@@ -152,6 +149,24 @@ defmodule Easypodcasts.Channels do
   """
   def get_episode!(id), do: Repo.get!(Episode, id)
 
+  def paginate_episodes_for(channel_id, params \\ []) do
+    from(e in Episode, where: e.channel_id == ^channel_id, order_by: [{:desc, e.publication_date}])
+    |> Repo.paginate(params)
+  end
+
+  def search_episodes(search) do
+    %{search_phrase: search}
+    |> Search.search_changeset()
+    |> case do
+      %{valid?: true, changes: %{search_phrase: search_phrase}} ->
+        Episode
+        |> Search.search(search_phrase)
+        |> Repo.all()
+
+      _ ->
+        :noop
+    end
+  end
   def create_episodes(episodes), do: Repo.insert_all(Episode, episodes, returning: true)
 
   def update_episode(%Episode{} = episode, attrs \\ %{}) do
