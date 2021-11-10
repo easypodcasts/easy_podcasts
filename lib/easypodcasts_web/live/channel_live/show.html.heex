@@ -18,7 +18,7 @@
 </section>
 
 <%= if @total_pages > 1 and @total_entries > 0 do %>
-  <.pagination socket={@socket} page_number={@page_number} total_pages={@total_pages} is_top={true} route={&Routes.channel_show_path/4} action={:show} object_id={Channels.slugify_channel(@channel)}/>
+  <.pagination socket={@socket} page_number={@page_number} total_pages={@total_pages} page_range={@page_range} is_top={true} route={&Routes.channel_show_path/4} action={:show} object_id={Channels.slugify_channel(@channel)}/>
 <% end %>
 <section class="text-gray-600 dark:text-gray-100 body-font overflow-hidden">
   <div class="container md:px-52 md:py-10 px-2 py-4 mx-auto">
@@ -90,7 +90,7 @@
   </div>
 </section>
 <%= if @total_pages > 1 and @total_entries > 0 do %>
-  <.pagination socket={@socket} page_number={@page_number} total_pages={@total_pages} is_top={false} route={&Routes.channel_show_path/4} action={:show} object_id={Channels.slugify_channel(@channel)}/>
+  <.pagination socket={@socket} page_number={@page_number} total_pages={@total_pages} page_range={@page_range} is_top={false} route={&Routes.channel_show_path/4} action={:show} object_id={Channels.slugify_channel(@channel)}/>
 <% end %>
 
 <%= if @show_player do %>

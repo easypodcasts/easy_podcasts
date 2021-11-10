@@ -3,6 +3,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
 
   alias Easypodcasts.Channels
   alias Easypodcasts.Channels.Channel
+  import Easypodcasts.Helpers
   import EasypodcastsWeb.PaginationComponent
 
   @impl true
@@ -76,12 +77,16 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
       total_pages: total_pages
     } = Channels.paginate_channels(page: page)
 
+    page = page || 1
+    page_range = get_page_range(page, total_pages)
+
     [
       channels: entries,
       page_number: page_number || 0,
       page_size: page_size || 0,
       total_entries: total_entries || 0,
-      total_pages: total_pages || 0
+      total_pages: total_pages || 0,
+      page_range: page_range
     ]
   end
 end

@@ -1,5 +1,5 @@
 <%= if @total_pages > 1 and @total_entries > 0 do %>
-  <.pagination socket={@socket} page_number={@page_number} total_pages={@total_pages} is_top={true} route={&Routes.channel_index_path/3}, action={:index} object_id={nil}/>
+  <.pagination socket={@socket} page_number={@page_number} total_pages={@total_pages} page_range={@page_range} is_top={true} route={&Routes.channel_index_path/3}, action={:index} object_id={nil}/>
 <% end %>
 <section class="text-gray-600 dark:text-gray-100 body-font px-3 py-10 mx-auto">
     <div class="flex flex-wrap -m-4">
@@ -27,5 +27,5 @@
     </div>
 </section>
 <%= if @total_pages > 1 and @total_entries > 0 do %>
-  <.pagination socket={@socket} page_number={@page_number} total_pages={@total_pages} is_top={false} route={&Routes.channel_index_path/3} action={:index} object_id={nil}/>
+  <.pagination socket={@socket} page_number={@page_number} total_pages={@total_pages} page_range={@page_range} is_top={false} route={&Routes.channel_index_path/3} action={:index} object_id={nil}/>
 <% end %>
