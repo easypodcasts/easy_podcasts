@@ -1,34 +1,31 @@
-<section class="text-gray-600 dark:text-gray-100 body-font overflow-hidden">
-  <div class="container px-5 py-10 mx-auto">
-    <div class="lg:w-4/5 mx-auto flex flex-wrap">
-      <img alt={@channel.title} class="md:w-1/2 w-full h-auto mx-auto object-cover object-center rounded" src={@channel.image_url}/>
-      <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0 text-xl">
-        <p class="leading-relaxed"> <%= sanitize(@channel.description) %></p>
-          <%= link to: Routes.channel_path(@socket, :feed, Channels.slugify_channel(@channel)) do %>
-            <button class="flex justify-between text-white bg-indigo-500 dark:bg-blue-400 border-0 py-2 px-2 focus:outline-none rounded text-sm mt-4 self-start flex items-center">
-              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 32 32">
-              <path fill="white" d="M26.334 32c-0.025-14.351-12.547-26.079-26.334-26.106v-5.894c16.916 0 32 14.394 32 32h-5.666zM21.475 31.998h-5.663c0.019-3.524-1.771-7.468-4.604-10.421-2.817-2.977-7.81-4.853-11.194-4.835v-5.892c10.565 0.228 21.246 10.207 21.461 21.148zM4.016 23.997c2.207 0 3.996 1.791 3.996 4 0 2.208-1.789 3.999-3.996 3.999s-3.996-1.791-3.996-3.999c0-2.209 1.789-4 3.996-4z"></path>
-              </svg>
-              <span class="ml-1">Subscribe</span>
-            </button>
-          <% end %>
-      </div>
-    </div>
-  </div>
-</section>
-
 <%= if @total_pages > 1 and @total_entries > 0 do %>
   <.pagination socket={@socket} page_number={@page_number} total_pages={@total_pages} page_range={@page_range} is_top={true} route={&Routes.channel_show_path/4} action={:show} object_id={Channels.slugify_channel(@channel)}/>
 <% end %>
-<section class="text-gray-600 dark:text-gray-100 body-font overflow-hidden">
-  <div class="container md:px-52 md:py-10 px-2 py-4 mx-auto">
-    <div class="-my-8 divide-y-2 divide-gray-300">
-      <%= for {_, episode} <- @episodes do %>
-        <div class="py-8 flex flex-wrap md:flex-nowrap">
-          <div class="md:w-64 md:mb-0 mb-2 mt-6 mb:mt-0 flex-shrink-0 flex flex-col order-2 md:order-1">
-            <span class="text-sm text-gray-500 dark:text-gray-100 mb-3"><%= format_date(episode.publication_date) %></span>
-            <span class="text-sm text-gray-500 dark:text-gray-100 mb-3"><%= format_duration(Map.get(episode.feed_data, "itunes_duration")) %></span>
-            <span class="text-sm text-gray-500 dark:text-gray-100 mb-3">
+
+<div class="flex flex-col xl:flex-row pt-10">
+  <section class="text-gray-600 dark:text-gray-100 body-font overflow-hidden w-1/2 flex flex-col">
+    <img alt={@channel.title} class="rounded xl:w-2/3 w-full h-auto" src={@channel.image_url}/>
+    <%= link to: Routes.channel_path(@socket, :feed, Channels.slugify_channel(@channel)) do %>
+      <button class="flex justify-between text-white bg-indigo-500 dark:bg-blue-400 border-0 py-2 px-2 focus:outline-none rounded text-lg font-semibold mt-4 self-start flex items-center">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 32 32">
+        <path fill="white" d="M26.334 32c-0.025-14.351-12.547-26.079-26.334-26.106v-5.894c16.916 0 32 14.394 32 32h-5.666zM21.475 31.998h-5.663c0.019-3.524-1.771-7.468-4.604-10.421-2.817-2.977-7.81-4.853-11.194-4.835v-5.892c10.565 0.228 21.246 10.207 21.461 21.148zM4.016 23.997c2.207 0 3.996 1.791 3.996 4 0 2.208-1.789 3.999-3.996 3.999s-3.996-1.791-3.996-3.999c0-2.209 1.789-4 3.996-4z"></path>
+        </svg>
+        <span class="ml-1">Subscribe</span>
+      </button>
+    <% end %>
+  </section>
+
+<section class="text-gray-600 dark:text-gray-100 body-font xl:w-1/2 mt-5 xl:mt-0">
+  <p class="mb-5 border-b-2 border-gray-200 divide-gray-300 title-font text-2xl pb-2"> <%= sanitize(@channel.description) %></p>
+  <div class="divide-y-2 divide-gray-300">
+    <%= for {_, episode} <- @episodes do %>
+      <div class="xl:py-8 flex flex-wrap md:flex-nowrap xl:mb-0 mb-4">
+        <div class="flex flex-col w-full">
+          <h2 class="text-xl font-medium text-gray-900 dark:text-gray-200 title-font mb-2"> <%= episode.title %></h2>
+          <div class="flex mb-3">
+            <span class="text-xs md:text-sm text-gray-500 dark:text-gray-100 mr-3"><%= format_date(episode.publication_date) %></span>
+            <span class="text-xs md:text-sm text-gray-500 dark:text-gray-100 mr-3"><%= format_duration(Map.get(episode.feed_data, "itunes_duration")) %></span>
+            <span class="text-xs md:text-sm  text-gray-500 dark:text-gray-100">
             <%= if episode.status == :done do %>
               <%= Float.floor(episode.processed_size  / 1_000_000, 2) %> MB (<%= Float.floor((episode.original_size - episode.processed_size)  / 1_000_000, 2) %> MB less)
             <% else %>
@@ -36,59 +33,58 @@
             <% end %>
             </span>
           </div>
-          <div class="flex flex-col w-full order-1 md:order-2">
-            <h2 class="text-2xl font-medium text-gray-900 dark:text-gray-200 title-font mb-2"> <%= episode.title %></h2>
-            <p class="line-clamp-6"> <%= sanitize(episode.description) %></p>
-            <%= if episode.status == :done do %>
-              <div class="flex items-center self-start">
-                <a class="text-white bg-purple-900 border-0 ml-1 px-2 py-2 text-sm rounded text-sm mt-4 flex justify-between" href={"/podcasts/download/#{episode.processed_audio_url}"}} download={"#{episode.title}.opus"} target="_blank">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                  </svg>
-                  Download
-                </a>
-                <%= if not @show_player or @playing_episode.id != episode.id do %>
-                  <button class="text-white bg-purple-900 border-0 ml-1 px-2 py-2 text-sm rounded text-sm mt-4 flex justify-between" phx-click="play_episode" phx-value-episode_id={episode.id}>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    Play
-                  </button>
-                <% end %>
-              </div>
-            <% end %>
-            <%= if episode.status == :queued do %>
-              <button class="flex text-white bg-gray-400 dark:bg-gray-200 border-0 py-2 px-2 focus:outline-none rounded text-sm mt-4 cursor-wait self-start" disabled>
+          <p class="line-clamp-6"> <%= sanitize(episode.description) %></p>
+          <%= if episode.status == :done do %>
+            <div class="flex items-center self-start">
+              <a class="text-white bg-purple-900 border-0 ml-1 px-2 py-2 text-sm rounded text-sm mt-4 flex justify-between" href={"/podcasts/download/#{episode.processed_audio_url}"}} download={"#{episode.title}.opus"} target="_blank">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
-                Queued
-              </button>
-            <% end %>
-            <%= if episode.status == :processing do %>
-              <button class="flex text-white bg-gray-400 dark:bg-gray-200 border-0 py-2 px-2 focus:outline-none rounded text-sm mt-4 cursor-wait self-start" disabled>
-                <svg class="animate-spin -ml-1 mr-1 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                Download
+              </a>
+              <%= if not @show_player or @playing_episode.id != episode.id do %>
+                <button class="text-white bg-purple-900 border-0 ml-1 px-2 py-2 text-sm rounded text-sm mt-4 flex justify-between" phx-click="play_episode" phx-value-episode_id={episode.id}>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                Processing
+                  Play
                 </button>
-            <% end %>
-            <%= if episode.status == :new do %>
-              <button class="flex justify-between text-white bg-indigo-500 dark:bg-blue-400 disabled:bg-gray-400 dark:disabled:bg-gray-200 disabled:cursor-wait border-0 py-2 px-2 focus:outline-none rounded text-sm lg: mt-4 self-start" phx-click="process_episode" phx-value-episode_id={episode.id} phx-disable-with="Queuing...">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+              <% end %>
+            </div>
+          <% end %>
+          <%= if episode.status == :queued do %>
+            <button class="flex text-white bg-gray-400 dark:bg-gray-200 border-0 py-2 px-2 focus:outline-none rounded text-sm mt-4 cursor-wait self-start" disabled>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              </svg>
+              Queued
+            </button>
+          <% end %>
+          <%= if episode.status == :processing do %>
+            <button class="flex text-white bg-gray-400 dark:bg-gray-200 border-0 py-2 px-2 focus:outline-none rounded text-sm mt-4 cursor-wait self-start" disabled>
+              <svg class="animate-spin -ml-1 mr-1 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                Process Episode
+              Processing
               </button>
-            <% end %>
-          </div>
+          <% end %>
+          <%= if episode.status == :new do %>
+            <button class="flex justify-between text-white bg-indigo-500 dark:bg-blue-400 disabled:bg-gray-400 dark:disabled:bg-gray-200 disabled:cursor-wait border-0 py-2 px-2 focus:outline-none rounded text-sm lg: mt-4 self-start" phx-click="process_episode" phx-value-episode_id={episode.id} phx-disable-with="Queuing...">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+              </svg>
+              Process Episode
+            </button>
+          <% end %>
         </div>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
   </div>
 </section>
+
+</div>
 <%= if @total_pages > 1 and @total_entries > 0 do %>
   <.pagination socket={@socket} page_number={@page_number} total_pages={@total_pages} page_range={@page_range} is_top={false} route={&Routes.channel_show_path/4} action={:show} object_id={Channels.slugify_channel(@channel)}/>
 <% end %>
