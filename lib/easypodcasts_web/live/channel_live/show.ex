@@ -3,6 +3,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   import EasypodcastsWeb.PaginationComponent
 
   alias Easypodcasts.Channels
+  import Easypodcasts.Helpers
   alias Phoenix.PubSub
 
   # @impl true
@@ -65,6 +66,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
   def handle_event("play_episode", %{"episode_id" => episode_id}, socket) do
     episode_id = String.to_integer(episode_id)
+
     socket =
       socket
       |> assign(:show_player, true)
@@ -143,12 +145,16 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
     episodes = episodes_from_list(entries)
 
+    page = page || 1
+    page_range = get_page_range(page, total_pages)
+
     [
       episodes: episodes,
       page_number: page_number || 0,
       page_size: page_size || 0,
       total_entries: total_entries || 0,
-      total_pages: total_pages || 0
+      total_pages: total_pages || 0,
+      page_range: page_range
     ]
   end
 
