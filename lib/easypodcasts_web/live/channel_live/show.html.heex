@@ -3,7 +3,7 @@
 <% end %>
 
 <div class="flex flex-col xl:flex-row pt-10">
-  <section class="text-gray-600 dark:text-gray-100 body-font overflow-hidden w-1/2 flex flex-col">
+  <section class="text-gray-600 dark:text-gray-100 body-font w-1/2 flex flex-col sticky top-2 self-start">
     <img alt={@channel.title} class="rounded xl:w-2/3 w-full h-auto" src={@channel.image_url}/>
     <%= link to: Routes.channel_path(@socket, :feed, Channels.slugify_channel(@channel)) do %>
       <button class="flex justify-between text-white bg-indigo-500 dark:bg-blue-400 border-0 py-2 px-2 focus:outline-none rounded text-lg font-semibold mt-4 self-start flex items-center">
