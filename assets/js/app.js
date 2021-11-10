@@ -38,23 +38,59 @@ Hooks.PlayerHook = {
   },
   setupPlayer() {
     const audioUrl = this.el.dataset.audioUrl;
-    this.player = new this.Howl({
-      src: [audioUrl],
-      html5: true,
-    });
+
+    /* let progressWrapper = this.el.querySelector("#progress-wrapper") */
+    let progress = this.el.querySelector("#progress");
+
+    /* progressWrapper.onclick = (event) => { */
+    /*   let x = event.pageX - progressWrapper.offsetLeft; // or e.offsetX (less support, though) */
+    /*   console.log(x); */
+    /*   /1* let y = e.pageY - progress.offsetTop; // or e.offsetY *1/ */
+    /*   let clickedValue = (x * this.player.duration()) / progressWrapper.offsetWidth; */
+
+    /*   console.log(clickedValue); */
+    /*   /1* this.player.seek(clickedValue) *1/ */
+    /* }; */
+
+    let currentTime = this.el.querySelector("#current-time");
+
+    let step = () => {
+      var seek = this.player.seek() || 0;
+      progress.style.width = ((seek / this.player.duration()) * 100 || 0) + "%";
+      let strCurrentTime = new Date(parseInt(seek) * 1000).toISOString().substr(11, 8);
+      currentTime.textContent = strCurrentTime;
+      if (this.player.playing()) {
+        requestAnimationFrame(step);
+      }
+    };
 
     let play_button = this.el.querySelector("#play");
     let pause_button = this.el.querySelector("#pause");
+
     play_button.onclick = () => {
       this.player.play();
       play_button.classList.add("hidden");
       pause_button.classList.remove("hidden");
     };
+
     pause_button.onclick = () => {
       this.player.pause();
       pause_button.classList.add("hidden");
       play_button.classList.remove("hidden");
     };
+
+    this.player = new this.Howl({
+      src: [audioUrl],
+      html5: true,
+      onplay: function () {
+        requestAnimationFrame(step);
+      },
+      onstop: function () {
+        pause_button.classList.add("hidden");
+        play_button.classList.remove("hidden");
+      },
+    });
+
     this.player.play();
   },
 };
