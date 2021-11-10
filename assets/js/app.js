@@ -27,26 +27,38 @@ Hooks.PlayerHook = {
   async mounted() {
     const { Howl } = await import("howler");
     this.Howl = Howl;
-    const audioUrl = this.el.dataset.audioUrl;
-    this.player = new this.Howl({
-      src: [audioUrl],
-      html5: true,
-    });
-    this.player.play();
+    this.setupPlayer();
   },
   updated() {
     this.player.unload();
-    const audioUrl = this.el.dataset.audioUrl;
-    this.player = new this.Howl({
-      src: [audioUrl],
-      html5: true,
-    });
-    this.player.play();
+    this.setupPlayer();
   },
   destroyed() {
     this.player.unload();
   },
+  setupPlayer() {
+    const audioUrl = this.el.dataset.audioUrl;
+    this.player = new this.Howl({
+      src: [audioUrl],
+      html5: true,
+    });
+
+    let play_button = this.el.querySelector("#play");
+    let pause_button = this.el.querySelector("#pause");
+    play_button.onclick = () => {
+      this.player.play();
+      play_button.classList.add("hidden");
+      pause_button.classList.remove("hidden");
+    };
+    pause_button.onclick = () => {
+      this.player.pause();
+      pause_button.classList.add("hidden");
+      play_button.classList.remove("hidden");
+    };
+    this.player.play();
+  },
 };
+
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, { params: { _csrf_token: csrfToken }, hooks: Hooks });
 
