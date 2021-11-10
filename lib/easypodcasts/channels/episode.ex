@@ -1,6 +1,13 @@
 defmodule Easypodcasts.Channels.Episode do
   use Ecto.Schema
 
+  @behaviour Access
+
+  defdelegate fetch(term, key), to: Map
+  defdelegate get(term, key, default), to: Map
+  defdelegate get_and_update(term, key, fun), to: Map
+  defdelegate pop(term, key), to: Map
+
   schema "episodes" do
     field :description, :string
     field :link, :string

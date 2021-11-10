@@ -175,7 +175,8 @@ defmodule Easypodcasts.Channels do
     |> Repo.update()
   end
 
-  def enqueue_episode(episode) do
+  def enqueue_episode(episode_id) do
+    episode = get_episode!(episode_id)
     case episode.status do
       :new ->
         Queue.add_episode(episode)

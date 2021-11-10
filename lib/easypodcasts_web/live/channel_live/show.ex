@@ -28,23 +28,22 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   end
 
   @impl true
-  def handle_params(%{"slug" => slug, "page" => page}, _, socket) do
+  def handle_params(%{"slug" => _slug, "page" => page}, _, socket) do
     {:noreply, assign(socket, get_pagination_assigns(socket.assigns.channel.id, page))}
   end
 
   @impl true
-  def handle_params(%{"slug" => slug}, _, socket) do
+  def handle_params(_params, _, socket) do
     {:noreply, assign(socket, get_pagination_assigns(socket.assigns.channel.id))}
   end
 
   @impl true
   def handle_event("process_episode", %{"episode_id" => episode_id}, socket) do
-    episode = Channels.get_episode!(episode_id)
-
     Process.send_after(self(), :clear_flash, 5000)
+    episode_id = String.to_integer(episode_id)
 
     socket =
-      case Channels.enqueue_episode(episode) do
+      case Channels.enqueue_episode(episode_id) do
         :ok ->
           msg =
             Enum.random([
@@ -54,8 +53,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
             ])
 
           socket
-          # TODO: Don't fetch the channel again, just the episode that changed
-          |> update(:channel, fn _ -> Channels.get_channel!(socket.assigns.channel.id) end)
+          |> update(:episodes, fn episodes -> put_in(episodes, [episode_id, :status], :queued) end)
           |> put_flash(:info, "The episode is in queue. #{msg}")
 
         :error ->
@@ -66,8 +64,12 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   end
 
   def handle_event("play_episode", %{"episode_id" => episode_id}, socket) do
-    episode = Channels.get_episode!(episode_id)
-    socket = socket |> assign(:show_player, true) |> assign(:playing_episode, episode)
+    episode_id = String.to_integer(episode_id)
+    socket =
+      socket
+      |> assign(:show_player, true)
+      |> assign(:playing_episode, Map.get(socket.assigns.episodes, episode_id))
+
     {:noreply, socket}
   end
 
@@ -90,15 +92,32 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
   @impl true
   def handle_info(
-        {:episode_processed, %{channel_id: channel_id, episode_title: episode_title}},
+        {:episode_processing, %{episode_id: episode_id}},
         socket
       ) do
     Process.send_after(self(), :clear_flash, 5000)
+    episode = Map.get(socket.assigns.episodes, episode_id)
 
     socket =
       socket
-      |> put_flash(:success, "The episode '#{episode_title}' was processed successfully")
-      |> update(:channel, fn _ -> Channels.get_channel!(channel_id) end)
+      |> put_flash(:success, "The episode '#{episode.title}' is being processed")
+      |> update(:episodes, fn episodes -> put_in(episodes, [episode_id, :status], :processing) end)
+
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_info(
+        {:episode_processed, %{episode_id: episode_id}},
+        socket
+      ) do
+    Process.send_after(self(), :clear_flash, 5000)
+    episode = Channels.get_episode!(episode_id)
+
+    socket =
+      socket
+      |> put_flash(:success, "The episode '#{episode.title}' was processed successfully")
+      |> update(:episodes, fn episodes -> put_in(episodes, [episode_id], episode) end)
 
     {:noreply, socket}
   end
