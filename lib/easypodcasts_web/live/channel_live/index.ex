@@ -41,7 +41,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
          |> put_flash(:success, "Channel created successfully")
          |> push_patch(to: Routes.channel_index_path(socket, :index))}
 
-      {:error, %Ecto.Changeset{} = changeset} ->
+      {:error, changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
     end
   end

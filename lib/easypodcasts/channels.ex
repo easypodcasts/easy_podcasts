@@ -93,15 +93,17 @@ defmodule Easypodcasts.Channels do
 
   """
   def create_channel(attrs \\ %{}) do
-    {:ok, channel} =
-      result =
-      %Channel{}
-      |> Channel.changeset(attrs)
-      |> Repo.insert()
+    case %Channel{}
+         |> Channel.changeset(attrs)
+         |> Repo.insert() do
+      {:ok, channel} ->
+        # TODO do something when this fails
+        Processing.process_channel(channel)
+        {:ok, channel}
 
-    # TODO do something when this fails
-    Processing.process_channel(channel)
-    result
+      result ->
+        result
+    end
   end
 
   @doc """
