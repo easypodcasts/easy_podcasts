@@ -57,7 +57,13 @@ defmodule Easypodcasts.Processing.Queue do
 
   def handle_info({:DOWN, _ref, :process, _pid, :normal}, {queue, current_episode}) do
     Logger.debug("handle_info - task tompleted, moving on to next #{inspect(queue)}")
-    broadcast_episode_processed(current_episode.channel_id, current_episode.title)
+
+    broadcast_episode_state_change(
+      :episode_processed,
+      current_episode.channel_id,
+      current_episode.id
+    )
+
     {:noreply, process_next_in_queue(queue)}
   end
 
@@ -77,6 +83,12 @@ defmodule Easypodcasts.Processing.Queue do
       {{:value, episode}, queue} ->
         broadcast_queue_changed(:queue.len(queue))
 
+        broadcast_episode_state_change(
+          :episode_processing,
+          episode.channel_id,
+          episode.id
+        )
+
         Task.Supervisor.async_nolink(Easypodcasts.TaskSupervisor, fn ->
           Processing.process_episode_file(episode)
         end)
@@ -89,11 +101,11 @@ defmodule Easypodcasts.Processing.Queue do
     PubSub.broadcast(Easypodcasts.PubSub, "queue_state", {:queue_changed, queue_len})
   end
 
-  defp broadcast_episode_processed(channel_id, episode_title) do
+  defp broadcast_episode_state_change(event, channel_id, episode_id) do
     PubSub.broadcast(
       Easypodcasts.PubSub,
       "channel#{channel_id}",
-      {:episode_processed, %{channel_id: channel_id, episode_title: episode_title}}
+      {event, %{episode_id: episode_id}}
     )
   end
 end
