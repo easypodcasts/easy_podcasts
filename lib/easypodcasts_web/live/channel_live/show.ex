@@ -1,5 +1,6 @@
 defmodule EasypodcastsWeb.ChannelLive.Show do
   use EasypodcastsWeb, :live_view
+  import EasypodcastsWeb.PaginationComponent
 
   alias Easypodcasts.Channels
   alias Phoenix.PubSub
@@ -15,14 +16,6 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
     if connected?(socket), do: PubSub.subscribe(Easypodcasts.PubSub, "channel#{id}")
 
-    {:ok, socket}
-  end
-
-  @impl true
-  def handle_params(%{"slug" => slug}, _, socket) do
-    [id | _] = String.split(slug, "-")
-    IO.inspect "handle_params"
-
     channel = Channels.get_channel!(id)
 
     socket =
@@ -31,7 +24,17 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
       |> assign(:show_player, false)
       |> assign(:page_title, "#{channel.title}")
 
-    {:noreply, socket}
+    {:ok, socket}
+  end
+
+  @impl true
+  def handle_params(%{"slug" => slug, "page" => page}, _, socket) do
+    {:noreply, assign(socket, get_pagination_assigns(socket.assigns.channel.id, page))}
+  end
+
+  @impl true
+  def handle_params(%{"slug" => slug}, _, socket) do
+    {:noreply, assign(socket, get_pagination_assigns(socket.assigns.channel.id))}
   end
 
   @impl true
@@ -74,6 +77,18 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   end
 
   @impl true
+  def handle_event("search", %{"search" => ""}, socket),
+    do: {:noreply, assign(socket, get_pagination_assigns(socket.assigns.channel.id))}
+
+  @impl true
+  def handle_event("search", %{"search" => search}, socket) do
+    case Channels.search_episodes(search) do
+      :noop -> {:noreply, socket}
+      episodes -> {:noreply, assign(socket, :episodes, episodes_from_list(episodes))}
+    end
+  end
+
+  @impl true
   def handle_info(
         {:episode_processed, %{channel_id: channel_id, episode_title: episode_title}},
         socket
@@ -96,6 +111,35 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
   def handle_info(:clear_flash, socket) do
     {:noreply, clear_flash(socket)}
+  end
+
+  defp get_pagination_assigns(channel_id, page \\ nil) do
+    %{
+      entries: entries,
+      page_number: page_number,
+      page_size: page_size,
+      total_entries: total_entries,
+      total_pages: total_pages
+    } = Channels.paginate_episodes_for(channel_id, page: page)
+
+    episodes = episodes_from_list(entries)
+
+    [
+      episodes: episodes,
+      page_number: page_number || 0,
+      page_size: page_size || 0,
+      total_entries: total_entries || 0,
+      total_pages: total_pages || 0
+    ]
+  end
+
+  defp episodes_from_list(episodes) do
+    {_, episodes} =
+      Enum.map_reduce(episodes, %{}, fn entry, acc ->
+        {entry, Map.put_new(acc, entry.id, entry)}
+      end)
+
+    episodes
   end
 
   defp format_date(date) do
