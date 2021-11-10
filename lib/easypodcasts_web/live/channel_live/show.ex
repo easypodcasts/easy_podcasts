@@ -169,7 +169,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
   defp format_date(date) do
     localized = DateTime.shift_zone!(date, "America/Havana")
-    "#{localized.year}/#{localized.month}/#{localized.day} #{localized.hour}:#{localized.minute}"
+    Calendar.strftime(localized, "%B %d, %Y")
   end
 
   defp format_duration(duration) when is_binary(duration) do
