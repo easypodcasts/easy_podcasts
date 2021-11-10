@@ -35,23 +35,25 @@
   </div>
 </header>
 <main class="container mx-auto px-4">
+  <div class="flex flex-col fixed top-6 max-w-md mx-auto inset-x-0">
   <%= if live_flash(@flash, :success) do %>
-    <div class="fixed top-6 bg-green-100 rounded-lg p-4 text-sm text-green-700 max-w-md mx-auto inset-x-0 text-center" role="alert" phx-click="lv:clear-flash" phx-value-key="success">
+    <div class="bg-green-100 rounded-lg p-4 text-sm text-green-700 text-center mb-3" role="alert" phx-click="lv:clear-flash" phx-value-key="success">
       <span class="font-medium">Success! </span> <%= live_flash(@flash, :success) %>
     </div>
   <% end %>
 
   <%= if live_flash(@flash, :info) do %>
-    <div class="fixed top-6 bg-blue-100 rounded-lg p-4 text-sm text-blue-700 max-w-md mx-auto inset-x-0 text-center" role="alert" phx-click="lv:clear-flash" phx-value-key="info">
+    <div class="bg-blue-100 rounded-lg p-4 text-sm text-blue-700 text-center mb-3" role="alert" phx-click="lv:clear-flash" phx-value-key="info">
       <span class="font-medium">Info! </span> <%= live_flash(@flash, :info) %>
     </div>
   <% end %>
 
   <%= if live_flash(@flash, :error) do %>
-    <div class="fixed top-6 bg-red-100 rounded-lg p-4 mb-4 text-sm text-red-700 max-w-md mx-auto inset-x-0 text-center" role="alert" phx-click="lv:clear-flash" phx-value-key="error">
+    <div class="bg-red-100 rounded-lg p-4 mb-4 text-sm text-red-700 text-center mb-3" role="alert" phx-click="lv:clear-flash" phx-value-key="error">
       <span class="font-medium">Error! </span> <%= live_flash(@flash, :error) %>
     </div>
   <% end %>
+  </div>
 
   <%= @inner_content %>
   <.live_component module={EasypodcastsWeb.QueueComponent} id={"queue_state"}/>
