@@ -154,12 +154,15 @@ defmodule Easypodcasts.Channels do
     |> Repo.paginate(params)
   end
 
-  def search_episodes(search) do
+  def search_episodes(channel_id, search) do
     %{search_phrase: search}
     |> Search.search_changeset()
     |> case do
       %{valid?: true, changes: %{search_phrase: search_phrase}} ->
-        Episode
+        from(e in Episode,
+          where: e.channel_id == ^channel_id,
+          order_by: [{:desc, e.publication_date}]
+        )
         |> Search.search(search_phrase)
         |> Repo.all()
 
@@ -167,6 +170,7 @@ defmodule Easypodcasts.Channels do
         :noop
     end
   end
+
   def create_episodes(episodes), do: Repo.insert_all(Episode, episodes, returning: true)
 
   def update_episode(%Episode{} = episode, attrs \\ %{}) do
@@ -177,6 +181,7 @@ defmodule Easypodcasts.Channels do
 
   def enqueue_episode(episode_id) do
     episode = get_episode!(episode_id)
+
     case episode.status do
       :new ->
         Queue.add_episode(episode)

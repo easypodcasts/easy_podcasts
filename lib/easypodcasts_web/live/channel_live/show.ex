@@ -84,7 +84,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
   @impl true
   def handle_event("search", %{"search" => search}, socket) do
-    case Channels.search_episodes(search) do
+    case Channels.search_episodes(socket.assigns.channel.id, search) do
       :noop -> {:noreply, socket}
       episodes -> {:noreply, assign(socket, :episodes, episodes_from_list(episodes))}
     end
