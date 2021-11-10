@@ -4,7 +4,8 @@
 
 <div class="flex flex-col xl:flex-row pt-10">
   <section class="text-gray-600 dark:text-gray-100 body-font w-1/2 flex flex-col sticky top-2 self-start">
-    <img alt={@channel.title} class="rounded xl:w-2/3 w-full h-auto" src={@channel.image_url}/>
+    <div class="self-center xl:w-2/3 h-auto flex flex-col">
+    <img alt={@channel.title} class="rounded " src={@channel.image_url}/>
     <%= link to: Routes.channel_path(@socket, :feed, Channels.slugify_channel(@channel)) do %>
       <button class="flex justify-between text-white bg-indigo-500 dark:bg-blue-400 border-0 py-2 px-2 focus:outline-none rounded text-lg font-semibold mt-4 self-start flex items-center">
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 32 32">
@@ -13,10 +14,11 @@
         <span class="ml-1">Subscribe</span>
       </button>
     <% end %>
+    </div>
   </section>
 
 <section class="text-gray-600 dark:text-gray-100 body-font xl:w-1/2 mt-5 xl:mt-0">
-  <p class="mb-5 border-b-2 border-gray-200 divide-gray-300 title-font text-2xl pb-2"> <%= sanitize(@channel.description) %></p>
+  <p class="mb-5 border-b-2 border-gray-200 divide-gray-300 title-font text-2xl line-clamp-5"> <%= sanitize(@channel.description) %></p>
   <div class="divide-y-2 divide-gray-300">
     <%= for {_, episode} <- @episodes do %>
       <div class="xl:py-8 flex flex-wrap md:flex-nowrap xl:mb-0 mb-4">
