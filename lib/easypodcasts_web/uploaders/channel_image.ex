@@ -33,7 +33,7 @@ defmodule Easypodcasts.ChannelImage do
 
   # Override the storage directory:
   def storage_dir(_version, {_file, channel}) do
-    "#{channel.id}"
+    "#{channel.id}/img"
   end
 
   # Provide a default URL if there hasn't been a file uploaded

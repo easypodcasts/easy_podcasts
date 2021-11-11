@@ -25,13 +25,8 @@ defmodule EasypodcastsWeb.Endpoint do
     only: ~w(assets fonts images favicon.ico robots.txt)
 
   plug Plug.Static,
-    at: "/download",
-    from: Path.expand("./priv/static/podcasts"),
-    gzip: false
-
-  plug Plug.Static,
-    at: "/imgs",
-    from: Path.expand("./priv/static/images/channels"),
+    at: "/files",
+    from: Path.expand("./priv/static/channels"),
     gzip: false
 
   # Code reloading can be explicitly enabled under the

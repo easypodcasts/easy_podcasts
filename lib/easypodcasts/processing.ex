@@ -44,11 +44,10 @@ defmodule Easypodcasts.Processing do
   def process_episode_file(episode) do
     {:ok, episode} = Channels.update_episode(episode, %{status: :processing})
 
-    {tmp_episode_file, episode_file, processed_audio_url} =
+    {tmp_episode_file, episode_file} =
       create_filesytem_directories(
         episode.channel_id,
-        episode.id,
-        episode.original_audio_url
+        episode.id
       )
 
     with {:ok, :saved_to_file} <- download_file(episode.original_audio_url, tmp_episode_file),
@@ -58,7 +57,6 @@ defmodule Easypodcasts.Processing do
 
       Channels.update_episode(episode, %{
         status: :done,
-        processed_audio_url: processed_audio_url,
         processed_size: new_size
       })
     else
@@ -78,25 +76,20 @@ defmodule Easypodcasts.Processing do
     :httpc.request(:get, {String.to_charlist(url), []}, [], stream: String.to_charlist(dest))
   end
 
-  defp create_filesytem_directories(channel_id, episode_id, original_audio_url) do
-    id_path = Path.join(to_string(channel_id), to_string(episode_id))
-    tmp_episode_dir = Path.join([System.tmp_dir!(), "easypodcasts", id_path])
-    episode_dir = Path.join("priv/static/podcasts", id_path)
+  defp create_filesytem_directories(channel_id, episode_id) do
+    tmp_episode_dir =
+      Path.join([System.tmp_dir!(), "easypodcasts", to_string(channel_id), to_string(episode_id)])
+
+    episode_dir = Path.join(["priv/static/channels", channel_id, "episodes", episode_id])
 
     File.mkdir_p!(tmp_episode_dir)
     File.mkdir_p!(episode_dir)
 
-    episode_file_name = get_filename_from_url(original_audio_url)
+    episode_file_name = "episode.opus"
     tmp_episode_file = Path.join(tmp_episode_dir, episode_file_name)
-    episode_file = "#{Path.join(episode_dir, episode_file_name)}.opus"
+    episode_file = Path.join(episode_dir, episode_file_name)
 
-    processed_audio_url =
-      Path.join(
-        id_path,
-        "#{episode_file_name}.opus"
-      )
-
-    {tmp_episode_file, episode_file, processed_audio_url}
+    {tmp_episode_file, episode_file}
   end
 
   defp compress_audio(orig, dest) do
@@ -126,15 +119,6 @@ defmodule Easypodcasts.Processing do
     # The order of the directories is important
     Enum.each(files, &File.rm/1)
     Enum.each(directories, &File.rmdir/1)
-  end
-
-  defp get_filename_from_url(url) do
-    url
-    |> String.split("/")
-    |> List.last()
-    |> String.downcase()
-    |> String.replace(~r/[^a-z0-9\s-.]/, "")
-    |> String.replace(~r/(\s|-)+/, "-")
   end
 
   defp get_file_size(file) do
