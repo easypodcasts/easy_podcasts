@@ -78,5 +78,10 @@ config :logger, :console, format: "[$level] $message\n"
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
 
+config :waffle,
+  storage: Waffle.Storage.Local,
+  asset_host: "http://localhost:4000/uploads",
+  storage_dir_prefix: "uploads"
+
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime

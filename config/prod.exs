@@ -18,8 +18,8 @@ config :logger, level: :info
 
 config :waffle,
   storage: Waffle.Storage.Local,
-  asset_host: "https://roig.is-a.dev/podcasts/files",
-  storage_dir_prefix: "priv/static/channels"
+  asset_host: "https://roig.is-a.dev/podcasts/uploads",
+  storage_dir_prefix: "uploads"
 
 # ## SSL Support
 #
