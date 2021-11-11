@@ -80,7 +80,7 @@ defmodule Easypodcasts.Processing do
     tmp_episode_dir =
       Path.join([System.tmp_dir!(), "easypodcasts", to_string(channel_id), to_string(episode_id)])
 
-    episode_dir = Path.join(["priv/static/channels", channel_id, "episodes", episode_id])
+    episode_dir = Path.join(["uploads", to_string(channel_id), "episodes", to_string(episode_id)])
 
     File.mkdir_p!(tmp_episode_dir)
     File.mkdir_p!(episode_dir)
