@@ -74,7 +74,7 @@ defmodule Easypodcasts.Processing do
     end
   end
 
-  defp download_file(url, dest) do
+  def download_file(url, dest) do
     :httpc.request(:get, {String.to_charlist(url), []}, [], stream: String.to_charlist(dest))
   end
 

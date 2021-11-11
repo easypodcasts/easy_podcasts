@@ -16,6 +16,11 @@ config :easypodcasts, EasypodcastsWeb.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
+config :waffle,
+  storage: Waffle.Storage.Local,
+  asset_host: "https://roig.is-a.dev/podcasts/imgs",
+  storage_dir_prefix: "priv/static/images/channels"
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
