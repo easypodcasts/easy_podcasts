@@ -39,7 +39,7 @@ Hooks.PlayerHook = {
   setupPlayer() {
     const audioUrl = this.el.dataset.audioUrl;
 
-    let progressWrapper = this.el.querySelector("#progress-wrapper")
+    let progressWrapper = this.el.querySelector("#progress-wrapper");
     let progress = this.el.querySelector("#progress");
 
     progressWrapper.onclick = (event) => {
@@ -61,6 +61,7 @@ Hooks.PlayerHook = {
       }
     };
 
+    let loading = this.el.querySelector("#loading");
     let play_button = this.el.querySelector("#play");
     let pause_button = this.el.querySelector("#pause");
 
@@ -78,10 +79,14 @@ Hooks.PlayerHook = {
 
     this.player = new this.Howl({
       src: [audioUrl],
+      onload: function () {
+        loading.classList.add("hidden");
+        pause_button.classList.remove("hidden");
+      },
       onplay: function () {
         requestAnimationFrame(step);
       },
-      onstop: function () {
+      onend: function () {
         pause_button.classList.add("hidden");
         play_button.classList.remove("hidden");
       },
