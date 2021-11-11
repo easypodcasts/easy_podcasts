@@ -25,8 +25,7 @@ easypodcasts-*.tar
 # Ignore assets that are produced by build tools.
 /priv/static/assets/
 
-/priv/static/podcasts/
-/priv/static/images/channels
+/priv/static/channels/
 
 # Ignore digested assets cache.
 /priv/static/cache_manifest.json

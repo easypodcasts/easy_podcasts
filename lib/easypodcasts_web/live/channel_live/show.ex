@@ -2,7 +2,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   use EasypodcastsWeb, :live_view
   import EasypodcastsWeb.PaginationComponent
 
-  alias Easypodcasts.{Channels, ChannelImage}
+  alias Easypodcasts.{Channels, ChannelImage, EpisodeAudio}
   import Easypodcasts.Helpers
   alias Phoenix.PubSub
 
