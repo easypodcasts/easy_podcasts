@@ -39,18 +39,15 @@ Hooks.PlayerHook = {
   setupPlayer() {
     const audioUrl = this.el.dataset.audioUrl;
 
-    /* let progressWrapper = this.el.querySelector("#progress-wrapper") */
+    let progressWrapper = this.el.querySelector("#progress-wrapper")
     let progress = this.el.querySelector("#progress");
 
-    /* progressWrapper.onclick = (event) => { */
-    /*   let x = event.pageX - progressWrapper.offsetLeft; // or e.offsetX (less support, though) */
-    /*   console.log(x); */
-    /*   /1* let y = e.pageY - progress.offsetTop; // or e.offsetY *1/ */
-    /*   let clickedValue = (x * this.player.duration()) / progressWrapper.offsetWidth; */
-
-    /*   console.log(clickedValue); */
-    /*   /1* this.player.seek(clickedValue) *1/ */
-    /* }; */
+    progressWrapper.onclick = (event) => {
+      let rect = event.target.getBoundingClientRect();
+      let x = event.clientX - rect.left;
+      let clickedValue = (x * this.player.duration()) / progressWrapper.offsetWidth;
+      this.player.seek(clickedValue);
+    };
 
     let currentTime = this.el.querySelector("#current-time");
 
@@ -81,7 +78,6 @@ Hooks.PlayerHook = {
 
     this.player = new this.Howl({
       src: [audioUrl],
-      html5: true,
       onplay: function () {
         requestAnimationFrame(step);
       },
