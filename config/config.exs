@@ -48,11 +48,6 @@ config :phoenix, :json_library, Jason
 
 config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
 
-config :waffle,
-  storage: Waffle.Storage.Local,
-  asset_host: "http://localhost:4000/files",
-  storage_dir_prefix: "priv/static/channels"
-
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
