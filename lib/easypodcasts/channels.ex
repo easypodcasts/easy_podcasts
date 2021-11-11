@@ -14,6 +14,7 @@ defmodule Easypodcasts.Channels do
   alias Easypodcasts.Channels.{Channel, Episode}
   alias Easypodcasts.Processing
   alias Easypodcasts.Processing.Queue
+  alias Easypodcasts.ChannelImage
 
   @doc """
   Returns the list of channels.
@@ -98,6 +99,9 @@ defmodule Easypodcasts.Channels do
          |> Repo.insert() do
       {:ok, channel} ->
         # TODO do something when this fails
+
+        ChannelImage.store({channel.image_url, channel})
+
         Processing.process_channel(channel)
         {:ok, channel}
 

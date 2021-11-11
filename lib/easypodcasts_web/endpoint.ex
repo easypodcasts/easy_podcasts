@@ -29,6 +29,11 @@ defmodule EasypodcastsWeb.Endpoint do
     from: Path.expand("./priv/static/podcasts"),
     gzip: false
 
+  plug Plug.Static,
+    at: "/imgs",
+    from: Path.expand("./priv/static/images/channels"),
+    gzip: false
+
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
