@@ -177,6 +177,10 @@ defmodule Easypodcasts.Channels do
     end
   end
 
+  def filter_episodes_by_updated_at(date) do
+    from(e in Episode, where: e.updated_at <= ^date and e.status == :done)
+  end
+
   def create_episodes(episodes), do: Repo.insert_all(Episode, episodes, returning: true)
 
   def update_episode(%Episode{} = episode, attrs \\ %{}) do
