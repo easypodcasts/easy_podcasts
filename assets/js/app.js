@@ -43,10 +43,12 @@ Hooks.PlayerHook = {
     let progress = this.el.querySelector("#progress");
 
     progressWrapper.onclick = (event) => {
+      console.log("clicked progress");
       let rect = event.target.getBoundingClientRect();
       let x = event.clientX - rect.left;
       let clickedValue = (x * this.player.duration()) / progressWrapper.offsetWidth;
       this.player.seek(clickedValue);
+      progress.style.width = ((clickedValue / this.player.duration()) * 100 || 0) + "%";
     };
 
     let currentTime = this.el.querySelector("#current-time");
@@ -79,6 +81,7 @@ Hooks.PlayerHook = {
 
     this.player = new this.Howl({
       src: [audioUrl],
+      html5: true,
       onload: function () {
         loading.classList.add("hidden");
         pause_button.classList.remove("hidden");
