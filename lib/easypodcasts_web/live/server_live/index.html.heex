@@ -1,0 +1,37 @@
+<section class="flex flex-col p-4">
+  <div class="flex">
+    <div class="flex-col w-1/2 m-2 border border-gray-200 rounded-lg">
+      <span class="text-white text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex w-full justify-center"> Podcasts </span>
+        <ul class="p-2">
+          <li>Total Podcasts: <%= @channels %></li>
+          <li>Total Episodes: <%= @episodes %></li>
+          <li>Original Size: <%= Float.floor(@size.original  / 1_000_000_000, 2) %> GB</li>
+          <li>Processed Episodes: <%= @size.total %></li>
+          <li>Processed Size: <%= Float.floor(@size.processed  / 1_000_000_000, 2) %> GB</li>
+        </ul>
+    </div>
+    <div class="flex-col w-1/2 m-2 border border-gray-200 rounded-lg">
+      <span class="text-white text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex w-full justify-center"> Storage </span>
+      <ul>
+        <li>Disk Capacity: <%= Float.floor(@disk_capacity/ 1_000_000_000, 2) %> GB</li>
+        <li>Used: <%= @disk_used %> %</li>
+      </ul>
+    </div>
+  </div>
+  <div class="m-2 border border-gray-200 rounded-lg">
+      <span class="text-white text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex w-full justify-center"> Queue State </span>
+      <%= if @current_episode  do %>
+          <span>Current Episode: <%= @current_episode.title %> </span>
+      <% end %>
+      <%= if length(@queue) > 0 do %>
+        <span>Episodes in queue:</span>
+        <ul>
+        <%= for episode <- @queue do %>
+          <li></li>
+        <% end %>
+        </ul>
+      <% else %> 
+        <span> No episodes in queue </span>
+      <% end %>
+  </div>
+</section>

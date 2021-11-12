@@ -18,6 +18,12 @@ defmodule Easypodcasts.Processing.Queue do
     GenServer.call(@name, :get_queue_len)
   end
 
+  def get_queue_state do
+    Logger.debug("get_queue_state")
+
+    GenServer.call(@name, :get_queue_state)
+  end
+
   def add_episode(new_episode) do
     Logger.debug("add_episode - Episode: #{inspect(new_episode)}")
     GenServer.call(@name, {:add_episode, new_episode})
@@ -53,6 +59,11 @@ defmodule Easypodcasts.Processing.Queue do
   def handle_call(:get_queue_len, _from, {queue, _current_episode} = state) do
     Logger.debug("handle_call (:get_queue_len) - state: #{inspect(:queue.len(queue))}")
     {:reply, :queue.len(queue), state}
+  end
+
+  def handle_call(:get_queue_state, _from, {queue, current_episode} = state) do
+    Logger.debug("handle_call (:get_queue_len) - state: #{inspect(state)}")
+    {:reply, {:queue.to_list(queue), current_episode}, state}
   end
 
   def handle_info({:DOWN, _ref, :process, _pid, :normal}, {queue, current_episode}) do
