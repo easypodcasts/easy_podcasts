@@ -1,28 +1,48 @@
 defmodule Easypodcasts.Processing do
   alias Easypodcasts.Channels
   alias Easypodcasts.Processing.Feed
+  require Logger
 
   def process_all_channels() do
+    Logger.info("Processing all channels")
+
     Channels.list_channels()
-    |> Enum.each(fn channel -> Task.start(fn -> process_channel(channel, true) end) end)
+    |> Enum.each(fn channel -> process_channel(channel, true) end)
   end
 
   def process_channel(channel, process_new_episodes \\ false) do
+    Logger.info("Processing channel #{channel.title}")
+
     {:ok, new_episodes} =
       with {:ok, feed_data} <- Feed.get_feed_data(channel.link),
            do: save_new_episodes(channel, feed_data)
 
+    Logger.info("Channel #{channel.title} has #{length(new_episodes)} new episodes")
+
     if process_new_episodes do
+      Logger.info("Processing audio from new episodes of #{channel.title}")
       Enum.each(new_episodes, &Channels.enqueue_episode/1)
     end
   end
 
   def save_new_episodes(channel, feed_data) do
     episode_audio_urls = Channels.get_episodes_url_from_channel(channel.id)
+    Logger.info("Channel #{channel.title} has #{length(episode_audio_urls)} episodes")
 
     new_episodes =
       feed_data.entries
+      |> then(fn entries ->
+        Logger.info("The feed for the channel #{channel.title} has #{length(entries)} entries")
+        entries
+      end)
       |> Enum.filter(fn entry -> entry.enclosure.url not in episode_audio_urls end)
+      |> then(fn filtered_entries ->
+        Logger.info(
+          "The feed for the channel #{channel.title} has #{length(filtered_entries)} new entries"
+        )
+
+        filtered_entries
+      end)
       |> Enum.map(fn entry ->
         # TODO validate this stuff
         %{
