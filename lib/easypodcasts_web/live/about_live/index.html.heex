@@ -3,11 +3,11 @@
     <h1 class="text-xl font-bold hover:text-gray-700 pb-4 text-center">Acerca de Easy Podcasts</h1>
     <h2 class="text-xl font-bold pb-1 pt-3">¿Qué es?</h2>
     <p>
-      <em>Easy Podcasts</em> es un agregador de podcasts/procesador de audio que tiene como objetivo ayudar . Es gratis y software libre
+      <em>Easy Podcasts</em> es una solución comunitaria para la descarga de podcasts que tiene como objetivo ayudar a disminuir el consumo de datos: el servicio está alojando en .cu y los audios son comprimidos. Hecho con &hearts; y Software Libre
     </p>
     <h2 class="text-xl font-bold pb-1 pt-3">¿Cómo lo uso?</h2>
     <p>Recomendamos usar <em>Easy Podcasts</em> mediante una aplicación de podcasts como <a class="text-indigo-500" href="https://antennapod.org">Antennapod</a> simplemente adicionando el <em>feed rss</em> del podcast que quieres escuchar a la aplicación</p>
-    <p>Para comenzar a usar el sistema debes <%= live_redirect "añadir", to: Routes.channel_index_path(@socket, :new), class: "text-indigo-500" %> el podcast que quieres escuchar o seleccionar uno de los <%= live_redirect "existentes", to: Routes.channel_index_path(@socket, :index), class: "text-indigo-500" %> y usar el botón de subscribirse</p>
+    <p>Para comenzar a usar el sistema debes <%= live_redirect "añadir", to: Routes.channel_index_path(@socket, :new), class: "text-indigo-500" %> el podcast que quieres escuchar utilizando el enlace a su <em>feed</em> o seleccionar uno de los <%= live_redirect "existentes", to: Routes.channel_index_path(@socket, :index), class: "text-indigo-500" %> y usar el botón de subscribirse</p>
     <p><em>Easy Podcasts</em> también cuenta con un reproductor básico integrado aunque recomendamos usar una <a class="text-indigo-500" href="https://antennapod.org">aplicación nativa</a>  para mejor experiencia </p>
     <h2 class="text-xl font-bold pb-1 pt-3">¿Cuánto cuesta?</h2>
     <p><em>Easy Podcasts</em> es gratis</p>
@@ -28,8 +28,10 @@
     <p> Los episodios son convertidos de uno en uno por lo que la prontitud con la que puede obtener un episodio convertido depende de la cantidad de episodios en cola. <%= live_redirect "El estado de la cola de conversión puede consultarse aquí", to: Routes.server_index_path(@socket, :index), class: "text-indigo-500" %> </p>
     <h2 class="text-xl font-bold pb-1 pt-3">Estoy usando una aplicación de podcasts, ¿por qué no aparecen todos los episodios en el feed?</h2>
     <p>En el <em>feed</em> generado por <em>Easy Podcasts</em> aparecen los episodios ya convertidos </p>
-    <p><em>Easy Podcasts</em> solo convierte automáticamente los episodios que se publiquen a partir del momento en que un podcast se al sistema. Cualquier episodio ya publicado debe convertirse manualmente</p>
+    <p><em>Easy Podcasts</em> solo convierte automáticamente los episodios que se publiquen a partir del momento en que un podcast se añade al sistema. Cualquier episodio ya publicado debe convertirse manualmente</p>
     <h2 class="text-xl font-bold pb-1 pt-3">Mis episodios convertidos desaparecieron, ¿por qué?</h2>
       Según el estado del almacenamiento los episodios convertidos se irán eliminando comenzando por los que se convirtieron hace más tiempo. Si un episodio convertido se elimina siempre puede convertirse nuevamente. <%= live_redirect "El estado del almacenamiento puede consultarse aquí", to: Routes.server_index_path(@socket, :index), class: "text-indigo-500" %>
+    <h2 class="text-xl font-bold pb-1 pt-3">Tengo un iPhone :(</h2>
+    <p><em>Easy Podcasts</em> usa el códec de audio <a src="https://es.wikipedia.org/wiki/Opus_(c%C3%B3dec)" class="text-indigo-500">Opus</a> para comprimir los episodios, por lo que el soporte en los dispositivos de Apple es limitado</p>
   </div>
 </article>
