@@ -54,7 +54,9 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
             ])
 
           socket
-          |> update(:episodes, fn episodes -> put_in(episodes, [episode_id, :status], :queued) end)
+          |> update(:episodes_map, fn episodes ->
+            put_in(episodes, [episode_id, :status], :queued)
+          end)
           |> put_flash(:info, "The episode is in queue. #{msg}")
 
         :error ->
@@ -70,7 +72,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
     socket =
       socket
       |> assign(:show_player, true)
-      |> assign(:playing_episode, Map.get(socket.assigns.episodes, episode_id))
+      |> assign(:playing_episode, Map.get(socket.assigns.episodes_map, episode_id))
 
     {:noreply, socket}
   end
@@ -87,8 +89,18 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   @impl true
   def handle_event("search", %{"search" => search}, socket) do
     case Channels.search_episodes(socket.assigns.channel.id, search) do
-      :noop -> {:noreply, socket}
-      episodes -> {:noreply, assign(socket, :episodes, episodes_from_list(episodes))}
+      :noop ->
+        {:noreply, socket}
+
+      episodes ->
+        {episodes_index, episodes_map} = episodes_from_list(episodes)
+
+        socket =
+          socket
+          |> assign(:episodes_index, episodes_index)
+          |> assign(:episodes_map, episodes_map)
+
+        {:noreply, socket}
     end
   end
 
@@ -98,12 +110,12 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
         socket
       ) do
     Process.send_after(self(), :clear_flash, 5000)
-    episode = Map.get(socket.assigns.episodes, episode_id)
+    episode = Map.get(socket.assigns.episodes_map, episode_id)
 
     socket =
       socket
       |> put_flash(:success, "The episode '#{episode.title}' is being processed")
-      |> update(:episodes, fn episodes -> put_in(episodes, [episode_id, :status], :processing) end)
+      |> update(:episodes_map, fn episodes -> put_in(episodes, [episode_id, :status], :processing) end)
 
     {:noreply, socket}
   end
@@ -119,7 +131,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
     socket =
       socket
       |> put_flash(:success, "The episode '#{episode.title}' was processed successfully")
-      |> update(:episodes, fn episodes -> put_in(episodes, [episode_id], episode) end)
+      |> update(:episodes_map, fn episodes -> put_in(episodes, [episode_id], episode) end)
 
     {:noreply, socket}
   end
@@ -143,13 +155,14 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
       total_pages: total_pages
     } = Channels.paginate_episodes_for(channel_id, page: page)
 
-    episodes = episodes_from_list(entries)
+    {episodes_index, episodes_map} = episodes_from_list(entries)
 
     page = page || 1
     page_range = get_page_range(page, total_pages)
 
     [
-      episodes: episodes,
+      episodes_index: episodes_index,
+      episodes_map: episodes_map,
       page_number: page_number || 0,
       page_size: page_size || 0,
       total_entries: total_entries || 0,
@@ -159,12 +172,13 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   end
 
   defp episodes_from_list(episodes) do
-    {_, episodes} =
+    {_, episodes_map} =
       Enum.map_reduce(episodes, %{}, fn entry, acc ->
         {entry, Map.put_new(acc, entry.id, entry)}
       end)
 
-    episodes
+    episodes_index = Enum.map(episodes, fn episode -> episode.id end)
+    {episodes_index, episodes_map}
   end
 
   defp format_date(date) do

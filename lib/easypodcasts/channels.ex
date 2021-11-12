@@ -166,8 +166,7 @@ defmodule Easypodcasts.Channels do
     |> case do
       %{valid?: true, changes: %{search_phrase: search_phrase}} ->
         from(e in Episode,
-          where: e.channel_id == ^channel_id,
-          order_by: [{:desc, e.publication_date}]
+          where: e.channel_id == ^channel_id
         )
         |> Search.search(search_phrase)
         |> Repo.all()
