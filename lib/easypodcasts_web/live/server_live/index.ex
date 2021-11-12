@@ -4,6 +4,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
   alias Easypodcasts.Channels
   alias Easypodcasts.Processing.Queue
 
+  @impl true
   def mount(_params, _session, socket) do
     if connected?(socket), do: PubSub.subscribe(Easypodcasts.PubSub, "queue_state")
 
@@ -24,7 +25,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
   end
 
   @impl true
-  def handle_info({:queue_changed, queue_len}, socket) do
+  def handle_info({:queue_changed, _queue_len}, socket) do
     {:ok, assign(socket, get_dynamic_assigns())}
   end
 
