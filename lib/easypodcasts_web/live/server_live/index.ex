@@ -12,6 +12,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
       :disksup.get_disk_data()
       |> Enum.filter(fn {disk_id, _size, _percent} ->
         disk_id == '/home/cloud/podcasts-storage'
+        # disk_id == '/'
       end)
       |> hd
 
@@ -26,7 +27,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
 
   @impl true
   def handle_info({:queue_changed, _queue_len}, socket) do
-    {:ok, assign(socket, get_dynamic_assigns())}
+    {:noreply, assign(socket, get_dynamic_assigns())}
   end
 
   defp get_dynamic_assigns() do
