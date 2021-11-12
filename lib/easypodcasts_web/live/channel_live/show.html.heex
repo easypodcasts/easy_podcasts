@@ -20,7 +20,8 @@
 <section class="text-gray-600 dark:text-gray-100 body-font xl:w-1/2 mt-5 xl:mt-0">
   <p class="mb-5 border-b-2 border-gray-200 divide-gray-300 title-font text-2xl line-clamp-5"> <%= sanitize(@channel.description) %></p>
   <div class="divide-y-2 divide-gray-300">
-    <%= for {_, episode} <- @episodes do %>
+    <%= for episode_id <- @episodes_index do %>
+      <% episode = Map.get(@episodes_map, episode_id) %>
       <div class="xl:py-8 flex flex-wrap md:flex-nowrap xl:mb-0 mb-4">
         <div class="flex flex-col w-full">
           <h2 class="text-xl font-medium text-gray-900 dark:text-gray-200 title-font mb-2"> <%= episode.title %></h2>
