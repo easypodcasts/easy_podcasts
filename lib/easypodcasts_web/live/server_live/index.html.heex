@@ -1,6 +1,6 @@
 <section class="flex flex-col p-4">
-  <div class="flex flex-wrap">
-    <div class="flex-col w-full md:w-1/2 m-2 border border-gray-200 rounded-lg">
+  <div class="flex flex-wrap justify-around">
+    <div class="flex-col w-full md:w-1/3 m-2 border border-gray-200 rounded-lg">
       <span class="text-white text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex w-full justify-center"> Podcasts </span>
         <ul class="p-2">
           <li>Total Podcasts: <%= @channels %></li>
@@ -10,7 +10,7 @@
           <li>Processed Size: <%= Float.floor(@size.processed  / 1_000_000_000, 2) %> GB</li>
         </ul>
     </div>
-    <div class="flex-col w-full md:w-1/2 m-2 border border-gray-200 rounded-lg">
+    <div class="flex-col w-full md:w-1/3 m-2 border border-gray-200 rounded-lg">
       <span class="text-white text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex w-full justify-center"> Storage </span>
       <ul class="p-2">
         <li>Disk Capacity: <%= Float.floor(@disk_capacity/ 1_000_000, 2) %> GB</li>
