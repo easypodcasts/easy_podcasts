@@ -1,8 +1,6 @@
 defmodule EasypodcastsWeb.AboutLive.Index do
   use EasypodcastsWeb, :live_view
   alias Phoenix.PubSub
-  alias Easypodcasts.Channels
-  alias Easypodcasts.Processing.Queue
 
   @impl true
   def mount(_params, _session, socket) do
