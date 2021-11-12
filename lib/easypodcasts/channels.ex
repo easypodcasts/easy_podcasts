@@ -218,4 +218,13 @@ defmodule Easypodcasts.Channels do
 
     {channels, episodes, size_stats}
   end
+
+  def get_channels_for(channels_id) do
+    {_, channels} =
+      from(c in Channel, where: c.id in ^channels_id, select: %{id: c.id, title: c.title})
+      |> Repo.all()
+      |> Enum.map_reduce(%{}, fn channel, acc -> {channel, Map.put_new(acc, channel.id, channel.title)} end)
+
+    channels
+  end
 end
