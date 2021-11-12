@@ -32,10 +32,17 @@ defmodule EasypodcastsWeb.ServerLive.Index do
 
   defp get_dynamic_assigns() do
     {queue, current_episode} = Queue.get_queue_state()
+
+    channels_index =
+      queue
+      |> Enum.map(fn episode -> episode.channel_id end)
+      |> Channels.get_channels_for()
+
     {channels, episodes, size} = Channels.get_channels_stats()
 
     [
       queue: queue,
+      channels_index: channels_index,
       current_episode: current_episode,
       channels: channels,
       episodes: episodes,
