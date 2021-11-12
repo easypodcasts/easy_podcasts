@@ -35,7 +35,7 @@
   </div>
 </header>
 <main class="container mx-auto px-4">
-  <div class="flex flex-col fixed top-6 max-w-md mx-auto inset-x-0">
+  <div class="flex flex-col fixed top-6 max-w-md mx-auto inset-x-0 z-50">
   <%= if live_flash(@flash, :success) do %>
     <div class="bg-green-100 rounded-lg p-4 text-sm text-green-700 text-center mb-3" role="alert" phx-click="lv:clear-flash" phx-value-key="success">
       <span class="font-medium">Success! </span> <%= live_flash(@flash, :success) %>
