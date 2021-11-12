@@ -19,7 +19,7 @@
     </div>
   </div>
   <div class="m-2 border border-gray-200 rounded-lg">
-      <span class="text-white text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex w-full justify-center"> Queue State </span>
+      <span class="text-white text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex flex-col w-full justify-center"> Queue State </span>
       <%= if @current_episode  do %>
           <span>Current Episode: <%= @current_episode.title %> </span>
       <% end %>
@@ -27,7 +27,9 @@
         <span>Episodes in queue:</span>
         <ul>
         <%= for episode <- @queue do %>
-          <li></li>
+          <li> 
+            <%= episode.title %>
+          </li>
         <% end %>
         </ul>
       <% else %> 
