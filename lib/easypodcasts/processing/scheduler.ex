@@ -7,7 +7,7 @@ defmodule Easypodcasts.Processing.Scheduler do
   # @drive_id = '/home/cloud/podcasts-storage'
 
   def start_link(_opts) do
-    Logger.debug("starting genserver: #{__MODULE__}")
+    Logger.info("starting genserver: #{__MODULE__}")
     GenServer.start_link(__MODULE__, %{})
   end
 
@@ -45,7 +45,7 @@ defmodule Easypodcasts.Processing.Scheduler do
 
     {_id, _capacity, percent} =
       :disksup.get_disk_data()
-      |> Enum.filter(fn {disk_id, _size, _percent} -> disk_id == '/' end)
+      |> Enum.filter(fn {disk_id, _size, _percent} -> disk_id == '/home/cloud/podcasts-storage' end)
       |> hd
 
     Logger.info("Scheduled Task: Disk Maintenance: Disk is #{percent} full")
@@ -54,6 +54,7 @@ defmodule Easypodcasts.Processing.Scheduler do
       percent > 95 -> remove_episode_older_than(:day)
       percent > 90 -> remove_episode_older_than(:week)
       percent > 85 -> remove_episode_older_than(:month)
+      percent <= 85 -> nil
     end
 
     Process.exit(pid, :normal)
@@ -98,7 +99,7 @@ defmodule Easypodcasts.Processing.Scheduler do
     episodes
     |> then(fn to_reset ->
       Logger.info(
-        "Scheduled Task: Disk Maintenance: Reset info for #{length(Repo.all(to_reset))} episodes"
+        "Scheduled Task: Disk Maintenance: Reset info for #{length(Easypodcasts.Repo.all(to_reset))} episodes"
       )
 
       to_reset
