@@ -2,7 +2,7 @@
   <div class="flex flex-wrap justify-around">
     <div class="flex-col w-full md:w-1/3 m-2 border border-gray-200 rounded-lg">
       <span class="text-white text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex w-full justify-center"> Podcasts </span>
-        <ul class="p-2">
+        <ul class="p-2 dark:text-white">
           <li>Total Podcasts: <%= @channels %></li>
           <li>Total Episodes: <%= @episodes %></li>
           <li>Original Size: <%= Float.floor(@size.original  / 1_000_000_000, 2) %> GB</li>
@@ -12,7 +12,7 @@
     </div>
     <div class="flex-col w-full md:w-1/3 m-2 border border-gray-200 rounded-lg">
       <span class="text-white text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex w-full justify-center"> Storage </span>
-      <ul class="p-2">
+      <ul class="p-2 dark:text-white">
         <li>Disk Capacity: <%= Float.floor(@disk_capacity/ 1_000_000, 2) %> GB</li>
         <li>Used: <%= @disk_used %> %</li>
       </ul>
@@ -21,14 +21,14 @@
   <%= if @current_episode  do %>
     <div class="m-2 border border-gray-200 rounded-lg flex-col">
         <span class="text-white text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex w-full justify-center"> Current Episode </span>
-            <p class="p-2">Current Episode: <%= @current_episode.title %>  </p>
+            <p class="p-2 dark:text-white">Current Episode: <%= @current_episode.title %>  </p>
     </div>
   <% end %>
   <div class="m-2 border border-gray-200 rounded-lg flex-col">
-      <span class="text-white text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex w-full justify-center"> Queue </span>
+      <span class=" text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex w-full justify-center"> Queue </span>
       <%= if length(@queue) > 0 do %>
-        <p class="p-2">Episodes in queue:</p>
-        <ol class="p-2 list-decimal">
+        <p class="p-2 dark:text-white">Episodes in queue:</p>
+        <ol class="px-5 list-decimal dark:text-white">
         <%= for episode <- @queue do %>
           <li> 
             <%= episode.title %> ( <%= Map.get(@channels_index, episode.channel_id) %> )
@@ -36,7 +36,7 @@
         <% end %>
         </ol>
       <% else %> 
-        <span class="p-2"> No episodes in queue </span>
+        <span class="p-2 dark:text-white"> No episodes in queue </span>
       <% end %>
   </div>
 </section>
