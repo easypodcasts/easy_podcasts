@@ -13,7 +13,7 @@
     <div class="flex-col w-1/2 m-2 border border-gray-200 rounded-lg">
       <span class="text-white text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex w-full justify-center"> Storage </span>
       <ul>
-        <li>Disk Capacity: <%= Float.floor(@disk_capacity/ 1_000_000_000, 2) %> GB</li>
+        <li>Disk Capacity: <%= Float.floor(@disk_capacity/ 1_000_000, 2) %> GB</li>
         <li>Used: <%= @disk_used %> %</li>
       </ul>
     </div>
