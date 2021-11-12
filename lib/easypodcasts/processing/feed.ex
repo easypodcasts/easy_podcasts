@@ -18,7 +18,7 @@ defmodule Easypodcasts.Processing.Feed do
   end
 
   defp parse_feed(xml_string) do
-    with {:ok, xml} <- XmlNode.parse_string(xml_string),
+    with {:ok, xml} <- xml_string |> String.trim() |> XmlNode.parse_string(),
          {:ok, ITunesRSS2, xml} <- determine_feed_parser(xml),
          do: {:ok, ITunesRSS2.parse(xml)}
   end
