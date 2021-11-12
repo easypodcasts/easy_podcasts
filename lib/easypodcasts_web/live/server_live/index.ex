@@ -26,7 +26,8 @@ defmodule EasypodcastsWeb.ServerLive.Index do
   end
 
   @impl true
-  def handle_info({:queue_changed, _queue_len}, socket) do
+  def handle_info({:queue_changed, queue_len}, socket) do
+    send_update(EasypodcastsWeb.QueueComponent, id: "queue_state", queue_len: queue_len)
     {:noreply, assign(socket, get_dynamic_assigns())}
   end
 
