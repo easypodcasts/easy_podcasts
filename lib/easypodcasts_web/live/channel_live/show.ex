@@ -6,11 +6,6 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   import Easypodcasts.Helpers
   alias Phoenix.PubSub
 
-  # @impl true
-  # def mount(_params, _session, socket) do
-  #   {:ok, socket}
-  # end
-
   @impl true
   def mount(%{"slug" => slug}, _session, socket) do
     [id | _] = String.split(slug, "-")
@@ -114,7 +109,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
     socket =
       socket
-      |> put_flash(:success, "The episode '#{episode.title}' is being processed")
+      |> put_flash(:info, "The episode '#{episode.title}' is being processed")
       |> update(:episodes_map, fn episodes -> put_in(episodes, [episode_id, :status], :processing) end)
 
     {:noreply, socket}

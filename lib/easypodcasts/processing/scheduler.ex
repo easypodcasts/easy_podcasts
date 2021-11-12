@@ -41,7 +41,6 @@ defmodule Easypodcasts.Processing.Scheduler do
   end
 
   def do_disk_maintenance() do
-    {:ok, pid} = :disksup.start_link()
 
     {_id, _capacity, percent} =
       :disksup.get_disk_data()
@@ -56,8 +55,6 @@ defmodule Easypodcasts.Processing.Scheduler do
       percent > 85 -> remove_episode_older_than(:month)
       percent <= 85 -> nil
     end
-
-    Process.exit(pid, :normal)
   end
 
   defp remove_episode_older_than(:month) do
