@@ -81,6 +81,11 @@ defmodule Easypodcasts.Channels do
       from(e in Episode, where: e.channel_id == ^id, select: e.original_audio_url)
       |> Repo.all()
 
+  def get_episodes_url(),
+    do:
+      from(e in Episode, select: e.original_audio_url)
+      |> Repo.all()
+
   @doc """
   Creates a channel.
 

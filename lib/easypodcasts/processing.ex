@@ -26,8 +26,10 @@ defmodule Easypodcasts.Processing do
   end
 
   def save_new_episodes(channel, feed_data) do
-    episode_audio_urls = Channels.get_episodes_url_from_channel(channel.id)
-    Logger.info("Channel #{channel.title} has #{length(episode_audio_urls)} episodes")
+    # episode_audio_urls = Channels.get_episodes_url_from_channel(channel.id)
+    episode_audio_urls = Channels.get_episodes_url()
+    # Logger.info("Channel #{channel.title} has #{length(episode_audio_urls)} episodes")
+    Logger.info("All episodes #{length(episode_audio_urls)}")
 
     new_episodes =
       feed_data.entries
