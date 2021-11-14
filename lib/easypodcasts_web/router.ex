@@ -14,6 +14,10 @@ defmodule EasypodcastsWeb.Router do
     plug :accepts, ["xml"]
   end
 
+  pipeline :counter do
+    plug :accepts, ["html"]
+  end
+
   scope "/", EasypodcastsWeb do
     pipe_through :browser
     live "/about", AboutLive.Index, :index
@@ -26,6 +30,7 @@ defmodule EasypodcastsWeb.Router do
 
   scope "/feeds", EasypodcastsWeb do
     pipe_through :feed
+    get "/counter", ChannelController, :counter
     get "/:slug", ChannelController, :feed
   end
 

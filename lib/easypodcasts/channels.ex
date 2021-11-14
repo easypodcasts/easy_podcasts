@@ -193,8 +193,8 @@ defmodule Easypodcasts.Channels do
     |> Repo.update()
   end
 
-  def enqueue_episode(episode_id) do
-    episode = get_episode!(episode_id)
+  def enqueue_episode(episode) do
+    episode = get_episode!(episode.id)
 
     case episode.status do
       :new ->
@@ -203,6 +203,17 @@ defmodule Easypodcasts.Channels do
 
       _ ->
         :error
+    end
+  end
+
+  def inc_episode_downloads(episode_id) do
+    case episode_id do
+      "img" ->
+        nil
+
+      episode_id ->
+        from(e in Episode, update: [inc: [downloads: 1]], where: e.id == ^episode_id)
+        |> Repo.update_all([])
     end
   end
 
@@ -228,7 +239,9 @@ defmodule Easypodcasts.Channels do
     {_, channels} =
       from(c in Channel, where: c.id in ^channels_id, select: %{id: c.id, title: c.title})
       |> Repo.all()
-      |> Enum.map_reduce(%{}, fn channel, acc -> {channel, Map.put_new(acc, channel.id, channel.title)} end)
+      |> Enum.map_reduce(%{}, fn channel, acc ->
+        {channel, Map.put_new(acc, channel.id, channel.title)}
+      end)
 
     channels
   end

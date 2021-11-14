@@ -28,13 +28,14 @@
           <div class="flex mb-3">
             <span class="text-xs md:text-sm text-gray-500 dark:text-gray-100 mr-3"><%= format_date(episode.publication_date) %></span>
             <span class="text-xs md:text-sm text-gray-500 dark:text-gray-100 mr-3"><%= format_duration(Map.get(episode.feed_data, "itunes_duration")) %></span>
-            <span class="text-xs md:text-sm  text-gray-500 dark:text-gray-100">
+            <span class="text-xs md:text-sm  text-gray-500 dark:text-gray-100 mr-3">
             <%= if episode.status == :done do %>
               <%= Float.floor(episode.processed_size  / 1_000_000, 2) %> MB (<%= Float.floor((episode.original_size - episode.processed_size)  / 1_000_000, 2) %> MB less)
             <% else %>
               <%= Float.floor(episode.original_size / 1_000_000, 2) %> MB
             <% end %>
             </span>
+            <span class="text-xs md:text-sm text-gray-500 dark:text-gray-100 mr-3">Downloads: <%= episode.downloads %></span>
           </div>
           <p class="line-clamp-6"> <%= sanitize(episode.description) %></p>
           <%= if episode.status == :done do %>
