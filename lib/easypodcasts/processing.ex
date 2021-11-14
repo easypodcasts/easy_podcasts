@@ -21,7 +21,7 @@ defmodule Easypodcasts.Processing do
 
     if process_new_episodes do
       Logger.info("Processing audio from new episodes of #{channel.title}")
-      Enum.each(new_episodes, &Channels.enqueue_episode/1)
+      Enum.each(new_episodes, fn episode -> Channels.enqueue_episode(episode.id) end)
     end
   end
 
