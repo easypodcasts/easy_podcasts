@@ -19,6 +19,7 @@ defmodule Easypodcasts.Channels.Episode do
     field :title, :string
     field :publication_date, :utc_datetime
     field :feed_data, :map
+    field :downloads, :integer, default: 0
     belongs_to :channel, Easypodcasts.Channels.Channel
 
     timestamps()
