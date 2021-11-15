@@ -27,6 +27,7 @@
                 <%= live_patch "Cancel", to: Routes.channel_index_path(@socket, :index), class: "align-middle text-white bg-gray-500 border-0 ml-1 px-4 py-2 md:py-0.5 focus:outline-none rounded text-sm inline-flex items-center" %>
               </div>
             </div>
+            <spam class="text-sm">Lea sobre nuestra política de contenidos <a href={"#{Routes.about_index_path(@socket, :index)}#disclaimer"} class="text-indigo-500">aquí</a></spam>
         </.form>
       </div>
     <% else %>
