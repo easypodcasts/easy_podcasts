@@ -39,7 +39,8 @@ defmodule EasypodcastsWeb.ServerLive.Index do
       |> Enum.map(fn episode -> episode.channel_id end)
       |> Channels.get_channels_for()
 
-    {channels, episodes, size} = Channels.get_channels_stats()
+    {channels, episodes, size, latest_episodes, latest_processed_episodes} =
+      Channels.get_channels_stats()
 
     [
       queue: queue,
@@ -47,7 +48,9 @@ defmodule EasypodcastsWeb.ServerLive.Index do
       current_episode: current_episode,
       channels: channels,
       episodes: episodes,
-      size: size
+      size: size,
+      latest_episodes: latest_episodes,
+      latest_processed_episodes: latest_processed_episodes
     ]
   end
 end
