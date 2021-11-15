@@ -31,10 +31,20 @@ defmodule Easypodcasts.Processing.Queue do
 
   # Internal Callbacks
   def init(:ok) do
-    # TODO get pending episodes from the database
     Logger.debug("init (:ok) - Creating empty queue")
     state = {:queue.new(), nil}
-    {:ok, state}
+    {:ok, state, {:continue, :get_queued_episodes}}
+  end
+
+  def handle_continue(:get_queued_episodes, _state) do
+    Logger.debug("handle_continue getting queued episodes from database")
+
+    state =
+      Channels.get_queued_episodes()
+      |> :queue.from_list()
+      |> process_next_in_queue
+
+    {:noreply, state}
   end
 
   def handle_call({:add_episode, new_episode}, _from, {queue, current_episode} = state) do

@@ -206,6 +206,9 @@ defmodule Easypodcasts.Channels do
     end
   end
 
+  def get_queued_episodes(), do:
+  from(e in Episode, where: e.status in [:queued, :processing]) |> Repo.all
+
   def inc_episode_downloads(episode_id) do
     case episode_id do
       "img" ->
