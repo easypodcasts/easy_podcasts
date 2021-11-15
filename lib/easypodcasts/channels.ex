@@ -206,8 +206,8 @@ defmodule Easypodcasts.Channels do
     end
   end
 
-  def get_queued_episodes(), do:
-  from(e in Episode, where: e.status in [:queued, :processing]) |> Repo.all
+  def get_queued_episodes(),
+    do: from(e in Episode, where: e.status in [:queued, :processing]) |> Repo.all()
 
   def inc_episode_downloads(episode_id) do
     case episode_id do
@@ -224,6 +224,20 @@ defmodule Easypodcasts.Channels do
     channels = Repo.one(from c in Channel, select: count(c))
     episodes = Repo.one(from e in Episode, select: count(e))
 
+    latest_episodes =
+      Repo.all(
+        from e in Episode, order_by: [{:desc, e.publication_date}], limit: 10, select: e.title
+      )
+
+    latest_processed_episodes =
+      Repo.all(
+        from e in Episode,
+          where: e.status == :done,
+          order_by: [{:desc, e.updated_at}],
+          limit: 10,
+          select: e.title
+      )
+
     size_stats =
       Repo.one(
         from e in Episode,
@@ -235,7 +249,7 @@ defmodule Easypodcasts.Channels do
           }
       )
 
-    {channels, episodes, size_stats}
+    {channels, episodes, size_stats, latest_episodes, latest_processed_episodes}
   end
 
   def get_channels_for(channels_id) do

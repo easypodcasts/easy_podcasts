@@ -18,6 +18,24 @@
       </ul>
     </div>
   </div>
+  <div class="flex flex-wrap justify-between">
+    <div class="flex-col w-full md:w-5/12 border border-gray-200 rounded-lg mb-6">
+      <span class="text-white text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex w-full justify-center"> Latest Episodes </span>
+        <ol class="px-7 dark:text-white list-decimal">
+          <%= for episode <- @latest_episodes do %>
+            <li><%= episode %></li>
+          <% end %>
+        </ol>
+    </div>
+    <div class="flex-col w-full md:w-5/12 border border-gray-200 rounded-lg mb-6">
+      <span class="text-white text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex w-full justify-center"> Latest Processed </span>
+      <ol class="px-7 dark:text-white list-decimal">
+          <%= for episode <- @latest_processed_episodes do %>
+            <li><%= episode %></li>
+          <% end %>
+      </ol>
+    </div>
+  </div>
   <%= if @current_episode  do %>
     <div class="mb-6 border border-gray-200 rounded-lg flex-col">
         <span class="text-white text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex w-full justify-center"> Current Episode </span>
