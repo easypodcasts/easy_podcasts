@@ -9,8 +9,10 @@
       </form>
     <% end %>
     <nav class="flex flex-wrap items-center text-base justify-center">
-     <%= live_redirect "Status", to: Routes.server_index_path(@socket, :index), class: "mr-5 hover:text-gray-900" %>
-     <%= live_redirect "About", to: Routes.about_index_path(@socket, :index), class: "mr-5 hover:text-gray-900" %>
+      <%= if @live_action in [:index, :show] do %>
+       <%= live_redirect "Status", to: Routes.server_index_path(@socket, :index), class: "mr-5 hover:text-gray-900" %>
+       <%= live_redirect "About", to: Routes.about_index_path(@socket, :index), class: "mr-5 hover:text-gray-900" %>
+      <% end %>
     <%= if @live_action == :new do %>
       <div class="relative">
         <.form
