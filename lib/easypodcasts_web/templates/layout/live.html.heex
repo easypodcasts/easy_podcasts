@@ -1,20 +1,23 @@
 <header class="text-gray-600 body-font">
-  <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center border-b-2 border-gray-300 justify-between">
+  <div class="container mx-auto flex flex-wrap px-2 pt-2 pb-1 flex-col md:flex-row items-center border-b-2 border-gray-300 justify-between">
     <%= live_redirect to: Routes.channel_index_path(@socket, :index), class: "flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0" do %>
       <img class="ml-3 h-16" src={Routes.static_path(@socket, "/images/easypodcasts.svg")} alt="Easy Podcasts"/>
     <% end %>
     <%= if @socket.view not in [EasypodcastsWeb.ServerLive.Index, EasypodcastsWeb.AboutLive.Index] and @live_action in [:index, :show] do %>
+    <% end %>
+    <nav class="flex flex-wrap items-center text-base justify-around xl:w-1/2 ">
+      <%= if @live_action in [:index, :show] do %>
       <form phx-change="search">
         <input type="text" phx-debounce="200" name="search" class="mb-2 md:mb-0 bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" placeholder={if @live_action == :index, do: "Search Podcasts", else: "Search Episodes"} >
       </form>
-    <% end %>
-    <nav class="flex flex-wrap items-center text-base justify-center">
-      <%= if @live_action in [:index, :show] do %>
+      <div class="flex justify-center w-full xl:w-auto pb-3 xl:pb-0">
        <%= live_redirect "Status", to: Routes.server_index_path(@socket, :index), class: "mr-5 hover:text-gray-900" %>
-       <%= live_redirect "About", to: Routes.about_index_path(@socket, :index), class: "mr-5 hover:text-gray-900" %>
+       <%= live_redirect "About", to: Routes.about_index_path(@socket, :index), class: "hover:text-gray-900" %>
+      </div>
       <% end %>
     <%= if @live_action == :new do %>
-      <div class="relative">
+      <div class="flex flex-col">
+        <spam class="text-sm">Lea sobre nuestra política de contenidos <a href={"#{Routes.about_index_path(@socket, :index)}#disclaimer"} class="text-indigo-500">aquí</a></spam>
         <.form
           let={f}
           for={@changeset}
@@ -29,11 +32,10 @@
                 <%= live_patch "Cancel", to: Routes.channel_index_path(@socket, :index), class: "align-middle text-white bg-gray-500 border-0 ml-1 px-4 py-2 md:py-0.5 focus:outline-none rounded text-sm inline-flex items-center" %>
               </div>
             </div>
-            <spam class="text-sm">Lea sobre nuestra política de contenidos <a href={"#{Routes.about_index_path(@socket, :index)}#disclaimer"} class="text-indigo-500">aquí</a></spam>
         </.form>
       </div>
     <% else %>
-      <%= live_redirect "New Podcast", to: Routes.channel_index_path(@socket, :new), class: "align-middle font-semibold text-white bg-indigo-500 dark:bg-blue-400 border-0 ml-1 px-4 py-2 focus:outline-none rounded text-md inline-flex items-center" %>
+      <%= live_patch "New Podcast", to: Routes.channel_index_path(@socket, :new), class: "align-middle font-semibold text-white bg-indigo-500 dark:bg-blue-400 border-0 ml-1 px-4 py-2 focus:outline-none rounded text-md inline-flex items-center" %>
     <% end %>
 
     </nav>
