@@ -1,3 +1,24 @@
+<%= if @live_action == :new do %>
+ <div class="mt-4 xl:w-1/2 w-full mx-auto">
+        <.form
+          let={f}
+          for={@changeset}
+          id="channel-form"
+          phx-submit="save"
+          phx-page-loading>
+            <%= error_tag f, :link %>
+            <div class="flex flex-col md:flex-row">
+              <%= url_input f, :link, placeholder: "https://example.podcast.com/rss", class: "w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" %>
+              <div class="flex mt-2 md:mt-0 justify-center">
+                <%= submit "Save", phx_disable_with: "Saving...", class: "text-white bg-green-500 border-0 ml-1 px-5 focus:outline-none rounded text-sm" %>
+                <%= live_patch "Cancel", to: Routes.channel_index_path(@socket, :index), class: "align-middle text-white bg-gray-500 border-0 ml-1 px-4 py-2 md:py-0.5 focus:outline-none rounded text-sm inline-flex items-center" %>
+              </div>
+            </div>
+            <spam class="text-sm">Lea sobre nuestra política de contenidos <a href={"#{Routes.about_index_path(@socket, :index)}#disclaimer"} class="text-indigo-500">aquí</a></spam>
+        </.form>
+      </div> 
+<% end %>
+
 <%= if @total_pages > 1 and @total_entries > 0 do %>
   <.pagination socket={@socket} page_number={@page_number} total_pages={@total_pages} page_range={@page_range} is_top={true} route={&Routes.channel_index_path/3}, action={:index} object_id={nil}/>
 <% end %>

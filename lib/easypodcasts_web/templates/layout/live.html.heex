@@ -1,7 +1,7 @@
 <header class="text-gray-600 body-font">
-  <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center border-b-2 border-gray-300 justify-between">
+  <div class="container mx-auto flex flex-wrap p-3 flex-col md:flex-row items-center border-b-2 border-gray-300 justify-between">
     <%= live_redirect to: Routes.channel_index_path(@socket, :index), class: "flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0" do %>
-      <img class="ml-3 h-16" src={Routes.static_path(@socket, "/images/easypodcasts.svg")} alt="Easy Podcasts"/>
+      <img class="ml-3 h-12" src={Routes.static_path(@socket, "/images/easypodcasts.svg")} alt="Easy Podcasts"/>
     <% end %>
     <%= if @socket.view not in [EasypodcastsWeb.ServerLive.Index, EasypodcastsWeb.AboutLive.Index] and @live_action in [:index, :show] do %>
       <form phx-change="search">
@@ -9,30 +9,9 @@
       </form>
     <% end %>
     <nav class="flex flex-wrap items-center text-base justify-center">
-      <%= if @live_action in [:index, :show] do %>
        <%= live_redirect "Status", to: Routes.server_index_path(@socket, :index), class: "mr-5 hover:text-gray-900" %>
        <%= live_redirect "About", to: Routes.about_index_path(@socket, :index), class: "mr-5 hover:text-gray-900" %>
-      <% end %>
-    <%= if @live_action == :new do %>
-      <div class="relative">
-        <.form
-          let={f}
-          for={@changeset}
-          id="channel-form"
-          phx-submit="save"
-          phx-page-loading>
-            <%= error_tag f, :link %>
-            <div class="flex flex-col md:flex-row">
-              <%= url_input f, :link, placeholder: "https://example.podcast.com/rss", class: "w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" %>
-              <div class="flex mt-2 md:mt-0 justify-center">
-                <%= submit "Save", phx_disable_with: "Saving...", class: "text-white bg-green-500 border-0 ml-1 px-5 focus:outline-none rounded text-sm" %>
-                <%= live_patch "Cancel", to: Routes.channel_index_path(@socket, :index), class: "align-middle text-white bg-gray-500 border-0 ml-1 px-4 py-2 md:py-0.5 focus:outline-none rounded text-sm inline-flex items-center" %>
-              </div>
-            </div>
-            <spam class="text-sm">Lea sobre nuestra política de contenidos <a href={"#{Routes.about_index_path(@socket, :index)}#disclaimer"} class="text-indigo-500">aquí</a></spam>
-        </.form>
-      </div>
-    <% else %>
+    <%= if @live_action != :new do %>
       <%= live_redirect "New Podcast", to: Routes.channel_index_path(@socket, :new), class: "align-middle font-semibold text-white bg-indigo-500 dark:bg-blue-400 border-0 ml-1 px-4 py-2 focus:outline-none rounded text-md inline-flex items-center" %>
     <% end %>
 
