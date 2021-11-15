@@ -3,7 +3,7 @@
 <% end %>
 
 <div class="flex flex-col xl:flex-row pt-10">
-  <section class="text-gray-600 dark:text-gray-100 body-font w-1/2 flex flex-col relative xl:sticky top-2 xl:self-start self-center items-center">
+  <section class="text-gray-600 dark:text-gray-100 body-font xl:w-1/2 w-full flex flex-col relative xl:sticky top-2 xl:self-start self-center items-center">
     <div class="self-center xl:w-2/3 h-auto flex flex-col">
     <img alt={@channel.title} class="rounded " src={ChannelImage.url({"original.jpg", @channel}, :original)}/>
     <%= link to: Routes.channel_path(@socket, :feed, Channels.slugify_channel(@channel)), class: "self-center xl:self-start" do %>
@@ -15,10 +15,10 @@
       </button>
     <% end %>
     </div>
+    <p class="mb-5 border-b-2 border-gray-200 divide-gray-300 title-font text-md xl:px-24 mt-2"> <%= sanitize(@channel.description) %></p>
   </section>
 
 <section class="text-gray-600 dark:text-gray-100 body-font xl:w-1/2 mt-5 xl:mt-0">
-  <p class="mb-5 border-b-2 border-gray-200 divide-gray-300 title-font text-2xl line-clamp-5"> <%= sanitize(@channel.description) %></p>
   <div class="divide-y-2 divide-gray-300">
     <%= for episode_id <- @episodes_index do %>
       <% episode = Map.get(@episodes_map, episode_id) %>
