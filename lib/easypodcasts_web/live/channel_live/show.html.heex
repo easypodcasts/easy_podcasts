@@ -1,11 +1,12 @@
 <%= if @total_pages > 1 and @total_entries > 0 do %>
   <.pagination socket={@socket} page_number={@page_number} total_pages={@total_pages} page_range={@page_range} is_top={true} route={&Routes.channel_show_path/4} action={:show} object_id={Channels.slugify_channel(@channel)}/>
 <% end %>
+
 <div class="flex flex-col xl:flex-row pt-10">
-  <section class="text-gray-600 dark:text-gray-100 body-font xl:w-1/2 w-full flex flex-col relative xl:sticky top-2 xl:self-start self-center items-center">
+  <section class="text-gray-600 dark:text-gray-100 body-font w-1/2 flex flex-col relative xl:sticky top-2 xl:self-start self-center items-center">
     <div class="self-center xl:w-2/3 h-auto flex flex-col">
     <img alt={@channel.title} class="rounded " src={ChannelImage.url({"original.jpg", @channel}, :original)}/>
-    <%= link to: Routes.channel_path(@socket, :feed, Channels.slugify_channel(@channel)), class: "self-center xl:self-start mb-2" do %>
+    <%= link to: Routes.channel_path(@socket, :feed, Channels.slugify_channel(@channel)), class: "self-center xl:self-start" do %>
       <button class="flex justify-between text-white bg-indigo-500 dark:bg-blue-400 border-0 py-2 px-2 focus:outline-none rounded text-lg font-semibold mt-4 xl:self-start flex items-center">
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 32 32">
         <path fill="white" d="M26.334 32c-0.025-14.351-12.547-26.079-26.334-26.106v-5.894c16.916 0 32 14.394 32 32h-5.666zM21.475 31.998h-5.663c0.019-3.524-1.771-7.468-4.604-10.421-2.817-2.977-7.81-4.853-11.194-4.835v-5.892c10.565 0.228 21.246 10.207 21.461 21.148zM4.016 23.997c2.207 0 3.996 1.791 3.996 4 0 2.208-1.789 3.999-3.996 3.999s-3.996-1.791-3.996-3.999c0-2.209 1.789-4 3.996-4z"></path>
@@ -14,10 +15,10 @@
       </button>
     <% end %>
     </div>
-    <p class="mb-5 border-b-2 border-gray-200 divide-gray-300 title-font text-md xl:px-24"> <%= sanitize(@channel.description) %></p>
   </section>
 
 <section class="text-gray-600 dark:text-gray-100 body-font xl:w-1/2 mt-5 xl:mt-0">
+  <p class="mb-5 border-b-2 border-gray-200 divide-gray-300 title-font text-2xl line-clamp-5"> <%= sanitize(@channel.description) %></p>
   <div class="divide-y-2 divide-gray-300">
     <%= for episode_id <- @episodes_index do %>
       <% episode = Map.get(@episodes_map, episode_id) %>
