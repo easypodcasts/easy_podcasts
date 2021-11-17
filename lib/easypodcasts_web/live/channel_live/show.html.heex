@@ -14,7 +14,7 @@
         <span class="ml-1">Subscribe</span>
       </button>
     <% end %>
-    <p class="title-font text-md xl:px-24 mt-2"> <%= sanitize(@channel.description) %></p>
+    <p class="title-font text-md mt-2"> <%= sanitize(@channel.description) %></p>
     </div>
   </section>
 
@@ -27,7 +27,7 @@
           <h2 class="text-xl font-medium text-gray-900 dark:text-gray-200 title-font mb-2"> <%= episode.title %></h2>
           <div class="flex mb-3">
             <span class="text-xs md:text-sm text-gray-500 dark:text-gray-100 mr-3"><%= format_date(episode.publication_date) %></span>
-            <span class="text-xs md:text-sm text-gray-500 dark:text-gray-100 mr-3"><%= format_duration(Map.get(episode.feed_data, "itunes_duration")) %></span>
+            <span class="text-xs md:text-sm text-gray-500 dark:text-gray-100 mr-3"><%= get_duration(episode) %></span>
             <span class="text-xs md:text-sm  text-gray-500 dark:text-gray-100 mr-3">
             <%= if episode.status == :done do %>
               <%= Float.floor(episode.processed_size  / 1_000_000, 2) %> MB (<%= Float.floor((episode.original_size - episode.processed_size)  / 1_000_000, 2) %> MB less)
@@ -113,7 +113,7 @@
      </div> 
      <div class="flex justify-between">
        <span id="current-time">0:00</span>
-       <span><%= format_duration(Map.get(@playing_episode.feed_data, "itunes_duration")) %></span>
+       <span><%= get_duration(@playing_episode) %></span>
      </div>
     </div>
     <svg class="animate-spin -ml-1 mr-1 h-8 w-8 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" id="loading" viewBox="0 0 24 24">

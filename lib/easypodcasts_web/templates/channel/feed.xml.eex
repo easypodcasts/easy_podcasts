@@ -7,44 +7,72 @@
   xmlns:podcast="https://podcastindex.org/namespace/1.0"
 >
 <channel>
-  <title><![CDATA[<%= @title %>]]></title>
-    <copyright><![CDATA[<%= Map.get(@feed_data,"copyright")%>]]></copyright>
-    <link><![CDATA[<%= @link %>]]></link>
-    <atom:link href="<%= Map.get(@feed_data, "atom:link") %>" rel="self" type="application/rss+xml" />
-    <atom:link href="<%= Map.get(@feed_data, "url") %>" rel="alternate" type="text/html" />
-    <language><%= Map.get(@feed_data, "language") %></language>
-    <description><![CDATA[<%= @description %>]]></description>
-    <itunes:author><![CDATA[<%= @author %>]]></itunes:author>
-    <itunes:summary><![CDATA[<%= Map.get(@feed_data, "itunes_summary")%>]]></itunes:summary>
-    <itunes:explicit><%= Map.get(@feed_data, "explicit")%></itunes:explicit>
-    <itunes:image href="<%= Map.get(@feed_data, "itunes_image") %>"/>
-    <itunes:keywords><%= Map.get(@feed_data, "itunes_keywords") %></itunes:keywords>
-    <itunes:owner>
-      <itunes:name><%= Map.get(@feed_data, "itunes_name") %></itunes:name>
-      <itunes:email><%= Map.get(@feed_data, "itunes_email") %></itunes:email>
-    </itunes:owner>
+  <title><![CDATA[<%= @title %> ]]></title>
+  <copyright><%= @feed_data["copyright"] %></copyright>
+  <link><![CDATA[<%= @link %>]]></link>
+  <%= for link <- @feed_data["extensions"]["atom"]["link"] do %>
+    <atom:link href="<%= link["attrs"]["href"] %>" rel="<%= link["attrs"]["rel"] %>" type="<%= link["attrs"]["type"] %>"/>
+  <% end %>
+  <language><%= @feed_data["language"] %></language>
+  <description>
+    <![CDATA[<%= @description %>]]>
+  </description>
+  <itunes:author><%= @feed_data["itunesExt"]["author"] %></itunes:author>
+  <itunes:summary>
+    <![CDATA[<%= @feed_data["itunesExt"]["summary"] %>]]>
+  </itunes:summary>
+  <itunes:explicit><%= @feed_data["itunesExt"]["explicit"] %></itunes:explicit>
+  <itunes:image href="<%= @feed_data["itunesExt"]["image"] %>"/>
+  <itunes:keywords>
+    <%= @feed_data["itunesExt"]["keywords"] %>
+  </itunes:keywords>
+  <itunes:owner>
+  <itunes:name><%= @feed_data["itunesExt"]["owner"]["name"] %></itunes:name>
+  <itunes:email><%= @feed_data["itunesExt"]["owner"]["email"] %></itunes:email>
+  </itunes:owner>
+  <%= for category <- @feed_data["extensions"]["itunes"]["category"] do %>
+    <itunes:category text="<%= category["attrs"]["text"]  %>">
+      <%= for subcategory <- category["children"]["category"] do %>
+        <itunes:category text="<%= subcategory["attrs"]["text"] %>"/>
+      <% end %>
+  </itunes:category>
+  <% end %>
 
-    <%= for episode <- @episodes do %>
-    <item>
-      <title><![CDATA[<%= episode.title %>]]></title>
-      <link><%= episode.link %></link>
-      <guid isPermaLink="false"><%= episode.feed_data |> Map.get("rss2:guid") |> URI.encode_www_form %></guid>
-      <pubDate><%= Map.get(episode.feed_data, "rss2:pubDate") %></pubDate>
-      <enclosure url="<%= EpisodeAudio.url({"episode.opus", episode}) %>" length="<%= episode.processed_size %>" type="audio/ogg" />
-      <description><![CDATA[<%= episode.description %>]]></description>
-      <content:encoded><![CDATA[ <%= Map.get(episode.feed_data, "content") %>
-]]>
-</content:encoded>
+  <%= for funding <- @feed_data["extensions"]["podcast"]["funding"] do %>
+    <podcast:funding url="<%= funding["attrs"]["url"] %>"><%= funding["value"]  %></podcast:funding>
+  <% end %>
+  <%= for person <- @feed_data["extensions"]["podcast"]["person"] do %>
+      <podcast:person role="<%= person["attrs"]["role"] %>" img="<%= URI.encode_www_form(person["attrs"]["img"]) %>" href="<%= person["attrs"]["href"] %>"><%= person["value"] %></podcast:person>
+  <% end %>
+  <%= for episode <- @episodes do %>
+   <item>
+      <title><%= episode.feed_data["title"] %></title>
+      <link><%= episode.feed_data["link"] %></link>
+      <guid isPermaLink="false"><%= episode.feed_data["guid"] %></guid>
+      <pubDate><%= episode.feed_data["published"] %></pubDate>
+      <%= for enclosure <- episode.feed_data["enclosures"] do %>
+        <enclosure url="<%= EpisodeAudio.url({"episode.opus", episode}) %>" length="<%= enclosure["length"] %>" type="<%= enclosure["type"] %>" />
+      <% end %>
+        <description><![CDATA[<%= episode.feed_data["description"] %>]]></description>
+        <content:encoded><![CDATA[<%= episode.feed_data["content"]  %> ]]></content:encoded>
+        <itunes:episodeType><%= episode.feed_data["itunesExt"]["episodeType"] %></itunes:episodeType>
+        <itunes:episode><%= episode.feed_data["itunesExt"]["episode"]  %></itunes:episode>
 
-      <itunes:image href="<%= Map.get(episode.feed_data, "itunes_image")  %>"/>
-      <itunes:duration><%= Map.get(episode.feed_data, "itunes_duration") %></itunes:duration>
-      <itunes:explicit><%= Map.get(episode.feed_data, "itunes_explicit") %></itunes:explicit>
-      <itunes:keywords><%= Map.get(episode.feed_data, "itunes_keywords") %></itunes:keywords>
-      <itunes:subtitle><![CDATA[<%= Map.get(episode.feed_data, "itunes_subtitle") %>]]></itunes:subtitle>
-      <itunes:summary><![CDATA[<%= Map.get(episode.feed_data, "itunes_summary") %>]]></itunes:summary>
-      <dc:creator><%= Map.get(episode.feed_data, "rss2:dc:creator") %></dc:creator>
-      <itunes:author><%= Map.get(episode.feed_data, "itunes_author") %></itunes:author>
-    </item>
-    <% end %>
+        <itunes:image href="<%= episode.feed_data["itunesExt"]["image"] %>"/>
+        <itunes:duration><%= episode.feed_data["itunesExt"]["duration"] %></itunes:duration>
+        <itunes:explicit><%= episode.feed_data["itunesExt"]["explicit"] %></itunes:explicit>
+        <itunes:keywords><%= episode.feed_data["itunesExt"]["keywords"] %></itunes:keywords>
+        <itunes:subtitle><![CDATA[<%= episode.feed_data["itunesExt"]["subtitle"] %>]]></itunes:subtitle>
+        <itunes:summary><![CDATA[<%= episode.feed_data["itunesExt"]["summary"] %> ]]></itunes:summary>
+        <%= for creator <- episode.feed_data["dcExt"]["creator"] do %>
+          <dc:creator><%= creator %></dc:creator>
+        <% end %>
+        <itunes:author><%= episode.feed_data["itunesExt"]["author"] %></itunes:author>
+
+        <%= for person <- episode.feed_data["extensions"]["podcast"]["person"] do %>
+            <podcast:person role="<%= person["attrs"]["role"] %>" img="<%= URI.encode_www_form(person["attrs"]["img"]) %>" href="<%= person["attrs"]["href"] %>"><%= person["value"] %></podcast:person>
+        <% end %>
+      </item>
+  <% end %>
 </channel>
 </rss>

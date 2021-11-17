@@ -110,7 +110,9 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
     socket =
       socket
       |> put_flash(:info, "The episode '#{episode.title}' is being processed")
-      |> update(:episodes_map, fn episodes -> put_in(episodes, [episode_id, :status], :processing) end)
+      |> update(:episodes_map, fn episodes ->
+        put_in(episodes, [episode_id, :status], :processing)
+      end)
 
     {:noreply, socket}
   end
@@ -179,6 +181,13 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   defp format_date(date) do
     localized = DateTime.shift_zone!(date, "America/Havana")
     Calendar.strftime(localized, "%B %d, %Y")
+  end
+
+  defp get_duration(episode) do
+    episode.feed_data["extensions"]["itunes"]["duration"]
+    |> hd
+    |> Map.get("value")
+    |> format_duration
   end
 
   defp format_duration(duration) when is_binary(duration) do

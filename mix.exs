@@ -49,11 +49,12 @@ defmodule Easypodcasts.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:elixir_feed_parser, "~> 2.1"},
       {:phoenix_html_sanitizer, "~> 1.1"},
-      {:finch, "~> 0.9"},
       {:scrivener_ecto, "~> 2.0"},
-      {:waffle, "~> 1.1"}
+      {:waffle, "~> 1.1"},
+      {:jaxon, "~> 2.0"},
+      {:tzdata, "~> 1.1"},
+      {:timex, "~> 3.7"}
     ]
   end
 

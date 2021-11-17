@@ -36,9 +36,11 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
     case Channels.create_channel(channel_params) do
       {:ok, _channel} ->
         Process.send_after(self(), :clear_flash, 5000)
+
         {:noreply,
          socket
          |> put_flash(:success, "Channel created successfully")
+         |> assign(get_pagination_assigns())
          |> push_patch(to: Routes.channel_index_path(socket, :index))}
 
       {:error, changeset} ->
