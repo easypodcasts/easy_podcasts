@@ -31,15 +31,15 @@ defmodule Easypodcasts.Channels.Channel do
           {:ok, data} ->
             changeset
             # TODO: validate these values
-            |> put_change(:author, data.itunes_author)
-            |> put_change(:description, data.description)
-            |> put_change(:image_url, data.itunes_image)
-            |> put_change(:title, data.title)
-            |> put_change(:feed_data, Map.drop(data, [:entries]))
+            |> put_change(:author, data["author"]["name"])
+            |> put_change(:description, data["description"])
+            |> put_change(:image_url, data["image"]["url"])
+            |> put_change(:title, data["title"])
+            |> put_change(:feed_data, Map.drop(data, ["items"]))
 
-          {:error, message} ->
+          _ ->
             validate_change(changeset, field, fn _, _link ->
-              [{field, options[:message] || message}]
+              [{field, options[:message] || "Failed to get and parse feed"}]
             end)
         end
 

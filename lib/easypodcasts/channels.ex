@@ -25,9 +25,7 @@ defmodule Easypodcasts.Channels do
       [%Channel{}, ...]
 
   """
-  def list_channels do
-    Channel |> channels_with_episode_count() |> Repo.all()
-  end
+  def list_channels, do: Channel |> Repo.all()
 
   def paginate_channels(params \\ []) do
     Channel |> channels_with_episode_count() |> Repo.paginate(params)
@@ -105,7 +103,9 @@ defmodule Easypodcasts.Channels do
       {:ok, channel} ->
         # TODO do something when this fails
 
-        ChannelImage.store({channel.image_url, channel})
+        if channel.image_url do
+          ChannelImage.store({channel.image_url, channel})
+        end
 
         Processing.process_channel(channel)
         {:ok, channel}
@@ -261,5 +261,29 @@ defmodule Easypodcasts.Channels do
       end)
 
     channels
+  end
+
+  def refresh_feed_data() do
+    Repo.all(Channel)
+    |> Enum.map(fn channel ->
+      {:ok, feed_data} = Processing.Feed.get_feed_data(channel.link)
+      {channel, feed_data}
+    end)
+    |> Enum.each(fn {channel, feed_data} ->
+      channel |> change(%{feed_data: Map.drop(feed_data, ["items"])}) |> Repo.update()
+
+      feed_data["items"]
+      |> Enum.each(fn item ->
+        e =
+          from(e in Episode, where: e.original_audio_url == ^hd(item["enclosures"])["url"])
+          |> Repo.one()
+
+        if e do
+          e
+          |> change(%{feed_data: item})
+          |> Repo.update()
+        end
+      end)
+    end)
   end
 end

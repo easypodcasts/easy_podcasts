@@ -32,30 +32,30 @@ defmodule Easypodcasts.Processing do
     Logger.info("All episodes #{length(episode_audio_urls)}")
 
     new_episodes =
-      feed_data.entries
-      |> then(fn entries ->
-        Logger.info("The feed for the channel #{channel.title} has #{length(entries)} entries")
-        entries
+      feed_data["items"]
+      |> then(fn items ->
+        Logger.info("The feed for the channel #{channel.title} has #{length(items)} items")
+        items
       end)
-      |> Enum.filter(fn entry -> entry.enclosure.url not in episode_audio_urls end)
-      |> then(fn filtered_entries ->
+      |> Enum.filter(fn item -> hd(item["enclosures"])["url"] not in episode_audio_urls end)
+      |> then(fn filtered_items ->
         Logger.info(
-          "The feed for the channel #{channel.title} has #{length(filtered_entries)} new entries"
+          "The feed for the channel #{channel.title} has #{length(filtered_items)} new items"
         )
 
-        filtered_entries
+        filtered_items
       end)
-      |> Enum.map(fn entry ->
+      |> Enum.map(fn item ->
         # TODO validate this stuff
         %{
-          description: entry.description,
-          title: entry.title,
-          link: entry.url,
-          original_audio_url: entry.enclosure.url,
-          original_size: String.to_integer(entry.enclosure.length),
+          description: item["description"],
+          title: item["title"],
+          link: item["link"],
+          original_audio_url: hd(item["enclosures"])["url"],
+          original_size: String.to_integer(hd(item["enclosures"])["length"]),
           channel_id: channel.id,
-          publication_date: DateTime.shift_zone!(entry."rss2:pubDate", "Etc/UTC"),
-          feed_data: entry
+          publication_date: DateTime.shift_zone!(Timex.parse!(item["publishedParsed"], "{ISO:Extended}"), "Etc/UTC"),
+          feed_data: item
         }
       end)
 
