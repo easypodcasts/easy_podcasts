@@ -54,7 +54,11 @@ defmodule Easypodcasts.Processing do
           original_audio_url: hd(item["enclosures"])["url"],
           original_size: String.to_integer(hd(item["enclosures"])["length"]),
           channel_id: channel.id,
-          publication_date: DateTime.shift_zone!(Timex.parse!(item["publishedParsed"], "{ISO:Extended}"), "Etc/UTC"),
+          publication_date:
+            DateTime.shift_zone!(
+              Timex.parse!(item["publishedParsed"], "{ISO:Extended}"),
+              "Etc/UTC"
+            ),
           feed_data: item
         }
       end)
@@ -66,25 +70,22 @@ defmodule Easypodcasts.Processing do
   def process_episode_file(episode) do
     {:ok, episode} = Channels.update_episode(episode, %{status: :processing})
 
-    {tmp_episode_file, episode_file} =
+    episode_file =
       create_filesytem_directories(
         episode.channel_id,
         episode.id
       )
 
-    with {:ok, :saved_to_file} <- download_file(episode.original_audio_url, tmp_episode_file),
-         {_, 0} <- compress_audio(tmp_episode_file, episode_file) do
-      cleanup_filesystem([tmp_episode_file])
-      new_size = get_file_size(episode_file)
+    case compress_audio(episode.original_audio_url, episode_file) do
+      {_, 0} ->
+        new_size = get_file_size(episode_file)
 
-      Channels.update_episode(episode, %{
-        status: :done,
-        processed_size: new_size
-      })
-    else
+        Channels.update_episode(episode, %{
+          status: :done,
+          processed_size: new_size
+        })
+
       _error ->
-        cleanup_filesystem([tmp_episode_file, episode_file])
-
         {:ok, episode} =
           Channels.update_episode(episode, %{
             status: :new
@@ -99,19 +100,10 @@ defmodule Easypodcasts.Processing do
   end
 
   defp create_filesytem_directories(channel_id, episode_id) do
-    tmp_episode_dir =
-      Path.join([System.tmp_dir!(), "easypodcasts", to_string(channel_id), to_string(episode_id)])
-
     episode_dir = Path.join(["uploads", to_string(channel_id), "episodes", to_string(episode_id)])
-
-    File.mkdir_p!(tmp_episode_dir)
     File.mkdir_p!(episode_dir)
-
-    episode_file_name = "episode.opus"
-    tmp_episode_file = Path.join(tmp_episode_dir, episode_file_name)
-    episode_file = Path.join(episode_dir, episode_file_name)
-
-    {tmp_episode_file, episode_file}
+    episode_file = Path.join(episode_dir, "episode.opus")
+    episode_file
   end
 
   defp compress_audio(orig, dest) do
@@ -135,12 +127,6 @@ defmodule Easypodcasts.Processing do
       "voip",
       dest
     ])
-  end
-
-  defp cleanup_filesystem(files, directories \\ []) do
-    # The order of the directories is important
-    Enum.each(files, &File.rm/1)
-    Enum.each(directories, &File.rmdir/1)
   end
 
   defp get_file_size(file) do
