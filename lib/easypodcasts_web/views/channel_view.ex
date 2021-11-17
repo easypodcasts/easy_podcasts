@@ -10,4 +10,7 @@ defmodule EasypodcastsWeb.ChannelView do
   def render("feed.xml", %{channel: channel}) do
     feed(channel)
   end
+
+  defp clear_ampersand(nil), do: ""
+  defp clear_ampersand(string), do: String.replace(string, "&", "&amp;")
 end

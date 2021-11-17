@@ -12,7 +12,7 @@
   <link><![CDATA[<%= @link %>]]></link>
   <%= if @feed_data["extensions"]["atom"]["link"] do %>
     <%= for link <- @feed_data["extensions"]["atom"]["link"] do %>
-  <atom:link href="<%= String.replace(link["attrs"]["href"], "&", "&amp;") %>" rel="<%= link["attrs"]["rel"] %>" type="<%= link["attrs"]["type"] %>"/>
+  <atom:link href="<%= clear_ampersand(link["attrs"]["href"]) %>" rel="<%= link["attrs"]["rel"] %>" type="<%= link["attrs"]["type"] %>"/>
     <% end %>
   <% end %>
   <language><%= @feed_data["language"] %></language>
@@ -24,7 +24,7 @@
     <![CDATA[<%= @feed_data["itunesExt"]["summary"] %>]]>
   </itunes:summary>
   <itunes:explicit><%= @feed_data["itunesExt"]["explicit"] %></itunes:explicit>
-  <itunes:image href="<%= String.replace(@feed_data["itunesExt"]["image"], "&", "&amp;") %>"/>
+  <itunes:image href="<%= clear_ampersand(@feed_data["itunesExt"]["image"]) %>"/>
   <itunes:keywords>
     <%= @feed_data["itunesExt"]["keywords"] %>
   </itunes:keywords>
@@ -34,10 +34,10 @@
   </itunes:owner>
   <%= if @feed_data["extensions"]["itunes"]["category"] do %>
     <%= for category <- @feed_data["extensions"]["itunes"]["category"] do %>
-      <itunes:category text="<%= category["attrs"]["text"]  %>">
+      <itunes:category text="<%= clear_ampersand(category["attrs"]["text"]) %>">
         <%= if category["children"]["category"] do %>
           <%= for subcategory <- category["children"]["category"] do %>
-            <itunes:category text="<%= subcategory["attrs"]["text"] %>"/>
+            <itunes:category text="<%= clear_ampersand(subcategory["attrs"]["text"]) %>"/>
           <% end %>
         <% end %>
     </itunes:category>
@@ -51,14 +51,14 @@
   <% end %>
   <%= if @feed_data["extensions"]["podcast"]["person"] do %>
     <%= for person <- @feed_data["extensions"]["podcast"]["person"] do %>
-        <podcast:person role="<%= person["attrs"]["role"] %>" img="<%= String.replace(person["attrs"]["img"], "&", "&amp;") %>" href="<%= person["attrs"]["href"] %>"><%= person["value"] %></podcast:person>
+        <podcast:person role="<%= person["attrs"]["role"] %>" img="<%= clear_ampersand(person["attrs"]["img"]) %>" href="<%= person["attrs"]["href"] %>"><%= person["value"] %></podcast:person>
     <% end %>
   <% end %>
   <%= for episode <- @episodes do %>
    <item>
       <title><%= episode.feed_data["title"] %></title>
       <link><%= episode.feed_data["link"] %></link>
-      <guid isPermaLink="false"><%= episode.feed_data["guid"] %></guid>
+      <guid isPermaLink="false"><%= clear_ampersand(episode.feed_data["guid"]) %></guid>
       <pubDate><%= episode.feed_data["published"] %></pubDate>
       <%= for enclosure <- episode.feed_data["enclosures"] do %>
         <enclosure url="<%= EpisodeAudio.url({"episode.opus", episode}) %>" length="<%= enclosure["length"] %>" type="<%= enclosure["type"] %>" />
@@ -68,7 +68,7 @@
         <itunes:episodeType><%= episode.feed_data["itunesExt"]["episodeType"] %></itunes:episodeType>
         <itunes:episode><%= episode.feed_data["itunesExt"]["episode"]  %></itunes:episode>
 
-        <itunes:image href="<%= episode.feed_data["itunesExt"]["image"] %>"/>
+        <itunes:image href="<%= clear_ampersand(episode.feed_data["itunesExt"]["image"]) %>"/>
         <itunes:duration><%= episode.feed_data["itunesExt"]["duration"] %></itunes:duration>
         <itunes:explicit><%= episode.feed_data["itunesExt"]["explicit"] %></itunes:explicit>
         <itunes:keywords><%= episode.feed_data["itunesExt"]["keywords"] %></itunes:keywords>
@@ -83,7 +83,7 @@
 
         <%= if episode.feed_data["extensions"]["podcast"]["person"] do %>
           <%= for person <- episode.feed_data["extensions"]["podcast"]["person"] do %>
-              <podcast:person role="<%= person["attrs"]["role"] %>" img="<%= String.replace(person["attrs"]["img"], "&", "&amp;") %>" href="<%= person["attrs"]["href"] %>"><%= person["value"] %></podcast:person>
+              <podcast:person role="<%= person["attrs"]["role"] %>" img="<%= clear_ampersand(person["attrs"]["img"]) %>" href="<%= person["attrs"]["href"] %>"><%= person["value"] %></podcast:person>
           <% end %>
         <% end %>
       </item>
