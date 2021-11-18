@@ -56,7 +56,7 @@
   <% end %>
   <%= for episode <- @episodes do %>
    <item>
-      <title><%= episode.feed_data["title"] %></title>
+     <title><![CDATA[<%= episode.feed_data["title"] %>]]></title>
       <link><%= episode.feed_data["link"] %></link>
       <guid isPermaLink="false"><%= clear_ampersand(episode.feed_data["guid"]) %></guid>
       <pubDate><%= episode.feed_data["published"] %></pubDate>
