@@ -36,9 +36,7 @@ defmodule Easypodcasts.Processing do
 
     (feed_data["items"] ||
        [])
-    |> Stream.filter(
-      &(&1["enclosures"] && hd(&1["enclosures"])["url"] not in episode_audio_urls)
-    )
+    |> Stream.filter(&(&1["enclosures"] && hd(&1["enclosures"])["url"] not in episode_audio_urls))
     |> Stream.map(&episode_item_to_map(&1, channel.id))
     |> Enum.to_list()
     |> Channels.create_episodes()
@@ -59,7 +57,7 @@ defmodule Easypodcasts.Processing do
       link: item["link"],
       original_audio_url: item["enclosures"] && hd(item["enclosures"])["url"],
       original_size:
-        item["enclosures"] && String.to_integer(hd(item["enclosures"])["length"]),
+        item["enclosures"] && String.to_integer(hd(item["enclosures"])["length"] || "0"),
       channel_id: channel_id,
       publication_date: publication_date,
       feed_data: item
