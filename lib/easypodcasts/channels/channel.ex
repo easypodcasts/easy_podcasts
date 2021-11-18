@@ -24,26 +24,20 @@ defmodule Easypodcasts.Channels.Channel do
     |> append_feed_data(:link)
   end
 
-  defp append_feed_data(changeset, field, options \\ []) do
-    case changeset do
-      %Ecto.Changeset{valid?: true, changes: %{link: link}} ->
-        case Feed.get_feed_data(link) do
-          {:ok, data} ->
-            changeset
-            # TODO: validate these values
-            |> put_change(:author, data["author"]["name"])
-            |> put_change(:description, data["description"])
-            |> put_change(:image_url, data["image"]["url"])
-            |> put_change(:title, data["title"])
-            |> put_change(:feed_data, Map.drop(data, ["items"]))
+  defp append_feed_data(changeset, field, _options \\ []) do
+    with %Ecto.Changeset{valid?: true, changes: %{link: link}} <- changeset,
+         {:ok, data} <- Feed.get_feed_data(link) do
+      changeset
+      |> put_change(:author, data["author"]["name"])
+      |> put_change(:description, data["description"])
+      |> put_change(:image_url, data["image"]["url"])
+      |> put_change(:title, data["title"])
+      |> put_change(:feed_data, Map.drop(data, ["items"]))
+    else
+      {:error, msg} ->
+        validate_change(changeset, field, fn _, _link -> [{field, msg}] end)
 
-          _ ->
-            validate_change(changeset, field, fn _, _link ->
-              [{field, options[:message] || "Failed to get and parse feed"}]
-            end)
-        end
-
-      _ ->
+      changeset ->
         changeset
     end
   end

@@ -84,36 +84,32 @@ defmodule Easypodcasts.Channels do
       from(e in Episode, select: e.original_audio_url)
       |> Repo.all()
 
-  @doc """
-  Creates a channel.
-
-  ## Examples
-
-      iex> create_channel(%{field: value})
-      {:ok, %Channel{}}
-
-      iex> create_channel(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
   def create_channel(attrs \\ %{}) do
-    case %Channel{}
-         |> Channel.changeset(attrs)
-         |> Repo.insert() do
-      {:ok, channel} ->
-        # TODO do something when this fails
+    with {:ok, channel} <- insert_channel(attrs),
+         {:ok, _episodes} <- Processing.process_channel(channel) do
+      if channel.image_url do
+        ChannelImage.store({channel.image_url, channel})
+      end
 
-        if channel.image_url do
-          ChannelImage.store({channel.image_url, channel})
-        end
+      {:ok, channel}
+    else
+      {:error, %Ecto.Changeset{} = changeset} ->
+        # Some validation errors
+        {:error, changeset}
 
-        Processing.process_channel(channel)
-        {:ok, channel}
-
-      result ->
-        result
+      {:error, channel, msg} ->
+        # The channel was created but the episodes weren't
+        # or it didn't have any episodes
+        delete_channel(channel)
+        {:error, msg}
     end
   end
+
+  defp insert_channel(attrs),
+    do:
+      %Channel{}
+      |> Channel.changeset(attrs)
+      |> Repo.insert()
 
   @doc """
   Deletes a channel.

@@ -7,64 +7,63 @@ defmodule Easypodcasts.Processing do
     Logger.info("Processing all channels")
 
     Channels.list_channels()
-    |> Enum.each(fn channel -> process_channel(channel, true) end)
+    |> Enum.each(&process_channel(&1, true))
   end
 
   def process_channel(channel, process_new_episodes \\ false) do
     Logger.info("Processing channel #{channel.title}")
 
-    {:ok, new_episodes} =
-      with {:ok, feed_data} <- Feed.get_feed_data(channel.link),
-           do: save_new_episodes(channel, feed_data)
+    with {:ok, feed_data} <- Feed.get_feed_data(channel.link),
+         {_, new_episodes = [_ | _]} <- save_new_episodes(channel, feed_data) do
+      Logger.info("Channel #{channel.title} has #{length(new_episodes)} new episodes")
 
-    Logger.info("Channel #{channel.title} has #{length(new_episodes)} new episodes")
+      if process_new_episodes do
+        Logger.info("Processing audio from new episodes of #{channel.title}")
+        Enum.each(new_episodes, &Channels.enqueue_episode(&1.id))
+      end
 
-    if process_new_episodes do
-      Logger.info("Processing audio from new episodes of #{channel.title}")
-      Enum.each(new_episodes, fn episode -> Channels.enqueue_episode(episode.id) end)
+      {:ok, new_episodes}
+    else
+      _ ->
+        {:error, channel,
+         "We can't process that podcast right now. Please create an issue with the feed url."}
     end
   end
 
   def save_new_episodes(channel, feed_data) do
     # episode_audio_urls = Channels.get_episodes_url_from_channel(channel.id)
     episode_audio_urls = Channels.get_episodes_url()
-    # Logger.info("Channel #{channel.title} has #{length(episode_audio_urls)} episodes")
-    Logger.info("All episodes #{length(episode_audio_urls)}")
 
-    new_episodes =
-      feed_data["items"]
-      |> then(fn items ->
-        Logger.info("The feed for the channel #{channel.title} has #{length(items)} items")
-        items
-      end)
-      |> Enum.filter(fn item -> hd(item["enclosures"])["url"] not in episode_audio_urls end)
-      |> then(fn filtered_items ->
-        Logger.info(
-          "The feed for the channel #{channel.title} has #{length(filtered_items)} new items"
-        )
+    (feed_data["items"] ||
+       [])
+    |> Stream.filter(
+      &(&1["enclosures"] && hd(&1["enclosures"])["url"] not in episode_audio_urls)
+    )
+    |> Stream.map(&episode_item_to_map(&1, channel.id))
+    |> Enum.to_list()
+    |> Channels.create_episodes()
+  end
 
-        filtered_items
-      end)
-      |> Enum.map(fn item ->
-        # TODO validate this stuff
-        %{
-          description: item["description"],
-          title: item["title"],
-          link: item["link"],
-          original_audio_url: hd(item["enclosures"])["url"],
-          original_size: String.to_integer(hd(item["enclosures"])["length"]),
-          channel_id: channel.id,
-          publication_date:
-            DateTime.shift_zone!(
-              Timex.parse!(item["publishedParsed"], "{ISO:Extended}"),
-              "Etc/UTC"
-            ),
-          feed_data: item
-        }
-      end)
+  defp episode_item_to_map(item, channel_id) do
+    publication_date =
+      with {:ok, parsed_datetime} <- Timex.parse(item["publishedParsed"], "{ISO:Extended}"),
+           {:ok, shifted_datetime} <- DateTime.shift_zone(parsed_datetime, "Etc/UTC") do
+        shifted_datetime
+      else
+        _ -> DateTime.utc_now()
+      end
 
-    {_, episodes} = Channels.create_episodes(new_episodes)
-    {:ok, episodes}
+    %{
+      description: item["description"],
+      title: item["title"],
+      link: item["link"],
+      original_audio_url: item["enclosures"] && hd(item["enclosures"])["url"],
+      original_size:
+        item["enclosures"] && String.to_integer(hd(item["enclosures"])["length"]),
+      channel_id: channel_id,
+      publication_date: publication_date,
+      feed_data: item
+    }
   end
 
   def process_episode_file(episode) do

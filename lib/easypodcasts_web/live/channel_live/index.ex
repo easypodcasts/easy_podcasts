@@ -34,17 +34,20 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   @impl true
   def handle_event("save", %{"channel" => channel_params}, socket) do
     case Channels.create_channel(channel_params) do
-      {:ok, _channel} ->
+      {:ok, channel} ->
         Process.send_after(self(), :clear_flash, 5000)
 
         {:noreply,
          socket
-         |> put_flash(:success, "Channel created successfully")
+         |> put_flash(:success, "Podcast '#{channel.title}' created successfully")
          |> assign(get_pagination_assigns())
          |> push_patch(to: Routes.channel_index_path(socket, :index))}
 
-      {:error, changeset} ->
+      {:error, changeset = %Ecto.Changeset{}} ->
         {:noreply, assign(socket, changeset: changeset)}
+
+      {:error, msg} ->
+        {:noreply, put_flash(socket, :error, msg)}
     end
   end
 
