@@ -184,10 +184,15 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   end
 
   defp get_duration(episode) do
-    episode.feed_data["extensions"]["itunes"]["duration"]
-    |> hd
-    |> Map.get("value")
-    |> format_duration
+    case episode.feed_data["extensions"]["itunes"]["duration"] do
+      [head | _] ->
+        head
+        |> Map.get("value")
+        |> format_duration
+
+      _ ->
+        "00:00"
+    end
   end
 
   defp format_duration(duration) when is_binary(duration) do
