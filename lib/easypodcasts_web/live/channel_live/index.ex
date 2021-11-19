@@ -20,10 +20,9 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   end
 
   defp apply_action(socket, :index, params) do
-    socket =
-      socket
-      |> assign(:page_title, "Home")
-      |> assign(list_channels(params))
+    socket
+    |> assign(:page_title, "Home")
+    |> assign(list_channels(params))
   end
 
   @impl true
@@ -65,7 +64,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
     # is invalid
     socket =
       case Search.validate_search(search) do
-        %{valid?: true, changes: %{search_phrase: search_phrase}} ->
+        %{valid?: true, changes: %{search_phrase: _search_phrase}} ->
           push_patch(socket,
             to:
               Routes.channel_index_path(
