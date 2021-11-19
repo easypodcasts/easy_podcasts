@@ -31,13 +31,16 @@ defmodule Easypodcasts.ChannelImage do
     version
   end
 
-  # Override the storage directory:
-  def storage_dir(_version, {_file, channel}) do
-    "#{channel.id}/img"
+  def storage_dir_prefix() do
+    "priv/static/images"
   end
 
-  # Provide a default URL if there hasn't been a file uploaded
-  # def default_url(version, scope) do
-  #   "/images/avatars/default_#{version}.png"
-  # end
+  # Override the storage directory:
+  def storage_dir(_version, {_file, channel}) do
+    "channels/#{channel.id}"
+  end
+
+  def url({file, channel}, _version, _options) do
+    "/images/channels/#{channel.id}/#{file}"
+  end
 end
