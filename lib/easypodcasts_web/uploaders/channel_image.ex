@@ -19,11 +19,11 @@ defmodule Easypodcasts.ChannelImage do
 
   # Define a thumbnail transformation:
   def transform(:thumb, _) do
-    {:convert, "-strip -thumbnail 215x215^ -gravity center -extent 215x215", :jpg}
+    {:convert, "-strip -thumbnail 215x215^ -gravity center -extent 215x215", :webp}
   end
 
   def transform(:original, _) do
-    {:convert, "-sampling-factor 4:2:0 -strip -quality 85 -interlace JPEG -colorspace RGB", :jpg}
+    {:convert, "-sampling-factor 4:2:0 -strip -quality 85 -colorspace RGB", :webp}
   end
 
   # Override the persisted filenames:
