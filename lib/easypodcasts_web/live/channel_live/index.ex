@@ -3,32 +3,27 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
 
   alias Easypodcasts.{Channels, ChannelImage}
   alias Easypodcasts.Channels.Channel
+  alias Easypodcasts.Helpers.Search
   import Easypodcasts.Helpers
   import EasypodcastsWeb.PaginationComponent
-
-  @impl true
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, get_pagination_assigns())}
-  end
-
-  @impl true
-  def handle_params(%{"page" => page}, _, socket) do
-    {:noreply, assign(socket, get_pagination_assigns(page))}
-  end
 
   @impl true
   def handle_params(params, _url, socket) do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
-  defp apply_action(socket, :new, _params) do
+  defp apply_action(socket, :new, params) do
     socket
     |> assign(:page_title, "New Channel")
     |> assign(:changeset, Channels.change_channel(%Channel{}))
+    |> assign(list_channels(params))
   end
 
-  defp apply_action(socket, :index, _params) do
-    assign(socket, :page_title, "Home")
+  defp apply_action(socket, :index, params) do
+    socket =
+      socket
+      |> assign(:page_title, "Home")
+      |> assign(list_channels(params))
   end
 
   @impl true
@@ -40,7 +35,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
         {:noreply,
          socket
          |> put_flash(:success, "Podcast '#{channel.title}' created successfully")
-         |> assign(get_pagination_assigns())
+         |> assign(list_channels(%{"search" => "", page: nil}))
          |> push_patch(to: Routes.channel_index_path(socket, :index))}
 
       {:error, changeset = %Ecto.Changeset{}} ->
@@ -52,15 +47,39 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   end
 
   @impl true
-  def handle_event("search", %{"search" => ""}, socket),
-    do: {:noreply, assign(socket, get_pagination_assigns())}
+  def handle_event("search", %{"search" => ""}, socket) do
+    {:noreply,
+     push_patch(socket,
+       to:
+         Routes.channel_index_path(
+           socket,
+           :index,
+           Keyword.drop(socket.assigns.params, [:search])
+         )
+     )}
+  end
 
   @impl true
   def handle_event("search", %{"search" => search}, socket) do
-    case Channels.search_channels(search) do
-      :noop -> {:noreply, socket}
-      channels -> {:noreply, assign(socket, :channels, channels)}
-    end
+    socket =
+      # We validate here to not overwrite current channels if the search query
+      # is invalid
+      case Search.validate_search(search) do
+        %{valid?: true, changes: %{search_phrase: search_phrase}} ->
+          push_patch(socket,
+            to:
+              Routes.channel_index_path(
+                socket,
+                :index,
+                Keyword.put(socket.assigns.params, :search, search)
+              )
+          )
+
+        _ ->
+          socket
+      end
+
+    {:noreply, socket}
   end
 
   @impl true
@@ -73,14 +92,22 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
     {:noreply, clear_flash(socket)}
   end
 
-  defp get_pagination_assigns(page \\ nil) do
+  defp list_channels(params) do
+    search = params["search"]
+
+    page =
+      if params["page"],
+        do: String.to_integer(params["page"]),
+        else: 1
+
     %{
       entries: entries,
       page_number: page_number,
       page_size: page_size,
       total_entries: total_entries,
-      total_pages: total_pages
-    } = Channels.paginate_channels(page: page)
+      total_pages: total_pages,
+      params: params
+    } = Channels.search_paginate_channels(search, page)
 
     page = page || 1
     page_range = get_page_range(page, total_pages)
@@ -91,7 +118,9 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
       page_size: page_size || 0,
       total_entries: total_entries || 0,
       total_pages: total_pages || 0,
-      page_range: page_range
+      page_range: page_range,
+      search: search,
+      params: params
     ]
   end
 end
