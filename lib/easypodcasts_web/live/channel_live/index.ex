@@ -61,9 +61,9 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
 
   @impl true
   def handle_event("search", %{"search" => search}, socket) do
+    # We validate here to not overwrite current channels if the search query
+    # is invalid
     socket =
-      # We validate here to not overwrite current channels if the search query
-      # is invalid
       case Search.validate_search(search) do
         %{valid?: true, changes: %{search_phrase: search_phrase}} ->
           push_patch(socket,
@@ -109,7 +109,6 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
       params: params
     } = Channels.search_paginate_channels(search, page)
 
-    page = page || 1
     page_range = get_page_range(page, total_pages)
 
     [

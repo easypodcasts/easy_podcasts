@@ -3,6 +3,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   import EasypodcastsWeb.PaginationComponent
 
   alias Easypodcasts.{Channels, ChannelImage, EpisodeAudio}
+  alias Easypodcasts.Helpers.Search
   import Easypodcasts.Helpers
   alias Phoenix.PubSub
 
@@ -24,13 +25,8 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   end
 
   @impl true
-  def handle_params(%{"slug" => _slug, "page" => page}, _, socket) do
-    {:noreply, assign(socket, get_pagination_assigns(socket.assigns.channel.id, page))}
-  end
-
-  @impl true
-  def handle_params(_params, _, socket) do
-    {:noreply, assign(socket, get_pagination_assigns(socket.assigns.channel.id))}
+  def handle_params(params, _, socket) do
+    {:noreply, assign(socket, list_episodes_for(socket.assigns.channel.id, params))}
   end
 
   @impl true
@@ -78,25 +74,41 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   end
 
   @impl true
-  def handle_event("search", %{"search" => ""}, socket),
-    do: {:noreply, assign(socket, get_pagination_assigns(socket.assigns.channel.id))}
+  def handle_event("search", %{"search" => ""}, socket) do
+    {:noreply,
+     push_patch(socket,
+       to:
+         Routes.channel_show_path(
+           socket,
+           :show,
+           Channels.slugify_channel(socket.assigns.channel),
+           Keyword.drop(socket.assigns.params, [:search])
+         )
+     )}
+  end
 
   @impl true
   def handle_event("search", %{"search" => search}, socket) do
-    case Channels.search_episodes(socket.assigns.channel.id, search) do
-      :noop ->
-        {:noreply, socket}
+    # We validate here to not overwrite current channels if the search query
+    # is invalid
+    socket =
+      case Search.validate_search(search) do
+        %{valid?: true, changes: %{search_phrase: _search_phrase}} ->
+          push_patch(socket,
+            to:
+              Routes.channel_show_path(
+                socket,
+                :show,
+                Channels.slugify_channel(socket.assigns.channel),
+                Keyword.put(socket.assigns.params, :search, search)
+              )
+          )
 
-      episodes ->
-        {episodes_index, episodes_map} = episodes_from_list(episodes)
-
-        socket =
+        _ ->
           socket
-          |> assign(:episodes_index, episodes_index)
-          |> assign(:episodes_map, episodes_map)
+      end
 
-        {:noreply, socket}
-    end
+    {:noreply, socket}
   end
 
   @impl true
@@ -143,18 +155,25 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
     {:noreply, clear_flash(socket)}
   end
 
-  defp get_pagination_assigns(channel_id, page \\ nil) do
+  defp list_episodes_for(channel_id, params) do
+    search = params["search"]
+
+    page =
+      if params["page"],
+        do: String.to_integer(params["page"]),
+        else: 1
+
     %{
       entries: entries,
       page_number: page_number,
       page_size: page_size,
       total_entries: total_entries,
-      total_pages: total_pages
-    } = Channels.paginate_episodes_for(channel_id, page: page)
+      total_pages: total_pages,
+      params: params
+    } = Channels.search_paginate_episodes_for(channel_id, search, page)
 
     {episodes_index, episodes_map} = episodes_from_list(entries)
 
-    page = page || 1
     page_range = get_page_range(page, total_pages)
 
     [
@@ -164,7 +183,9 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
       page_size: page_size || 0,
       total_entries: total_entries || 0,
       total_pages: total_pages || 0,
-      page_range: page_range
+      page_range: page_range,
+      search: search,
+      params: params
     ]
   end
 

@@ -37,7 +37,8 @@ defmodule Easypodcasts.Channels do
         Channel
     end
     |> channels_with_episode_count()
-    |> Repo.paginate([page: page]) |> Map.put(:params, [search: search, page: page])
+    |> Repo.paginate(page: page)
+    |> Map.put(:params, search: search, page: page)
   end
 
   @doc """
@@ -150,25 +151,19 @@ defmodule Easypodcasts.Channels do
   """
   def get_episode!(id), do: Repo.get!(Episode, id)
 
-  def paginate_episodes_for(channel_id, params \\ []) do
-    from(e in Episode, where: e.channel_id == ^channel_id, order_by: [{:desc, e.publication_date}])
-    |> Repo.paginate(params)
-  end
+  def search_paginate_episodes_for(channel_id, search, page) do
+    episode_query = from(e in Episode, where: e.channel_id == ^channel_id)
 
-  def search_episodes(channel_id, search) do
-    %{search_phrase: search}
-    |> Search.search_changeset()
-    |> case do
+    case Search.validate_search(search) do
       %{valid?: true, changes: %{search_phrase: search_phrase}} ->
-        from(e in Episode,
-          where: e.channel_id == ^channel_id
-        )
-        |> Search.search(search_phrase)
-        |> Repo.all()
+        Search.search(episode_query, search_phrase)
 
       _ ->
-        :noop
+        # This should never happen when searching from the web
+        episode_query
     end
+    |> Repo.paginate(page: page)
+    |> Map.put(:params, search: search, page: page)
   end
 
   def filter_episodes_by_updated_at(date) do
