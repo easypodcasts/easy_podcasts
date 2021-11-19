@@ -34,7 +34,7 @@ defmodule Easypodcasts.Helpers.Search do
     where(ecto_query, [table], fragment("? @@ ?", table.tsv_search, to_tsquery(^value)))
   end
 
-  defp search_changeset(attrs \\ %{}) do
+  defp search_changeset(attrs) do
     cast(
       {%{}, %{search_phrase: :string}},
       attrs,
