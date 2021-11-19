@@ -162,6 +162,7 @@ defmodule Easypodcasts.Channels do
         # This should never happen when searching from the web
         episode_query
     end
+    |> order_by([{:desc, :publication_date}])
     |> Repo.paginate(page: page)
     |> Map.put(:params, search: search, page: page)
   end
