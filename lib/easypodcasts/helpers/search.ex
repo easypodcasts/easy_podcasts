@@ -34,7 +34,7 @@ defmodule Easypodcasts.Helpers.Search do
     where(ecto_query, [table], fragment("? @@ ?", table.tsv_search, to_tsquery(^value)))
   end
 
-  def search_changeset(attrs \\ %{}) do
+  defp search_changeset(attrs \\ %{}) do
     cast(
       {%{}, %{search_phrase: :string}},
       attrs,
@@ -44,5 +44,9 @@ defmodule Easypodcasts.Helpers.Search do
     |> update_change(:search_phrase, &String.trim/1)
     |> validate_length(:search_phrase, min: 2)
     |> validate_format(:search_phrase, ~r/[A-Za-z0-9\ ]/)
+  end
+
+  def validate_search(search) do
+    %{search_phrase: search} |> search_changeset
   end
 end

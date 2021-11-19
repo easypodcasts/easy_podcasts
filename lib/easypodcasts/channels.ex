@@ -27,23 +27,17 @@ defmodule Easypodcasts.Channels do
   """
   def list_channels, do: Channel |> Repo.all()
 
-  def paginate_channels(params \\ []) do
-    Channel |> channels_with_episode_count() |> Repo.paginate(params)
-  end
-
-  def search_channels(search) do
-    %{search_phrase: search}
-    |> Search.search_changeset()
-    |> case do
+  def search_paginate_channels(search, page) do
+    case Search.validate_search(search) do
       %{valid?: true, changes: %{search_phrase: search_phrase}} ->
-        Channel
-        |> Search.search(search_phrase)
-        |> channels_with_episode_count()
-        |> Repo.all()
+        Search.search(Channel, search_phrase)
 
       _ ->
-        :noop
+        # This should never happen when searching from the web
+        Channel
     end
+    |> channels_with_episode_count()
+    |> Repo.paginate([page: page]) |> Map.put(:params, [search: search, page: page])
   end
 
   @doc """
