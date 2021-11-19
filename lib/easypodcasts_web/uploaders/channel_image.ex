@@ -41,6 +41,10 @@ defmodule Easypodcasts.ChannelImage do
   end
 
   def url({file, channel}, _version, _options) do
-    "/images/channels/#{channel.id}/#{file}"
+    if Mix.env() == :prod do
+      "/podcasts/images/channels/#{channel.id}/#{file}"
+    else
+      "/images/channels/#{channel.id}/#{file}"
+    end
   end
 end
