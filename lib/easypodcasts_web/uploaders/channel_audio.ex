@@ -26,6 +26,10 @@ defmodule Easypodcasts.EpisodeAudio do
   #   version
   # end
 
+  def storage_dir_prefix() do
+    "uploads"
+  end
+
   # Override the storage directory:
   def storage_dir(_version, {_file, episode}) do
     # "uploads/user/avatars/#{scope.id}"
