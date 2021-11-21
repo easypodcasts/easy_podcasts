@@ -2,7 +2,7 @@
   <.pagination socket={@socket} page_number={@page_number} total_pages={@total_pages} page_range={@page_range} is_top={true} route={&Routes.channel_show_path/4} action={:show} object_id={Channels.slugify_channel(@channel)} search={@search}/>
 <% end %>
 
-<div class="flex flex-col xl:flex-row pt-10">
+<div class="flex flex-col xl:flex-row pt-5">
   <section class="text-gray-600 dark:text-gray-100 body-font xl:w-1/2 w-full flex flex-col relative xl:sticky top-2 xl:self-start self-center items-center">
     <div class="self-center xl:w-2/3 h-auto flex flex-col">
     <img alt={@channel.title} class="rounded bg-placeholder-big h-96" src={ChannelImage.url({"original.webp", @channel}, :original)}/>
