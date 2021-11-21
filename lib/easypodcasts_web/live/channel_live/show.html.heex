@@ -4,7 +4,7 @@
 
 <div class="flex flex-col xl:flex-row pt-5">
   <section class="text-gray-600 dark:text-gray-100 body-font xl:w-1/2 w-full flex flex-col relative xl:sticky top-2 xl:self-start self-center items-center">
-    <div class="self-center xl:w-2/3 h-auto flex flex-col">
+    <div class="self-center xl:w-2/3 h-auto flex flex-col border-gray-300 border-b-2 pb-2 md:border-0">
     <img alt={@channel.title} class="rounded bg-placeholder-big h-96" src={ChannelImage.url({"original.webp", @channel}, :original)}/>
     <%= link to: Routes.channel_path(@socket, :feed, Channels.slugify_channel(@channel)), class: "self-center xl:self-start" do %>
       <button class="flex justify-between text-white bg-indigo-500 dark:bg-blue-400 border-0 py-2 px-2 focus:outline-none rounded text-lg font-semibold mt-4 xl:self-start flex items-center">
