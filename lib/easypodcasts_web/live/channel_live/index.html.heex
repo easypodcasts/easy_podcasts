@@ -1,8 +1,8 @@
 <%= if @total_pages > 1 and @total_entries > 0 do %>
   <.pagination socket={@socket} page_number={@page_number} total_pages={@total_pages} page_range={@page_range} is_top={true} route={&Routes.channel_index_path/3}, action={:index} object_id={nil} search={@search}/>
 <% end %>
-<section class="text-gray-600 dark:text-gray-100 body-font px-3 py-5 mx-auto">
-    <div class="flex flex-wrap -m-4">
+<section class="text-gray-600 dark:text-gray-100 body-font mx-auto">
+    <div class="flex flex-wrap md:pl-4 pl-0">
       <%= if @total_entries > 0 do %>
         <%= for channel <- @channels do %>
         <div class="p-4 md:w-1/5 w-full">
@@ -28,4 +28,8 @@
 </section>
 <%= if @total_pages > 1 and @total_entries > 0 do %>
   <.pagination socket={@socket} page_number={@page_number} total_pages={@total_pages} page_range={@page_range} is_top={false} route={&Routes.channel_index_path/3} action={:index} object_id={nil} search={@search}/>
+<% end %>
+
+<%= if @show_modal do %>
+  <.live_component module={EasypodcastsWeb.ModalComponent} id="new_podcast" return_to={Routes.channel_index_path(@socket, :index, @params)} />
 <% end %>
