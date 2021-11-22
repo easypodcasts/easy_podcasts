@@ -5,7 +5,16 @@ defmodule EasypodcastsWeb.AboutLive.Index do
   @impl true
   def mount(_params, _session, socket) do
     if connected?(socket), do: PubSub.subscribe(Easypodcasts.PubSub, "queue_state")
-    {:ok, socket}
+    {:ok, assign(socket, :show_modal, false)}
+  end
+
+  @impl true
+  def handle_event("show_modal", _params, socket) do
+    {:noreply, assign(socket, :show_modal, true)}
+  end
+
+  def handle_event("hide_modal", _params, socket) do
+    {:noreply, assign(socket, :show_modal, false)}
   end
 
   @impl true
@@ -14,4 +23,7 @@ defmodule EasypodcastsWeb.AboutLive.Index do
     {:noreply, socket}
   end
 
+  def handle_info(:clear_flash, socket) do
+    {:noreply, clear_flash(socket)}
+  end
 end
