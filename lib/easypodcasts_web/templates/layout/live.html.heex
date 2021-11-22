@@ -17,7 +17,33 @@
          <%= live_redirect "About", to: Routes.about_index_path(@socket, :index), class: "mr-5 self-center hover:text-gray-900" %>
          <button phx-click="show_modal" class="font-semibold text-white bg-indigo-500 hover:bg-indigo-600 dark:bg-blue-400 dark:hover:bg-blue-500 px-4 py-2 rounded text-md">Add</button>
       </div>
+      <div class="md:hidden flex items-center">
+        <button id="open-mobile-menu" class="outline-none" phx-click={JS.remove_class("hidden", to: "#mobile-menu") |> JS.add_class("hidden", to: "#open-mobile-menu") |> JS.remove_class("hidden", to: "#close-mobile-menu")}>
+          <svg
+            class="w-6 h-6 text-gray-500"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+          <path d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+        <button id="close-mobile-menu" class="outline-none hidden" phx-click={JS.add_class("hidden", to: "#mobile-menu") |> JS.remove_class("hidden", to: "#open-mobile-menu") |> JS.add_class("hidden", to: "#close-mobile-menu")}>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
     </nav>
+      <div id="mobile-menu" class="hidden px-10" phx-click-away={JS.add_class("hidden", to: "#mobile-menu") |> JS.remove_class("hidden", to: "#open-mobile-menu") |> JS.add_class("hidden", to: "#close-mobile-menu")}>
+         <%= live_redirect "Home", to: Routes.channel_index_path(@socket, :index), class: "block text-md py-4 text-gray-900 bg-gray-100 font-semibold" %>
+         <%= live_redirect "Status", to: Routes.server_index_path(@socket, :index), class: "block text-md py-4 text-gray-900 bg-gray-100 font-semibold" %>
+         <%= live_redirect "About", to: Routes.about_index_path(@socket, :index), class: "block text-md py-4 text-gray-900 bg-gray-100 font-semibold" %>
+         <button phx-click="show_modal" class="font-semibold text-white bg-indigo-500 hover:bg-indigo-600 dark:bg-blue-400 dark:hover:bg-blue-500 px-4 py-2 rounded text-md">Add</button>
+      </div>
 </header>
 <main class="container mx-auto px-4">
   <div class="flex flex-col fixed top-6 max-w-md mx-auto inset-x-0 z-50">
