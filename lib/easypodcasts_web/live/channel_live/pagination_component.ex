@@ -25,7 +25,7 @@ defmodule EasypodcastsWeb.PaginationComponent do
 
       <%= for idx <-  Enum.to_list(page_range) do %>
         <%= if page_number == idx do %>
-          <%= live_redirect idx, to: get_route(socket, route, action, object_id, search, idx), class: "bg-indigo-50 border border-indigo-300 text-indigo-600 hover:bg-indigo-100 hover:text-indigo-700 leading-tight z-10 py-2 px-3 pointer-events-none" %>
+          <%= live_redirect idx, to: get_route(socket, route, action, object_id, search, idx), class: "bg-indigo-50 border border-indigo-300 text-indigo-600 hover:bg-indigo-100 hover:text-indigo-700 leading-tight py-2 px-3 pointer-events-none" %>
         <% else %>
           <%= live_redirect idx, to: get_route(socket, route, action, object_id, search, idx), class: "bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3" %>
         <% end %>

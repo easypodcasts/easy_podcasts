@@ -20,12 +20,26 @@ defmodule EasypodcastsWeb.ServerLive.Index do
       socket
       |> assign(get_dynamic_assigns())
       |> assign(:disk_capacity, capacity)
+      |> assign(:show_modal, false)
       |> assign(:disk_used, percent)
 
     {:ok, assign(socket, get_dynamic_assigns())}
   end
 
   @impl true
+  def handle_event("show_modal", _params, socket) do
+    {:noreply, assign(socket, :show_modal, true)}
+  end
+
+  def handle_event("hide_modal", _params, socket) do
+    {:noreply, assign(socket, :show_modal, false)}
+  end
+
+  @impl true
+  def handle_info(:clear_flash, socket) do
+    {:noreply, clear_flash(socket)}
+  end
+
   def handle_info({:queue_changed, queue_len}, socket) do
     send_update(EasypodcastsWeb.QueueComponent, id: "queue_state", queue_len: queue_len)
     {:noreply, assign(socket, get_dynamic_assigns())}
