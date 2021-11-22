@@ -130,3 +130,7 @@
   </div>
 </section>
 <% end %>
+
+<%= if @show_modal do %>
+  <.live_component module={EasypodcastsWeb.ModalComponent} id="new_podcast" return_to={Routes.channel_show_path(@socket, :show, Channels.slugify_channel(@channel), @params)} />
+<% end %>

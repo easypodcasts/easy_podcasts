@@ -15,7 +15,7 @@
       <div class="w-1/3 justify-end hidden md:flex">
          <%= live_redirect "Status", to: Routes.server_index_path(@socket, :index), class: "mr-5 self-center hover:text-gray-900" %>
          <%= live_redirect "About", to: Routes.about_index_path(@socket, :index), class: "mr-5 self-center hover:text-gray-900" %>
-        <%= live_patch "Add ", to: Routes.channel_index_path(@socket, :new), class: "font-semibold text-white bg-indigo-500 hover:bg-indigo-600 dark:bg-blue-400 dark:hover:bg-blue-500 px-4 py-2 rounded text-md" %>
+         <button phx-click="show_modal" class="font-semibold text-white bg-indigo-500 hover:bg-indigo-600 dark:bg-blue-400 dark:hover:bg-blue-500 px-4 py-2 rounded text-md">Add</button>
       </div>
     </nav>
 </header>
@@ -40,26 +40,5 @@
   <% end %>
   </div>
   <%= @inner_content %>
-
-  <%= if @live_action == :new do %>
-    <div class="fixed top-0 left-0 flex justify-center w-screen h-screen bg-gray-500 bg-opacity-90">
-      <div class="bg-white rounded-md shadow-xl max-h-52 mt-10 xl:mt-24 p-5">
-        <h3 class="text-lg font-medium leading-6 text-gray-900">Add New Podcast</h3>
-        <.form let={f} for={@changeset} id="channel-form" phx-submit="save" phx-page-loading class="mt-5 h-4/6">
-        <%= error_tag f, :link %>
-          <div class="flex flex-col justify-between h-full">
-            <div class="flex flex-col">
-              <%= url_input f, :link, placeholder: "https://example.podcast.com/rss", class: "bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none text-gray-700 py-1 px-3 leading-8" %>
-              <spam class="text-xs px-1">Lea sobre nuestra política de contenidos <a href={"#{Routes.about_index_path(@socket, :index)}#disclaimer"} class="text-indigo-500">aquí</a></spam>
-            </div>
-            <div class="flex justify-between justify-self-end">
-              <%= live_patch "Cancel", to: Routes.channel_index_path(@socket, :index), class: "align-middle text-white bg-gray-500 border-0 ml-1 px-4 py-2 rounded text-sm inline-flex items-center" %>
-              <%= submit "Save", phx_disable_with: "Saving...", class: "text-white bg-green-500 border-0 ml-1 px-5 focus:outline-none rounded text-sm" %>
-            </div>
-          </div>
-        </.form>
-      </div>
-    </div>
-  <% end %>
   <.live_component module={EasypodcastsWeb.QueueComponent} id={"queue_state"}/>
 </main>

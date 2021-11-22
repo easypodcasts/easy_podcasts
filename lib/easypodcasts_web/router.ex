@@ -22,7 +22,6 @@ defmodule EasypodcastsWeb.Router do
     pipe_through :browser
     live "/about", AboutLive.Index, :index
     live "/status", ServerLive.Index, :index
-    live "/channels/new", ChannelLive.Index, :new
     live "/channels/:slug", ChannelLive.Show, :show
     live "/channels", ChannelLive.Index, :index
     live "/", ChannelLive.Index, :index

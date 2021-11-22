@@ -18,6 +18,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
     socket =
       socket
       |> assign(:channel, channel)
+      |> assign(:show_modal, false)
       |> assign(:show_player, false)
       |> assign(:page_title, "#{channel.title}")
 
@@ -66,6 +67,14 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
       |> assign(:playing_episode, Map.get(socket.assigns.episodes_map, episode_id))
 
     {:noreply, socket}
+  end
+
+  def handle_event("show_modal", _params, socket) do
+    {:noreply, assign(socket, :show_modal, true)}
+  end
+
+  def handle_event("hide_modal", _params, socket) do
+    {:noreply, assign(socket, :show_modal, false)}
   end
 
   def handle_event("stop_playing", _params, socket) do

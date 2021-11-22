@@ -2,47 +2,17 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   use EasypodcastsWeb, :live_view
 
   alias Easypodcasts.{Channels, ChannelImage}
-  alias Easypodcasts.Channels.Channel
   alias Easypodcasts.Helpers.Search
   import Easypodcasts.Helpers
   import EasypodcastsWeb.PaginationComponent
 
   @impl true
   def handle_params(params, _url, socket) do
-    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
-  end
-
-  defp apply_action(socket, :new, params) do
-    socket
-    |> assign(:page_title, "New Channel")
-    |> assign(:changeset, Channels.change_channel(%Channel{}))
-    |> assign(list_channels(params))
-  end
-
-  defp apply_action(socket, :index, params) do
-    socket
-    |> assign(:page_title, "Home")
-    |> assign(list_channels(params))
-  end
-
-  @impl true
-  def handle_event("save", %{"channel" => channel_params}, socket) do
-    case Channels.create_channel(channel_params) do
-      {:ok, channel} ->
-        Process.send_after(self(), :clear_flash, 5000)
-
-        {:noreply,
-         socket
-         |> put_flash(:success, "Podcast '#{channel.title}' created successfully")
-         |> assign(list_channels(%{"search" => "", page: nil}))
-         |> push_patch(to: Routes.channel_index_path(socket, :index))}
-
-      {:error, changeset = %Ecto.Changeset{}} ->
-        {:noreply, assign(socket, changeset: changeset)}
-
-      {:error, msg} ->
-        {:noreply, put_flash(socket, :error, msg)}
-    end
+    {:noreply,
+     socket
+     |> assign(:page_title, "Home")
+     |> assign(:show_modal, false)
+     |> assign(list_channels(params))}
   end
 
   @impl true
@@ -81,14 +51,22 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
     {:noreply, socket}
   end
 
-  @impl true
-  def handle_info({:queue_changed, queue_len}, socket) do
-    send_update(EasypodcastsWeb.QueueComponent, id: "queue_state", queue_len: queue_len)
-    {:noreply, socket}
+  def handle_event("show_modal", _params, socket) do
+    {:noreply, assign(socket, :show_modal, true)}
+  end
+
+  def handle_event("hide_modal", _params, socket) do
+    {:noreply, assign(socket, :show_modal, false)}
   end
 
   def handle_info(:clear_flash, socket) do
     {:noreply, clear_flash(socket)}
+  end
+
+  @impl true
+  def handle_info({:queue_changed, queue_len}, socket) do
+    send_update(EasypodcastsWeb.QueueComponent, id: "queue_state", queue_len: queue_len)
+    {:noreply, socket}
   end
 
   defp list_channels(params) do
