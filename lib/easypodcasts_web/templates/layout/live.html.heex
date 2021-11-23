@@ -40,8 +40,8 @@
     </nav>
       <div id="mobile-menu" class="hidden px-10 dark:bg-gray-800 bg-gray-100 flex flex-col" phx-click-away={JS.add_class("hidden", to: "#mobile-menu") |> JS.remove_class("hidden", to: "#open-mobile-menu") |> JS.add_class("hidden", to: "#close-mobile-menu")}>
          <%= live_redirect "Home", to: Routes.channel_index_path(@socket, :index), class: "text-md py-3 mb-2 dark:text-gray-300 dark:border-gray-700 border-gray-300 border-2 rounded font-semibold text-center" %>
-         <%= live_redirect "Status", to: Routes.server_index_path(@socket, :index), class: "text-md py-3 mb-2 dark:text-gray-300 dark:border-gray-700 border-gray-300 border-2 rounded bg-gray-800 font-semibold text-center" %>
-         <%= live_redirect "About", to: Routes.about_index_path(@socket, :index), class: "text-md py-3 mb-2 dark:text-gray-300 dark:border-gray-700 border-gray-300 border-2 rounded bg-gray-800 font-semibold text-center" %>
+         <%= live_redirect "Status", to: Routes.server_index_path(@socket, :index), class: "text-md py-3 mb-2 dark:text-gray-300 dark:border-gray-700 border-gray-300 border-2 rounded font-semibold text-center" %>
+         <%= live_redirect "About", to: Routes.about_index_path(@socket, :index), class: "text-md py-3 mb-2 dark:text-gray-300 dark:border-gray-700 border-gray-300 border-2 rounded font-semibold text-center" %>
          <button phx-click="show_modal" class="font-semibold text-white bg-indigo-500 hover:bg-indigo-600 dark:bg-blue-400 dark:hover:bg-blue-500 px-4 py-3 rounded text-md">Add Podcast</button>
       </div>
 </header>
