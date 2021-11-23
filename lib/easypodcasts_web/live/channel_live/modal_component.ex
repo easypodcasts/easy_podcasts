@@ -16,7 +16,6 @@ defmodule EasypodcastsWeb.ModalComponent do
 
   @impl true
   def handle_event("save", %{"channel" => channel_params}, socket) do
-    IO.inspect(socket.assigns)
 
     case Channels.create_channel(channel_params) do
       {:ok, channel} ->
