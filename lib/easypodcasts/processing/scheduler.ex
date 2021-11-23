@@ -33,7 +33,7 @@ defmodule Easypodcasts.Processing.Scheduler do
   end
 
   defp schedule_feed_update() do
-    Process.send_after(self(), :feed_update, :timer.hours(6))
+    Process.send_after(self(), :feed_update, :timer.hours(2))
   end
 
   defp schedule_disk_maintenance() do
