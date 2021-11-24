@@ -18,6 +18,10 @@ defmodule EasypodcastsWeb.Router do
     plug :accepts, ["html"]
   end
 
+  pipeline :api do
+    plug :accepts, ["json"]
+  end
+
   scope "/", EasypodcastsWeb do
     pipe_through :browser
     live "/about", AboutLive.Index, :index
@@ -31,6 +35,12 @@ defmodule EasypodcastsWeb.Router do
     pipe_through :feed
     get "/counter", ChannelController, :counter
     get "/:slug", ChannelController, :feed
+  end
+
+  scope "/api", EasypodcastsWeb do
+    pipe_through :api
+    get "/next", ApiController, :next
+    post "/converted", ApiController, :converted
   end
 
   # Enables LiveDashboard only for development

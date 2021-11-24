@@ -9,12 +9,10 @@ defmodule Easypodcasts.Channels do
   alias Easypodcasts.Repo
 
   import Easypodcasts.Helpers
+  alias Easypodcasts.{ChannelImage, EpisodeAudio, Processing}
+  alias Easypodcasts.Channels.{Channel, Episode}
   import Easypodcasts.Channels.Query
   alias Easypodcasts.Helpers.Search
-  alias Easypodcasts.Channels.{Channel, Episode}
-  alias Easypodcasts.Processing
-  alias Easypodcasts.Processing.Queue
-  alias Easypodcasts.ChannelImage
 
   @doc """
   Returns the list of channels.
@@ -184,7 +182,7 @@ defmodule Easypodcasts.Channels do
 
     case episode.status do
       :new ->
-        Queue.add_episode(episode)
+        update_episode(episode, %{status: :queued})
         :ok
 
       _ ->
@@ -271,5 +269,53 @@ defmodule Easypodcasts.Channels do
         end
       end)
     end)
+  end
+
+  def get_next_episode() do
+    with episode = %Episode{} <-
+           Repo.one(
+             from(e in Episode,
+               where: e.status == :queued,
+               limit: 1,
+               order_by: [{:asc, e.updated_at}]
+             )
+           ) do
+      episode
+      |> change(%{status: :processing})
+      |> Repo.update()
+    end
+  end
+
+  def get_episode_to_rescue() do
+    date = DateTime.now!("America/Havana") |> DateTime.add(-3 * 60, :second)
+
+    with episode = %Episode{} <-
+           Repo.one(
+             from(e in Episode,
+               where: e.status == :queued and e.updated_at <= ^date,
+               limit: 1,
+               order_by: [{:asc, e.updated_at}]
+             )
+           ) do
+      episode
+      |> change(%{status: :processing})
+      |> Repo.update()
+    end
+  end
+
+  def save_converted_episode(episode_id, upload) do
+    episode = get_episode!(episode_id)
+
+    IO.inspect(upload)
+
+    case IO.inspect(EpisodeAudio.store({upload, episode})) do
+      {:ok, _} ->
+        size = Processing.get_file_size(upload)
+        File.rm("priv/tmp/#{episode_id}")
+        episode |> change(%{status: :done, processed_size: size}) |> Repo.update()
+
+      {:error, _} ->
+        episode |> change(%{status: :queued}) |> Repo.update()
+    end
   end
 end

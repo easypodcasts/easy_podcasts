@@ -20,7 +20,8 @@ defmodule Easypodcasts.Application do
       # {Easypodcasts.Worker, arg}
       {Task.Supervisor, name: Easypodcasts.TaskSupervisor},
       Easypodcasts.Processing.Queue,
-      Easypodcasts.Processing.Scheduler
+      Easypodcasts.Processing.Scheduler,
+      Easypodcasts.Processing.WorkerManager
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

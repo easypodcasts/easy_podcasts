@@ -3,7 +3,7 @@ defmodule Easypodcasts.Processing.Queue do
   require Logger
   alias Phoenix.PubSub
   alias Easypodcasts.Processing
-  alias Easypodcasts.Channels
+  # alias Easypodcasts.Channels
 
   @name __MODULE__
 
@@ -39,17 +39,18 @@ defmodule Easypodcasts.Processing.Queue do
   def handle_continue(:get_queued_episodes, _state) do
     Logger.debug("handle_continue getting queued episodes from database")
 
-    state =
-      Channels.get_queued_episodes()
-      |> :queue.from_list()
-      |> process_next_in_queue
+    # state =
+    #   Channels.get_queued_episodes()
+    #   |> :queue.from_list()
+    #   |> process_next_in_queue
 
+    state = {:queue.new(), nil}
     {:noreply, state}
   end
 
   def handle_call({:add_episode, new_episode}, _from, {queue, current_episode} = state) do
     Logger.debug("handle_call (:add_episode) - state: #{inspect(state)}")
-    {:ok, new_episode} = Channels.update_episode(new_episode, %{status: :queued})
+    # {:ok, new_episode} = Channels.update_episode(new_episode, %{status: :queued})
 
     state = {queue, current_episode} = {:queue.in(new_episode, queue), current_episode}
 
