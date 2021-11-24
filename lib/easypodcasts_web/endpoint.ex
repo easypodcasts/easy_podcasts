@@ -47,6 +47,7 @@ defmodule EasypodcastsWeb.Endpoint do
 
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
+    length: 100_000_000,
     pass: ["*/*"],
     json_decoder: Phoenix.json_library()
 

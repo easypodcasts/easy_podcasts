@@ -126,7 +126,7 @@ defmodule Easypodcasts.Processing do
     ])
   end
 
-  defp get_file_size(file) do
+  def get_file_size(file) do
     {:ok, %{size: size}} = File.stat(file)
     size
   end

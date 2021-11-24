@@ -33,18 +33,23 @@ defmodule Easypodcasts.Processing.Scheduler do
   end
 
   defp schedule_feed_update() do
-    Process.send_after(self(), :feed_update, :timer.hours(2))
+    if Mix.env() == :prod do
+      Process.send_after(self(), :feed_update, :timer.hours(2))
+    end
   end
 
   defp schedule_disk_maintenance() do
-    Process.send_after(self(), :disk_maintenance, :timer.hours(1))
+    if Mix.env() == :prod do
+      Process.send_after(self(), :disk_maintenance, :timer.hours(1))
+    end
   end
 
   def do_disk_maintenance() do
-
     {_id, _capacity, percent} =
       :disksup.get_disk_data()
-      |> Enum.filter(fn {disk_id, _size, _percent} -> disk_id == '/home/cloud/podcasts-storage' end)
+      |> Enum.filter(fn {disk_id, _size, _percent} ->
+        disk_id == '/home/cloud/podcasts-storage'
+      end)
       |> hd
 
     Logger.info("Scheduled Task: Disk Maintenance: Disk is #{percent} full")
