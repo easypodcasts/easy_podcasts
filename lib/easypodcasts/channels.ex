@@ -288,9 +288,10 @@ defmodule Easypodcasts.Channels do
 
   def save_converted_episode(episode_id, upload, worker_id) do
     episode = get_episode!(episode_id)
+    file = %{filename: "episode.opus", path: upload}
 
     if episode.status == :processing do
-      case EpisodeAudio.store({upload, episode}) do
+      case EpisodeAudio.store({file, episode}) do
         {:ok, _} ->
           size = Processing.get_file_size(upload)
           File.rm("priv/tmp/#{episode_id}")
