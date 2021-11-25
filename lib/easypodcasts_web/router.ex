@@ -20,6 +20,7 @@ defmodule EasypodcastsWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug EasypodcastsWeb.Api.Auth
   end
 
   scope "/", EasypodcastsWeb do

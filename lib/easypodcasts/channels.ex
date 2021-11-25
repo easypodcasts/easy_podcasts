@@ -4,7 +4,7 @@ defmodule Easypodcasts.Channels do
   """
 
   import Ecto.Query, warn: false
-  import Ecto.Changeset
+  alias Ecto.Changeset
 
   alias Easypodcasts.Repo
 
@@ -86,7 +86,7 @@ defmodule Easypodcasts.Channels do
 
       {:ok, channel}
     else
-      {:error, %Ecto.Changeset{} = changeset} ->
+      {:error, %Changeset{} = changeset} ->
         # Some validation errors
         {:error, changeset}
 
@@ -173,7 +173,7 @@ defmodule Easypodcasts.Channels do
 
   def update_episode(%Episode{} = episode, attrs \\ %{}) do
     episode
-    |> change(attrs)
+    |> Changeset.change(attrs)
     |> Repo.update()
   end
 
@@ -254,7 +254,7 @@ defmodule Easypodcasts.Channels do
       {channel, feed_data}
     end)
     |> Enum.each(fn {channel, feed_data} ->
-      channel |> change(%{feed_data: Map.drop(feed_data, ["items"])}) |> Repo.update()
+      channel |> Changeset.change(%{feed_data: Map.drop(feed_data, ["items"])}) |> Repo.update()
 
       feed_data["items"]
       |> Enum.each(fn item ->
@@ -264,7 +264,7 @@ defmodule Easypodcasts.Channels do
 
         if e do
           e
-          |> change(%{feed_data: item})
+          |> Changeset.change(%{feed_data: item})
           |> Repo.update()
         end
       end)
@@ -281,8 +281,27 @@ defmodule Easypodcasts.Channels do
              )
            ) do
       episode
-      |> change(%{status: :processing})
+      |> Changeset.change(%{status: :processing})
       |> Repo.update()
+    end
+  end
+
+  def save_converted_episode(episode_id, upload, worker_id) do
+    episode = get_episode!(episode_id)
+
+    if episode.status == :processing do
+      case EpisodeAudio.store({upload, episode}) do
+        {:ok, _} ->
+          size = Processing.get_file_size(upload)
+          File.rm("priv/tmp/#{episode_id}")
+
+          episode
+          |> Changeset.change(%{status: :done, processed_size: size, worker_id: worker_id})
+          |> Repo.update()
+
+        {:error, _} ->
+          episode |> Changeset.change(%{status: :queued}) |> Repo.update()
+      end
     end
   end
 
@@ -298,24 +317,18 @@ defmodule Easypodcasts.Channels do
              )
            ) do
       episode
-      |> change(%{status: :processing})
+      |> Changeset.change(%{status: :processing})
       |> Repo.update()
     end
   end
 
-  def save_converted_episode(episode_id, upload) do
-    episode = get_episode!(episode_id)
+  def requeue_stale_episodes() do
+    date = DateTime.now!("America/Havana")
 
-    IO.inspect(upload)
-
-    case IO.inspect(EpisodeAudio.store({upload, episode})) do
-      {:ok, _} ->
-        size = Processing.get_file_size(upload)
-        File.rm("priv/tmp/#{episode_id}")
-        episode |> change(%{status: :done, processed_size: size}) |> Repo.update()
-
-      {:error, _} ->
-        episode |> change(%{status: :queued}) |> Repo.update()
-    end
+    from(e in Episode,
+      where: e.status == :processing and e.updated_at <= ^date,
+      update: [set: [status: :queued, updated_at: ^date]]
+    )
+    |> Repo.update_all([])
   end
 end
