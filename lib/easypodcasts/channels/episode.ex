@@ -21,6 +21,7 @@ defmodule Easypodcasts.Channels.Episode do
     field :feed_data, :map
     field :downloads, :integer, default: 0
     belongs_to :channel, Easypodcasts.Channels.Channel
+    belongs_to :worker, Easypodcasts.Workers.Worker
 
     timestamps()
   end

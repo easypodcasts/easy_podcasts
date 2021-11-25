@@ -19,8 +19,8 @@ defmodule Easypodcasts.Processing.WorkerManager do
     GenServer.call(@name, :next_episode)
   end
 
-  def save_converted_episode(episode_id, upload) do
-    GenServer.cast(@name, {:save_converted, {episode_id, upload}})
+  def save_converted_episode(episode_id, upload, worker_id \\ nil) do
+    GenServer.cast(@name, {:save_converted, {episode_id, upload, worker_id}})
   end
 
   @impl true
@@ -37,9 +37,9 @@ defmodule Easypodcasts.Processing.WorkerManager do
   end
 
   @impl true
-  def handle_cast({:save_converted, {episode_id, upload}}, state) do
+  def handle_cast({:save_converted, {episode_id, upload, worker_id}}, state) do
     Logger.info("Saving episode audio")
-    Channels.save_converted_episode(episode_id, upload)
+    Channels.save_converted_episode(episode_id, upload, worker_id)
     {:noreply, state}
   end
 
