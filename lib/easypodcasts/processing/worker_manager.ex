@@ -12,6 +12,7 @@ defmodule Easypodcasts.Processing.WorkerManager do
   @impl true
   def init(state) do
     schedule_rescue_episode()
+    schedule_requeue_episodes()
     {:ok, state}
   end
 
@@ -53,9 +54,20 @@ defmodule Easypodcasts.Processing.WorkerManager do
     {:noreply, state}
   end
 
+  def handle_info(:requeue_episodes, state) do
+    Channels.requeue_stale_episodes()
+    {:noreply, state}
+  end
+
   defp schedule_rescue_episode() do
     if Mix.env() == :prod do
       Process.send_after(self(), :rescue_episode, :timer.minutes(3))
+    end
+  end
+
+  defp schedule_requeue_episodes() do
+    if Mix.env() == :prod do
+      Process.send_after(self(), :requeue_episodes, :timer.minutes(5))
     end
   end
 end
