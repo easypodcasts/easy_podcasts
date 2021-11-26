@@ -7,4 +7,7 @@ defmodule Easypodcasts.Episodes do
   alias Easypodcasts.Repo
 
   alias Easypodcasts.Episodes.Episode
+
+  def get_queued_episodes(),
+    do: from(e in Episode, where: e.status in [:queued, :processing]) |> Repo.all()
 end

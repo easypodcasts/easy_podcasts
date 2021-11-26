@@ -193,18 +193,9 @@ defmodule Easypodcasts.Channels do
     end
   end
 
-  def get_queued_episodes(),
-    do: from(e in Episode, where: e.status in [:queued, :processing]) |> Repo.all()
-
   def inc_episode_downloads(episode_id) do
-    case episode_id do
-      "img" ->
-        nil
-
-      episode_id ->
-        from(e in Episode, update: [inc: [downloads: 1]], where: e.id == ^episode_id)
-        |> Repo.update_all([])
-    end
+    from(e in Episode, update: [inc: [downloads: 1]], where: e.id == ^episode_id)
+    |> Repo.update_all([])
   end
 
   def get_channels_stats() do

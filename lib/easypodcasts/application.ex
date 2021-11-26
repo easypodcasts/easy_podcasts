@@ -19,7 +19,7 @@ defmodule Easypodcasts.Application do
       # Start a worker by calling: Easypodcasts.Worker.start_link(arg)
       # {Easypodcasts.Worker, arg}
       {Task.Supervisor, name: Easypodcasts.TaskSupervisor},
-      Easypodcasts.Processing.Queue,
+      Easypodcasts.Queue,
       Easypodcasts.Processing.Scheduler,
       Easypodcasts.Processing.WorkerManager
     ]
