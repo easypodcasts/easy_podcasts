@@ -9,8 +9,11 @@ defmodule Easypodcasts.Channels do
   alias Easypodcasts.Repo
 
   import Easypodcasts.Helpers
-  alias Easypodcasts.{ChannelImage, EpisodeAudio, Processing}
-  alias Easypodcasts.Channels.{Channel, Episode}
+  alias Easypodcasts.Processing
+  alias Easypodcasts.Channels.ChannelImage
+  alias Easypodcasts.Episodes.EpisodeAudio
+  alias Easypodcasts.Channels.Channel
+  alias Easypodcasts.Episodes.Episode
   import Easypodcasts.Channels.Query
   alias Easypodcasts.Helpers.Search
 

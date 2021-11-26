@@ -1,4 +1,4 @@
-defmodule Easypodcasts.EpisodeAudio do
+defmodule Easypodcasts.Episodes.EpisodeAudio do
   use Waffle.Definition
 
   @versions [:original]

@@ -1,4 +1,4 @@
-defmodule Easypodcasts.ChannelImage do
+defmodule Easypodcasts.Channels.ChannelImage do
   use Waffle.Definition
 
   # Include ecto support (requires package waffle_ecto installed):

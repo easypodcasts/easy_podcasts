@@ -10,7 +10,7 @@ defmodule Easypodcasts.Channels.Channel do
     field :link, :string
     field :title, :string
     field :feed_data, :map
-    has_many :episodes, Easypodcasts.Channels.Episode
+    has_many :episodes, Easypodcasts.Episodes.Episode
 
     timestamps()
   end
