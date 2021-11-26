@@ -2,8 +2,6 @@ defmodule Easypodcasts.Processing.Queue do
   use GenServer
   require Logger
   alias Phoenix.PubSub
-  alias Easypodcasts.Processing
-  # alias Easypodcasts.Channels
 
   @name __MODULE__
 
@@ -112,7 +110,7 @@ defmodule Easypodcasts.Processing.Queue do
         )
 
         Task.Supervisor.async_nolink(Easypodcasts.TaskSupervisor, fn ->
-          Processing.process_episode_file(episode)
+          episode
         end)
 
         {queue, episode}

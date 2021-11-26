@@ -64,68 +64,6 @@ defmodule Easypodcasts.Processing do
     }
   end
 
-  def process_episode_file(episode) do
-    {:ok, episode} = Channels.update_episode(episode, %{status: :processing})
-
-    episode_file =
-      create_filesytem_directories(
-        episode.channel_id,
-        episode.id
-      )
-
-    case compress_audio(episode.original_audio_url, episode_file) do
-      {_, 0} ->
-        new_size = get_file_size(episode_file)
-
-        Channels.update_episode(episode, %{
-          status: :done,
-          processed_size: new_size
-        })
-
-      _error ->
-        {:ok, episode} =
-          Channels.update_episode(episode, %{
-            status: :new
-          })
-
-        {:error, episode}
-    end
-  end
-
-  def download_file(url, dest) do
-    :httpc.request(:get, {String.to_charlist(url), []}, [], stream: String.to_charlist(dest))
-  end
-
-  defp create_filesytem_directories(channel_id, episode_id) do
-    episode_dir = Path.join(["uploads", to_string(channel_id), "episodes", to_string(episode_id)])
-    File.mkdir_p!(episode_dir)
-    episode_file = Path.join(episode_dir, "episode.opus")
-    episode_file
-  end
-
-  defp compress_audio(orig, dest) do
-    System.cmd("ffmpeg", [
-      "-y",
-      "-i",
-      orig,
-      "-ac",
-      "1",
-      "-c:a",
-      "libopus",
-      "-b:a",
-      "24k",
-      "-vbr",
-      "on",
-      "-compression_level",
-      "10",
-      "-frame_duration",
-      "60",
-      "-application",
-      "voip",
-      dest
-    ])
-  end
-
   def get_file_size(file) do
     {:ok, %{size: size}} = File.stat(file)
     size
