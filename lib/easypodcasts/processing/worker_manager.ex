@@ -1,6 +1,5 @@
 defmodule Easypodcasts.Processing.WorkerManager do
   alias Easypodcasts.Channels
-  alias Easypodcasts.Processing.Queue
   use GenServer
   require Logger
 

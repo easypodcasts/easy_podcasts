@@ -1,6 +1,6 @@
 defmodule Easypodcasts.Processing do
   alias Easypodcasts.Channels
-  alias Easypodcasts.Processing.Feed
+  alias Easypodcasts.Helpers.Feed
   require Logger
 
   def process_all_channels() do

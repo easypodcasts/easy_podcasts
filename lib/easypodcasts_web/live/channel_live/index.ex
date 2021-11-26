@@ -1,7 +1,8 @@
 defmodule EasypodcastsWeb.ChannelLive.Index do
   use EasypodcastsWeb, :live_view
 
-  alias Easypodcasts.{Channels, ChannelImage}
+  alias Easypodcasts.Channels
+  alias Easypodcasts.Channels.ChannelImage
   alias Easypodcasts.Helpers.{Search, Utils}
   import EasypodcastsWeb.PaginationComponent
 
