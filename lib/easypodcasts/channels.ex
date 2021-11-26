@@ -311,31 +311,4 @@ defmodule Easypodcasts.Channels do
       File.rm("priv/tmp/#{episode_id}")
     end
   end
-
-  def get_episode_to_rescue() do
-    date = DateTime.now!("America/Havana") |> DateTime.add(-3 * 60, :second)
-
-    with episode = %Episode{} <-
-           Repo.one(
-             from(e in Episode,
-               where: e.status == :queued and e.updated_at <= ^date,
-               limit: 1,
-               order_by: [{:asc, e.updated_at}]
-             )
-           ) do
-      episode
-      |> Changeset.change(%{status: :processing})
-      |> Repo.update()
-    end
-  end
-
-  def requeue_stale_episodes() do
-    date = DateTime.now!("America/Havana")
-
-    from(e in Episode,
-      where: e.status == :processing and e.updated_at <= ^date,
-      update: [set: [status: :queued, updated_at: ^date]]
-    )
-    |> Repo.update_all([])
-  end
 end
