@@ -1,4 +1,4 @@
-defmodule Easypodcasts.Processing.Feed do
+defmodule Easypodcasts.Helpers.Feed do
   @feed_parser Path.expand("./priv/bin/feed-parser")
 
   def get_feed_data(url) do

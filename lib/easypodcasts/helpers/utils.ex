@@ -1,4 +1,4 @@
-defmodule Easypodcasts.Helpers do
+defmodule Easypodcasts.Helpers.Utils do
   def slugify(string) do
     string
     |> String.downcase()
@@ -27,5 +27,10 @@ defmodule Easypodcasts.Helpers do
       current_page >= total_pages - 6 ->
         (total_pages - 6)..total_pages
     end
+  end
+
+  def get_file_size(file) do
+    {:ok, %{size: size}} = File.stat(file)
+    size
   end
 end

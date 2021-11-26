@@ -6,16 +6,16 @@ defmodule Easypodcasts.Channels do
   import Ecto.Query, warn: false
   alias Ecto.Changeset
 
-  alias Easypodcasts.Repo
+  import Easypodcasts.Channels.Query
 
-  import Easypodcasts.Helpers
+  alias Easypodcasts.Repo
   alias Easypodcasts.Processing
   alias Easypodcasts.Channels.ChannelImage
   alias Easypodcasts.Episodes.EpisodeAudio
   alias Easypodcasts.Channels.Channel
   alias Easypodcasts.Episodes.Episode
-  import Easypodcasts.Channels.Query
   alias Easypodcasts.Helpers.Search
+  alias Easypodcasts.Helpers.Utils
 
   @doc """
   Returns the list of channels.
@@ -68,7 +68,7 @@ defmodule Easypodcasts.Channels do
     |> Map.from_struct()
   end
 
-  def slugify_channel(channel), do: "#{channel.id}-#{slugify(channel.title)}"
+  def slugify_channel(channel), do: "#{channel.id}-#{Utils.slugify(channel.title)}"
 
   def get_episodes_url_from_channel(id),
     do:
