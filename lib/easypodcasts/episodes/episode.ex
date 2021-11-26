@@ -1,4 +1,4 @@
-defmodule Easypodcasts.Channels.Episode do
+defmodule Easypodcasts.Episodes.Episode do
   use Ecto.Schema
 
   @behaviour Access
