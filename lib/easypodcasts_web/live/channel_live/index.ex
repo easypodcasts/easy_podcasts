@@ -2,8 +2,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   use EasypodcastsWeb, :live_view
 
   alias Easypodcasts.{Channels, ChannelImage}
-  alias Easypodcasts.Helpers.Search
-  import Easypodcasts.Helpers
+  alias Easypodcasts.Helpers.{Search, Utils}
   import EasypodcastsWeb.PaginationComponent
 
   @impl true
@@ -86,7 +85,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
       params: params
     } = Channels.search_paginate_channels(search, page)
 
-    page_range = get_page_range(page, total_pages)
+    page_range = Utils.get_page_range(page, total_pages)
 
     [
       channels: entries,

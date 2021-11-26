@@ -5,8 +5,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   alias Easypodcasts.Channels
   alias Easypodcasts.Channels.ChannelImage
   alias Easypodcasts.Episodes.EpisodeAudio
-  alias Easypodcasts.Helpers.Search
-  import Easypodcasts.Helpers
+  alias Easypodcasts.Helpers.{Search, Utils}
   alias Phoenix.PubSub
 
   @impl true
@@ -185,7 +184,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
     {episodes_index, episodes_map} = episodes_from_list(entries)
 
-    page_range = get_page_range(page, total_pages)
+    page_range = Utils.get_page_range(page, total_pages)
 
     [
       episodes_index: episodes_index,
