@@ -241,30 +241,6 @@ defmodule Easypodcasts.Channels do
     channels
   end
 
-  def refresh_feed_data() do
-    Repo.all(Channel)
-    |> Enum.map(fn channel ->
-      {:ok, feed_data} = Processing.Feed.get_feed_data(channel.link)
-      {channel, feed_data}
-    end)
-    |> Enum.each(fn {channel, feed_data} ->
-      channel |> Changeset.change(%{feed_data: Map.drop(feed_data, ["items"])}) |> Repo.update()
-
-      feed_data["items"]
-      |> Enum.each(fn item ->
-        e =
-          from(e in Episode, where: e.original_audio_url == ^hd(item["enclosures"])["url"])
-          |> Repo.one()
-
-        if e do
-          e
-          |> Changeset.change(%{feed_data: item})
-          |> Repo.update()
-        end
-      end)
-    end)
-  end
-
   def get_next_episode() do
     with episode = %Episode{} <-
            Repo.one(
@@ -288,7 +264,7 @@ defmodule Easypodcasts.Channels do
 
       case EpisodeAudio.store({file, episode}) do
         {:ok, _} ->
-          size = Processing.get_file_size(upload)
+          size = Utils.get_file_size(upload)
           File.rm("priv/tmp/#{episode_id}")
 
           episode

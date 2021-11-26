@@ -4,7 +4,7 @@ defmodule EasypodcastsWeb.QueueComponent do
   use EasypodcastsWeb, :live_component
 
   alias Phoenix.PubSub
-  alias Easypodcasts.Processing.Queue
+  # alias Easypodcasts.Queue
   require Logger
 
   @impl true
@@ -20,7 +20,9 @@ defmodule EasypodcastsWeb.QueueComponent do
 
   @impl true
   def update(_assigns, socket) do
-    {:ok, assign(socket, :queue_len, Queue.get_queue_len())}
+    # TODO: return real queue length
+    # {:ok, assign(socket, :queue_len, Queue.get_queue_len())}
+    {:ok, assign(socket, :queue_len, 0)}
   end
 
   @impl true

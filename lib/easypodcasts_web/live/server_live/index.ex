@@ -2,7 +2,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
   use EasypodcastsWeb, :live_view
   alias Phoenix.PubSub
   alias Easypodcasts.Channels
-  alias Easypodcasts.Processing.Queue
+  # alias Easypodcasts.Queue
 
   @impl true
   def mount(_params, _session, socket) do
@@ -46,7 +46,9 @@ defmodule EasypodcastsWeb.ServerLive.Index do
   end
 
   defp get_dynamic_assigns() do
-    {queue, current_episode} = Queue.get_queue_state()
+    # TODO: get real queue state
+    # {queue, current_episode} = Queue.get_queue_state()
+    {queue, current_episode} = {[], %{}}
 
     channels_index =
       queue

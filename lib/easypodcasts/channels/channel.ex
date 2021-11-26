@@ -1,7 +1,7 @@
 defmodule Easypodcasts.Channels.Channel do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Easypodcasts.Processing.Feed
+  alias Easypodcasts.Helpers.Feed
 
   schema "channels" do
     field :author, :string
