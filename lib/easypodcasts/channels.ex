@@ -6,16 +6,12 @@ defmodule Easypodcasts.Channels do
   import Ecto.Query, warn: false
   alias Ecto.Changeset
 
-  import Easypodcasts.Channels.Query
-
   alias Easypodcasts.Repo
-  alias Easypodcasts.Processing
-  alias Easypodcasts.Channels.ChannelImage
-  alias Easypodcasts.Episodes.EpisodeAudio
-  alias Easypodcasts.Channels.Channel
-  alias Easypodcasts.Episodes.Episode
-  alias Easypodcasts.Helpers.Search
-  alias Easypodcasts.Helpers.Utils
+  alias Easypodcasts.Channels.{Channel, ChannelImage}
+  alias Easypodcasts.Episodes.{Episode, EpisodeAudio}
+  alias Easypodcasts.Helpers.{Search, Utils, Feed}
+
+  require Logger
 
   @doc """
   Returns the list of channels.
@@ -37,7 +33,15 @@ defmodule Easypodcasts.Channels do
         # This should never happen when searching from the web
         Channel
     end
-    |> channels_with_episode_count()
+    |> then(
+      &from(c in &1,
+        left_join: e in Episode,
+        on: c.id == e.channel_id,
+        group_by: c.id,
+        select_merge: %{episodes: count(e.id)},
+        order_by: [desc: c.inserted_at]
+      )
+    )
     |> Repo.paginate(page: page)
     |> Map.put(:params, search: search, page: page)
   end
@@ -82,7 +86,7 @@ defmodule Easypodcasts.Channels do
 
   def create_channel(attrs \\ %{}) do
     with {:ok, channel} <- insert_channel(attrs),
-         {:ok, _episodes} <- Processing.process_channel(channel) do
+         {:ok, _episodes} <- process_channel(channel) do
       if channel.image_url do
         ChannelImage.store({channel.image_url, channel})
       end
@@ -199,32 +203,34 @@ defmodule Easypodcasts.Channels do
   end
 
   def get_channels_stats() do
-    channels = Repo.one(from c in Channel, select: count(c))
-    episodes = Repo.one(from e in Episode, select: count(e))
+    channels = Repo.one(from(c in Channel, select: count(c)))
+    episodes = Repo.one(from(e in Episode, select: count(e)))
 
     latest_episodes =
       Repo.all(
-        from e in Episode, order_by: [{:desc, e.publication_date}], limit: 10, select: e.title
+        from(e in Episode, order_by: [{:desc, e.publication_date}], limit: 10, select: e.title)
       )
 
     latest_processed_episodes =
       Repo.all(
-        from e in Episode,
+        from(e in Episode,
           where: e.status == :done,
           order_by: [{:desc, e.updated_at}],
           limit: 10,
           select: e.title
+        )
       )
 
     size_stats =
       Repo.one(
-        from e in Episode,
+        from(e in Episode,
           where: e.status == :done,
           select: %{
             total: count(e),
             original: sum(e.original_size),
             processed: sum(e.processed_size)
           }
+        )
       )
 
     {channels, episodes, size_stats, latest_episodes, latest_processed_episodes}
@@ -277,5 +283,66 @@ defmodule Easypodcasts.Channels do
     else
       File.rm("priv/tmp/#{episode_id}")
     end
+  end
+
+  def process_all_channels() do
+    Logger.info("Processing all channels")
+
+    list_channels()
+    |> Enum.each(&process_channel(&1, true))
+  end
+
+  def process_channel(channel, process_new_episodes \\ false) do
+    Logger.info("Processing channel #{channel.title}")
+
+    with {:ok, feed_data} <- Feed.get_feed_data(channel.link),
+         {_, new_episodes = [_ | _]} <- save_new_episodes(channel, feed_data) do
+      Logger.info("Channel #{channel.title} has #{length(new_episodes)} new episodes")
+
+      if process_new_episodes do
+        Logger.info("Processing audio from new episodes of #{channel.title}")
+        Enum.each(new_episodes, &enqueue_episode(&1.id))
+      end
+
+      {:ok, new_episodes}
+    else
+      _ ->
+        {:error, channel,
+         "We can't process that podcast right now. Please create an issue with the feed url."}
+    end
+  end
+
+  def save_new_episodes(channel, feed_data) do
+    # episode_audio_urls = get_episodes_url_from_channel(channel.id)
+    episode_audio_urls = get_episodes_url()
+
+    (feed_data["items"] || [])
+    |> Stream.filter(&(&1["enclosures"] && hd(&1["enclosures"])["url"] not in episode_audio_urls))
+    |> Stream.map(&episode_item_to_map(&1, channel.id))
+    |> Enum.to_list()
+    |> create_episodes()
+  end
+
+  defp episode_item_to_map(item, channel_id) do
+    publication_date =
+      with {:ok, parsed_datetime} <- Timex.parse(item["publishedParsed"], "{ISO:Extended}"),
+           {:ok, shifted_datetime} <- DateTime.shift_zone(parsed_datetime, "Etc/UTC") do
+        shifted_datetime
+      else
+        _ -> DateTime.utc_now()
+      end
+
+    %{
+      description: item["description"],
+      title: item["title"],
+      link: item["link"],
+      original_audio_url: item["enclosures"] && hd(item["enclosures"])["url"],
+      original_size:
+        item["enclosures"] &&
+          (hd(item["enclosures"])["length"] || "0") |> String.trim() |> String.to_integer(),
+      channel_id: channel_id,
+      publication_date: publication_date,
+      feed_data: item
+    }
   end
 end
