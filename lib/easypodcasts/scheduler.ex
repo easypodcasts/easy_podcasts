@@ -1,7 +1,7 @@
 defmodule Easypodcasts.Scheduler do
   use GenServer
   require Logger
-  alias Easypodcasts.Channels
+  alias Easypodcasts.{Channels, Episodes}
 
   # @drive_id = '/home/cloud/podcasts-storage'
 
@@ -64,19 +64,19 @@ defmodule Easypodcasts.Scheduler do
   defp remove_episode_older_than(:month) do
     Logger.info("Scheduled Task: Disk Maintenance: Removing episodes older than a month")
     date = DateTime.now!("America/Havana") |> DateTime.add(-30 * 24 * 3600, :second)
-    Channels.filter_episodes_by_updated_at(date) |> delete_audio_for |> reset_info
+    Episodes.list_episodes_updated_before(date) |> delete_audio_for |> reset_info
   end
 
   defp remove_episode_older_than(:week) do
     Logger.info("Scheduled Task: Disk Maintenance: Removing episodes older than a week")
     date = DateTime.now!("America/Havana") |> DateTime.add(-7 * 24 * 3600, :second)
-    Channels.filter_episodes_by_updated_at(date) |> delete_audio_for |> reset_info
+    Episodes.list_episodes_updated_before(date) |> delete_audio_for |> reset_info
   end
 
   defp remove_episode_older_than(:day) do
     Logger.info("Scheduled Task: Disk Maintenance: Removing episodes older than a day")
     date = DateTime.now!("America/Havana") |> DateTime.add(-1 * 24 * 3600, :second)
-    Channels.filter_episodes_by_updated_at(date) |> delete_audio_for |> reset_info
+    Episodes.list_episodes_updated_before(date) |> delete_audio_for |> reset_info
   end
 
   def delete_audio_for(episodes) do

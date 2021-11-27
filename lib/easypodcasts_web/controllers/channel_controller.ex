@@ -1,10 +1,10 @@
 defmodule EasypodcastsWeb.ChannelController do
   use EasypodcastsWeb, :controller
-  alias Easypodcasts.Channels
+  alias Easypodcasts.{Channels, Episodes}
 
   def feed(conn, %{"slug" => slug} = _params) do
     [channel_id | _] = String.split(slug, "-")
-    channel = Channels.get_channel_for_feed!(channel_id)
+    channel = Channels.get_channel_for_feed(channel_id)
 
     conn
     |> put_resp_content_type("text/xml")
@@ -28,6 +28,6 @@ defmodule EasypodcastsWeb.ChannelController do
     |> String.split("/")
     |> Enum.take(-2)
     |> hd
-    |> Channels.inc_episode_downloads()
+    |> Episodes.inc_episode_downloads()
   end
 end

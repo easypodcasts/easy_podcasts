@@ -2,7 +2,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   use EasypodcastsWeb, :live_view
   import EasypodcastsWeb.PaginationComponent
 
-  alias Easypodcasts.Channels
+  alias Easypodcasts.{Channels, Episodes}
   alias Easypodcasts.Channels.ChannelImage
   alias Easypodcasts.Episodes.EpisodeAudio
   alias Easypodcasts.Helpers.{Search, Utils}
@@ -37,7 +37,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
     episode_id = String.to_integer(episode_id)
 
     socket =
-      case Channels.enqueue_episode(episode_id) do
+      case Episodes.enqueue(episode_id) do
         :ok ->
           msg =
             Enum.random([
@@ -145,7 +145,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
         socket
       ) do
     Process.send_after(self(), :clear_flash, 5000)
-    episode = Channels.get_episode!(episode_id)
+    episode = Episodes.get_episode!(episode_id)
 
     socket =
       socket
@@ -180,7 +180,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
       total_entries: total_entries,
       total_pages: total_pages,
       params: params
-    } = Channels.search_paginate_episodes_for(channel_id, search, page)
+    } = Episodes.list_episodes(channel_id, search, page)
 
     {episodes_index, episodes_map} = episodes_from_list(entries)
 
