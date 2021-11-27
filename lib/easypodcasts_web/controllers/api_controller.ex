@@ -1,6 +1,6 @@
 defmodule EasypodcastsWeb.ApiController do
   use EasypodcastsWeb, :controller
-  alias Easypodcasts.Processing.WorkerManager
+  alias Easypodcasts.WorkerManager
 
   def next(conn, _params) do
     json(conn, WorkerManager.next_episode)

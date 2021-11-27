@@ -1,4 +1,4 @@
-defmodule Easypodcasts.Processing.WorkerManager do
+defmodule Easypodcasts.WorkerManager do
   alias Easypodcasts.Channels
   use GenServer
   require Logger

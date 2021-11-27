@@ -1,7 +1,6 @@
-defmodule Easypodcasts.Processing.Scheduler do
+defmodule Easypodcasts.Scheduler do
   use GenServer
   require Logger
-  alias Easypodcasts.Processing
   alias Easypodcasts.Channels
 
   # @drive_id = '/home/cloud/podcasts-storage'
@@ -20,7 +19,7 @@ defmodule Easypodcasts.Processing.Scheduler do
 
   def handle_info(:feed_update, state) do
     Logger.info("Scheduled Task: Updating all feeds")
-    Processing.process_all_channels()
+    Channels.process_all_channels()
     schedule_feed_update()
     {:noreply, state}
   end
