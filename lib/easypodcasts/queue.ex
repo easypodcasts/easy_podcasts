@@ -33,14 +33,14 @@ defmodule Easypodcasts.Queue do
   end
 
   def handle_call({:in, episode}, _from, queue) do
-    Logger.debug("#{@name} adding episode #{episode.id}")
+    Logger.info("#{@name} adding episode #{episode.id}")
     queue = :queue.in(episode, queue)
 
     {:reply, :ok, queue}
   end
 
   def handle_call(:out, _from, queue) do
-    Logger.debug("#{@name} extracting episode")
+    Logger.info("#{@name} extracting episode")
 
     {episode, queue} =
       case :queue.out(queue) do
