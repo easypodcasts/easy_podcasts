@@ -1,5 +1,5 @@
 defmodule Easypodcasts.WorkerManager do
-  alias Easypodcasts.Channels
+  alias Easypodcasts.Episodes
   use GenServer
   require Logger
 
@@ -25,11 +25,11 @@ defmodule Easypodcasts.WorkerManager do
   def handle_call(:next_episode, _from, state) do
     Logger.info("Giving episode to worker")
 
-    episode =
-      case Channels.get_next_episode() do
-        {:ok, episode} -> %{id: episode.id, url: episode.original_audio_url}
-        _ -> :noop
-      end
+    episode = nil
+    # case Channels.get_next_episode() do
+    #   {:ok, episode} -> %{id: episode.id, url: episode.original_audio_url}
+    #   _ -> :noop
+    # end
 
     {:reply, episode, state}
   end
@@ -37,7 +37,7 @@ defmodule Easypodcasts.WorkerManager do
   @impl true
   def handle_cast({:save_converted, {episode_id, upload, worker_id}}, state) do
     Logger.info("Saving episode audio")
-    Channels.save_converted_episode(episode_id, upload, worker_id)
+    Episodes.save_converted_episode(episode_id, upload, worker_id)
     {:noreply, state}
   end
 end
