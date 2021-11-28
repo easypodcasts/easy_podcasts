@@ -205,7 +205,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
         {entry, Map.put_new(acc, entry.id, entry)}
       end)
 
-    episodes_index = Enum.map(episodes, fn episode -> episode.id end)
+    episodes_index = Enum.map(episodes, & &1.id)
     {episodes_index, episodes_map}
   end
 
@@ -227,9 +227,10 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   end
 
   defp format_duration(duration) when is_binary(duration) do
-    cond do
-      String.contains?(duration, ":") -> duration
-      true -> format_duration(String.to_integer(duration))
+    if String.contains?(duration, ":") do
+      duration
+    else
+      format_duration(String.to_integer(duration))
     end
   end
 

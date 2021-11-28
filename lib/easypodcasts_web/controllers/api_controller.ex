@@ -1,15 +1,20 @@
 defmodule EasypodcastsWeb.ApiController do
   use EasypodcastsWeb, :controller
-  alias Easypodcasts.WorkerManager
+  alias Easypodcasts.Episodes
 
   def next(conn, _params) do
-    json(conn, WorkerManager.next_episode)
+    episode = Episodes.next_episode(conn.assigns.current_worker)
+    json(conn, episode)
   end
 
   def converted(conn, %{"id" => episode_id, "audio" => upload = %Plug.Upload{}}) do
-    dest = "priv/tmp/#{episode_id}"
-    File.cp!(upload.path, dest)
-    WorkerManager.save_converted_episode(episode_id, dest, conn.assigns.current_worker)
+    episode_id |> String.to_integer() |> Episodes.converted(upload, conn.assigns.current_worker)
+    json(conn, :ok)
+  end
+
+  def cancel(conn, %{"id" => episode_id}) do
+    episode_id |> String.to_integer() |> Episodes.cancel(conn.assigns.current_worker)
+    Episodes.cancel(String.to_integer(episode_id))
     json(conn, :ok)
   end
 end

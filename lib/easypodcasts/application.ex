@@ -19,9 +19,10 @@ defmodule Easypodcasts.Application do
       # Start a worker by calling: Easypodcasts.Worker.start_link(arg)
       # {Easypodcasts.Worker, arg}
       {Task.Supervisor, name: Easypodcasts.TaskSupervisor},
-      Easypodcasts.Queue,
       Easypodcasts.Scheduler,
-      Easypodcasts.WorkerManager
+      {Registry, keys: :unique, name: WorkerRegistry},
+      {DynamicSupervisor, strategy: :one_for_one, name: WorkerSupervisor},
+      Easypodcasts.Queue,
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

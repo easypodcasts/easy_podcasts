@@ -5,8 +5,10 @@ defmodule Easypodcasts.Scheduler do
 
   # @drive_id = '/home/cloud/podcasts-storage'
 
+  @name __MODULE__
+
   def start_link(_opts) do
-    Logger.info("starting genserver: #{__MODULE__}")
+    Logger.info("#{@name} starting")
     GenServer.start_link(__MODULE__, %{})
   end
 
@@ -18,14 +20,14 @@ defmodule Easypodcasts.Scheduler do
   end
 
   def handle_info(:feed_update, state) do
-    Logger.info("Scheduled Task: Updating all feeds")
+    Logger.info("#{@name} Scheduled Task: Updating all feeds")
     Channels.process_all_channels()
     schedule_feed_update()
     {:noreply, state}
   end
 
   def handle_info(:disk_maintenance, state) do
-    Logger.info("Scheduled Task: Disk Maintenance")
+    Logger.info("#{@name} Scheduled Task: Disk Maintenance")
     do_disk_maintenance()
     schedule_disk_maintenance()
     {:noreply, state}
@@ -82,29 +84,23 @@ defmodule Easypodcasts.Scheduler do
   def delete_audio_for(episodes) do
     episodes
     |> Easypodcasts.Repo.all()
-    |> then(fn to_delete ->
-      Logger.info(
-        "Scheduled Task: Disk Maintenance: Removing audio for #{length(to_delete)} episodes"
+    |> tap(
+      &Logger.info(
+        "#{@name} Scheduled Task: Disk Maintenance: Removing audio for #{length(&1)} episodes"
       )
-
-      to_delete
-    end)
-    |> Enum.each(fn episode ->
-      File.rm("uploads/#{episode.channel_id}/episodes/#{episode.id}/episode.opus")
-    end)
+    )
+    |> Enum.each(&File.rm("uploads/#{&1.channel_id}/episodes/#{&1.id}/episode.opus"))
 
     episodes
   end
 
   def reset_info(episodes) do
     episodes
-    |> then(fn to_reset ->
-      Logger.info(
-        "Scheduled Task: Disk Maintenance: Reset info for #{length(Easypodcasts.Repo.all(to_reset))} episodes"
+    |> tap(
+      &Logger.info(
+        "#{@name} Scheduled Task: Disk Maintenance: Reset info for #{length(Easypodcasts.Repo.all(&1))} episodes"
       )
-
-      to_reset
-    end)
+    )
     |> Easypodcasts.Repo.update_all(
       set: [status: :new, processed_audio_url: nil, processed_size: nil]
     )

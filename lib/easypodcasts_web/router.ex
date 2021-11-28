@@ -42,6 +42,7 @@ defmodule EasypodcastsWeb.Router do
     pipe_through :api
     get "/next", ApiController, :next
     post "/converted", ApiController, :converted
+    post "/cancel", ApiController, :cancel
   end
 
   # Enables LiveDashboard only for development

@@ -25,4 +25,5 @@ defmodule Easypodcasts.Episodes.Episode do
 
     timestamps()
   end
+
 end
