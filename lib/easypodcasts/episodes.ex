@@ -9,6 +9,8 @@ defmodule Easypodcasts.Episodes do
   alias Ecto.Changeset
   alias Easypodcasts.Helpers.{Utils, Search}
   alias Easypodcasts.Episodes.{Episode, EpisodeAudio}
+  alias Easypodcasts.Queue
+  alias Easypodcasts.Workers.Worker
 
   def get_queued_episodes(),
     do: from(e in Episode, where: e.status in [:queued, :processing]) |> Repo.all()
@@ -82,8 +84,9 @@ defmodule Easypodcasts.Episodes do
     episode = get_episode!(episode_id)
 
     case episode.status do
-      :new ->
-        update_episode(episode, %{status: :queued})
+      status when status in [:new, :processing] ->
+        {:ok, episode} = update_episode(episode, %{status: :queued})
+        Queue.in_(episode)
         :ok
 
       _ ->
@@ -91,26 +94,68 @@ defmodule Easypodcasts.Episodes do
     end
   end
 
-  def save_converted_episode(episode_id, upload, worker_id) do
+  def next_episode(worker_id) do
+    case Queue.out() do
+      :empty ->
+        :noop
+
+      episode ->
+        DynamicSupervisor.start_child(
+          WorkerSupervisor,
+          {Worker, {episode.id, worker_id}}
+        )
+
+        {:ok, episode} = update_episode(episode, %{status: :processing})
+        %{id: episode.id, url: episode.original_audio_url}
+    end
+  end
+
+  def converted(episode_id, upload, worker_id) do
+    # dest = "priv/tmp/#{episode_id}"
+    # File.cp!(upload.path, dest)
     episode = get_episode!(episode_id)
 
-    if episode.status == :processing do
-      file = %{filename: "episode.opus", path: upload}
+    pid =
+      case Registry.lookup(WorkerRegistry, episode_id) do
+        [] ->
+          nil
 
-      case EpisodeAudio.store({file, episode}) do
+        [{pid, _}] ->
+          pid
+      end
+
+    if pid && Worker.worker_id(pid) == worker_id do
+      case EpisodeAudio.store({%{upload | filename: "episode.opus"}, episode}) do
         {:ok, _} ->
-          size = Utils.get_file_size(upload)
-          File.rm("priv/tmp/#{episode_id}")
+          size = Utils.get_file_size(upload.path)
 
           episode
           |> Changeset.change(%{status: :done, processed_size: size, worker_id: worker_id})
           |> Repo.update()
 
+          DynamicSupervisor.terminate_child(WorkerSupervisor, pid)
+
         {:error, _} ->
-          episode |> Changeset.change(%{status: :queued}) |> Repo.update()
+          enqueue(episode.id)
       end
-    else
-      File.rm("priv/tmp/#{episode_id}")
+    end
+  end
+
+  def cancel(episode_id, worker_id) do
+    episode = get_episode!(episode_id)
+
+    pid =
+      case Registry.lookup(WorkerRegistry, episode_id) do
+        [] ->
+          nil
+
+        [{pid, _}] ->
+          pid
+      end
+
+    if pid && Worker.worker_id(pid) == worker_id do
+      DynamicSupervisor.terminate_child(WorkerSupervisor, pid)
+      enqueue(episode.id)
     end
   end
 
