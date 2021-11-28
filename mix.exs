@@ -54,7 +54,8 @@ defmodule Easypodcasts.MixProject do
       {:waffle, "~> 1.1"},
       {:jaxon, "~> 2.0"},
       {:tzdata, "~> 1.1"},
-      {:timex, "~> 3.7"}
+      {:timex, "~> 3.7"},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
     ]
   end
 
