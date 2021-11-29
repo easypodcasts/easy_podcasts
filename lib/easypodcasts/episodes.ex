@@ -5,15 +5,14 @@ defmodule Easypodcasts.Episodes do
 
   import Ecto.Query, warn: false
   alias Easypodcasts.Repo
+  alias Phoenix.PubSub
 
   alias Ecto.Changeset
   alias Easypodcasts.Helpers.{Utils, Search}
   alias Easypodcasts.Episodes.{Episode, EpisodeAudio}
   alias Easypodcasts.Queue
   alias Easypodcasts.Workers.Worker
-
-  def get_queued_episodes(),
-    do: from(e in Episode, where: e.status in [:queued, :processing]) |> Repo.all()
+  require Logger
 
   def list_episodes_audio_url(channel_id),
     do:
@@ -39,6 +38,22 @@ defmodule Easypodcasts.Episodes do
     |> order_by([{:desc, :publication_date}])
     |> Repo.paginate(page: page)
     |> Map.put(:params, search: search, page: page)
+  end
+
+  def queue_state() do
+    from(e in Episode,
+      where: e.status in [:processing, :queued],
+      order_by: [{:asc, :status}]
+    )
+    |> Repo.all()
+  end
+
+  def queue_size() do
+    from(e in Episode,
+      where: e.status in [:processing, :queued],
+      select: count(e)
+    )
+    |> Repo.one()
   end
 
   def query_done_episodes(channel_id) do
@@ -87,6 +102,7 @@ defmodule Easypodcasts.Episodes do
       status when status in [:new, :processing] ->
         {:ok, episode} = update_episode(episode, %{status: :queued})
         Queue.in_(episode)
+        broadcast_queue_changed()
         :ok
 
       _ ->
@@ -106,6 +122,7 @@ defmodule Easypodcasts.Episodes do
         )
 
         {:ok, episode} = update_episode(episode, %{status: :processing})
+        broadcast_episode_state_change(:episode_processing, episode.id, episode.channel_id)
         %{id: episode.id, url: episode.original_audio_url}
     end
   end
@@ -134,6 +151,7 @@ defmodule Easypodcasts.Episodes do
           |> Repo.update()
 
           DynamicSupervisor.terminate_child(WorkerSupervisor, pid)
+          broadcast_episode_state_change(:episode_processed, episode.id, episode.channel_id)
 
         {:error, _} ->
           enqueue(episode.id)
@@ -157,6 +175,18 @@ defmodule Easypodcasts.Episodes do
       DynamicSupervisor.terminate_child(WorkerSupervisor, pid)
       enqueue(episode.id)
     end
+  end
+
+  defp broadcast_queue_changed() do
+    PubSub.broadcast(Easypodcasts.PubSub, "queue_state", {:queue_changed, queue_size()})
+  end
+
+  defp broadcast_episode_state_change(event, channel_id, episode_id) do
+    PubSub.broadcast(
+      Easypodcasts.PubSub,
+      "channel#{channel_id}",
+      {event, %{episode_id: episode_id}}
+    )
   end
 
   def save_new_episodes(channel, feed_data) do

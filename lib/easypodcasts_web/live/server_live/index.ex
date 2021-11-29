@@ -1,8 +1,7 @@
 defmodule EasypodcastsWeb.ServerLive.Index do
   use EasypodcastsWeb, :live_view
   alias Phoenix.PubSub
-  alias Easypodcasts.Channels
-  # alias Easypodcasts.Queue
+  alias Easypodcasts.{Channels, Episodes}
 
   @impl true
   def mount(_params, _session, socket) do
@@ -11,8 +10,8 @@ defmodule EasypodcastsWeb.ServerLive.Index do
     {_id, capacity, percent} =
       :disksup.get_disk_data()
       |> Enum.filter(fn {disk_id, _size, _percent} ->
-        # disk_id == '/home/cloud/podcasts-storage'
-        disk_id == '/'
+        disk_id == '/home/cloud/podcasts-storage'
+        # disk_id == '/'
       end)
       |> hd
 
@@ -42,16 +41,15 @@ defmodule EasypodcastsWeb.ServerLive.Index do
 
   def handle_info({:queue_changed, queue_len}, socket) do
     send_update(EasypodcastsWeb.QueueComponent, id: "queue_state", queue_len: queue_len)
+    # TODO: dont do this with every message
     {:noreply, assign(socket, get_dynamic_assigns())}
   end
 
   defp get_dynamic_assigns() do
-    # TODO: get real queue state
-    # {queue, current_episode} = Queue.get_queue_state()
-    {queue, current_episode} = {[], %{}}
+    queued_episodes = Episodes.queue_state()
 
     channels_index =
-      queue
+      queued_episodes
       |> Enum.map(fn episode -> episode.channel_id end)
       |> Channels.get_channels_in()
 
@@ -59,9 +57,8 @@ defmodule EasypodcastsWeb.ServerLive.Index do
       Easypodcasts.get_channels_stats()
 
     [
-      queue: queue,
+      queued_episodes: queued_episodes,
       channels_index: channels_index,
-      current_episode: current_episode,
       channels: channels,
       episodes: episodes,
       size: size,

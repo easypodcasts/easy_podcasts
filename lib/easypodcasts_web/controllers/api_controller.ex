@@ -14,7 +14,6 @@ defmodule EasypodcastsWeb.ApiController do
 
   def cancel(conn, %{"id" => episode_id}) do
     episode_id |> String.to_integer() |> Episodes.cancel(conn.assigns.current_worker)
-    Episodes.cancel(String.to_integer(episode_id))
     json(conn, :ok)
   end
 end

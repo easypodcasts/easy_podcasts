@@ -28,7 +28,7 @@ defmodule Easypodcasts.Queue do
     Logger.info("#{@name} getting queued episodes from database")
 
     {:noreply,
-     Episodes.get_queued_episodes()
+     Episodes.queue_state()
      |> :queue.from_list()}
   end
 

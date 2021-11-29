@@ -36,20 +36,14 @@
       </ol>
     </div>
   </div>
-  <%= if @current_episode  do %>
-    <div class="mb-6 border border-gray-200 dark:border-gray-600 rounded-lg flex-col">
-        <span class="text-white text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex w-full justify-center"> Current Episode </span>
-            <p class="p-2 dark:text-white">Current Episode: <%= @current_episode.title %>  </p>
-    </div>
-  <% end %>
   <div class="border border-gray-200 dark:border-gray-600 rounded-lg flex-col">
       <span class="text-white text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex w-full justify-center"> Queue </span>
-      <%= if length(@queue) > 0 do %>
+      <%= if length(@queued_episodes) > 0 do %>
         <p class="p-2 dark:text-white">Episodes in queue:</p>
         <ol class="px-5 list-decimal dark:text-white">
-        <%= for episode <- @queue do %>
+        <%= for episode <- @queued_episodes do %>
           <li> 
-            <%= episode.title %> ( <%= Map.get(@channels_index, episode.channel_id) %> )
+            <%= "#{episode.title} #{episode.status}" %>  ( <%= Map.get(@channels_index, episode.channel_id) %> )
           </li>
         <% end %>
         </ol>
