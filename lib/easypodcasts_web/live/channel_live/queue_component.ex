@@ -3,9 +3,8 @@ defmodule EasypodcastsWeb.QueueComponent do
   # the line below would be: use MyAppWeb, :live_component
   use EasypodcastsWeb, :live_component
 
+  alias Easypodcasts.Episodes
   alias Phoenix.PubSub
-  # alias Easypodcasts.Queue
-  require Logger
 
   @impl true
   def mount(socket) do
@@ -20,9 +19,7 @@ defmodule EasypodcastsWeb.QueueComponent do
 
   @impl true
   def update(_assigns, socket) do
-    # TODO: return real queue length
-    # {:ok, assign(socket, :queue_len, Queue.get_queue_len())}
-    {:ok, assign(socket, :queue_len, 0)}
+    {:ok, assign(socket, :queue_len, Episodes.queue_size())}
   end
 
   @impl true
