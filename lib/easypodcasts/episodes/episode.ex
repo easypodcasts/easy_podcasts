@@ -20,6 +20,7 @@ defmodule Easypodcasts.Episodes.Episode do
     field :publication_date, :utc_datetime
     field :feed_data, :map
     field :downloads, :integer, default: 0
+    field :guid
     belongs_to :channel, Easypodcasts.Channels.Channel
     belongs_to :worker, Easypodcasts.Workers.Worker
 
