@@ -14,14 +14,17 @@ defmodule Easypodcasts.Episodes do
   alias Easypodcasts.Workers.Worker
   require Logger
 
-  def list_episodes_audio_url(channel_id),
+  def list_episodes_guids(channel_id),
     do:
-      from(e in Episode, where: e.channel_id == ^channel_id, select: e.original_audio_url)
+      from(e in Episode,
+        where: e.channel_id == ^channel_id,
+        select: e.guid
+      )
       |> Repo.all()
 
-  def list_episodes_audio_url(),
+  def list_episodes_guids(),
     do:
-      from(e in Episode, select: e.original_audio_url)
+      from(e in Episode, select: e.guid)
       |> Repo.all()
 
   def list_episodes(channel_id, search, page) do
@@ -215,10 +218,11 @@ defmodule Easypodcasts.Episodes do
 
   def save_new_episodes(channel, feed_data) do
     # episode_audio_urls = get_episodes_url_from_channel(channel.id)
-    episode_audio_urls = list_episodes_audio_url()
+    episodes_guids = list_episodes_guids()
 
     (feed_data["items"] || [])
-    |> Stream.filter(&(&1["enclosures"] && hd(&1["enclosures"])["url"] not in episode_audio_urls))
+    |> Stream.filter(&(&1["enclosures"] && hd(&1["enclosures"])["url"]))
+    |> Stream.filter(&(&1["guid"] && &1["guid"] not in episodes_guids))
     |> Stream.map(&episode_item_to_map(&1, channel.id))
     |> Enum.to_list()
     |> create_episodes()
@@ -236,6 +240,7 @@ defmodule Easypodcasts.Episodes do
     %{
       description: item["description"],
       title: item["title"],
+      guid: item["guid"],
       link: item["link"],
       original_audio_url: item["enclosures"] && hd(item["enclosures"])["url"],
       original_size:
