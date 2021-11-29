@@ -129,52 +129,63 @@ defmodule Easypodcasts.Episodes do
   end
 
   def converted(episode_id, upload, worker_id) do
-    # dest = "priv/tmp/#{episode_id}"
-    # File.cp!(upload.path, dest)
     episode = get_episode!(episode_id)
 
-    pid =
-      case Registry.lookup(WorkerRegistry, episode_id) do
-        [] ->
-          nil
+    with pid when is_pid(pid) <- lookup_worker(episode_id),
+         {:worker_validation, true} <- {:worker_validation, Worker.worker_id(pid) == worker_id},
+         {:audio_validation, true} <-
+           {:audio_validation, valid_episode_duration(episode.original_audio_url, upload.path)},
+         {:ok, _} <- EpisodeAudio.store({%{upload | filename: "episode.opus"}, episode}) do
+      size = Utils.get_file_size(upload.path)
 
-        [{pid, _}] ->
-          pid
-      end
+      episode
+      |> Changeset.change(%{status: :done, processed_size: size, worker_id: worker_id})
+      |> Repo.update()
 
-    if pid && Worker.worker_id(pid) == worker_id do
-      case EpisodeAudio.store({%{upload | filename: "episode.opus"}, episode}) do
-        {:ok, _} ->
-          size = Utils.get_file_size(upload.path)
+      DynamicSupervisor.terminate_child(WorkerSupervisor, pid)
+      broadcast_episode_state_change(:episode_processed, episode.channel_id, episode.id)
+      :ok
+    else
+      nil ->
+        "time for this episode expired"
 
-          episode
-          |> Changeset.change(%{status: :done, processed_size: size, worker_id: worker_id})
-          |> Repo.update()
+      {:worker_validation, false} ->
+        "this episode was assigned to another worker"
 
-          DynamicSupervisor.terminate_child(WorkerSupervisor, pid)
-          broadcast_episode_state_change(:episode_processed, episode.channel_id, episode.id)
+      {:audio_validation, false} ->
+        enqueue(episode.id)
+        "processed audio does not match original audio"
 
-        {:error, _} ->
-          enqueue(episode.id)
-      end
+      {:error, _} ->
+        enqueue(episode.id)
+        "error saving the episode file"
     end
   end
 
   def cancel(episode_id, worker_id) do
     episode = get_episode!(episode_id)
 
-    pid =
-      case Registry.lookup(WorkerRegistry, episode_id) do
-        [] ->
-          nil
-
-        [{pid, _}] ->
-          pid
-      end
+    pid = lookup_worker(episode_id)
 
     if pid && Worker.worker_id(pid) == worker_id do
       DynamicSupervisor.terminate_child(WorkerSupervisor, pid)
       enqueue(episode.id)
+    end
+  end
+
+  defp valid_episode_duration(original_path, converted_path) do
+    original_duration = Utils.get_audio_duration(original_path)
+    converted_duration = Utils.get_audio_duration(converted_path)
+    converted_duration in (original_duration - 2)..(original_duration + 2)
+  end
+
+  defp lookup_worker(id) do
+    case Registry.lookup(WorkerRegistry, id) do
+      [] ->
+        nil
+
+      [{pid, _}] ->
+        pid
     end
   end
 
