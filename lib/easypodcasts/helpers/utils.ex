@@ -33,4 +33,19 @@ defmodule Easypodcasts.Helpers.Utils do
     {:ok, %{size: size}} = File.stat(file)
     size
   end
+
+  def get_audio_duration(path) do
+    case System.cmd("ffprobe", [
+           path,
+           "-show_entries",
+           "format=duration",
+           "-v",
+           "quiet",
+           "-of",
+           "csv=p=0"
+         ]) do
+      {duration, 0} -> duration |> String.trim() |> String.to_float() |> trunc
+      _ -> 0
+    end
+  end
 end

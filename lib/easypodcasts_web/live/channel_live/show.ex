@@ -126,7 +126,6 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
         {:episode_processing, %{episode_id: episode_id}},
         socket
       ) do
-    IO.inspect("got episode processing")
     Process.send_after(self(), :clear_flash, 5000)
     episode = Map.get(socket.assigns.episodes_map, episode_id)
 
