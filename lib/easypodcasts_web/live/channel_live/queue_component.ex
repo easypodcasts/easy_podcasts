@@ -8,27 +8,27 @@ defmodule EasypodcastsWeb.QueueComponent do
 
   @impl true
   def mount(socket) do
-    if connected?(socket), do: PubSub.subscribe(Easypodcasts.PubSub, "queue_state")
+    if connected?(socket), do: PubSub.subscribe(Easypodcasts.PubSub, "queue_length")
     {:ok, socket}
   end
 
   @impl true
-  def update(%{queue_len: queue_len} = _assigns, socket) do
-    {:ok, assign(socket, :queue_len, queue_len)}
+  def update(%{queue_length: queue_length} = _assigns, socket) do
+    {:ok, assign(socket, :queue_length, queue_length)}
   end
 
   @impl true
   def update(_assigns, socket) do
-    {:ok, assign(socket, :queue_len, Episodes.queue_size())}
+    {:ok, assign(socket, :queue_length, Episodes.queue_length())}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <div>
-    <%= if @queue_len > 0 do %>
+    <%= if @queue_length > 0 do %>
       <div class="fixed bottom-6 right-6 rounded-lg bg-gray-200 px-3 py-1 text-xl">
-        <%= @queue_len %> episodes in queue
+        <%= @queue_length %> episodes in queue
       </div>
     <% end %>
     </div>

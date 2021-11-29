@@ -43,12 +43,12 @@ defmodule Easypodcasts.Episodes do
   def queue_state() do
     from(e in Episode,
       where: e.status in [:processing, :queued],
-      order_by: [{:asc, :status}]
+      order_by: [{:asc, :status}, {:asc, :updated_at}]
     )
     |> Repo.all()
   end
 
-  def queue_size() do
+  def queue_length() do
     from(e in Episode,
       where: e.status in [:processing, :queued],
       select: count(e)
@@ -122,7 +122,8 @@ defmodule Easypodcasts.Episodes do
         )
 
         {:ok, episode} = update_episode(episode, %{status: :processing})
-        broadcast_episode_state_change(:episode_processing, episode.id, episode.channel_id)
+        broadcast_queue_changed()
+        broadcast_episode_state_change(:episode_processing, episode.channel_id, episode.id)
         %{id: episode.id, url: episode.original_audio_url}
     end
   end
@@ -151,7 +152,7 @@ defmodule Easypodcasts.Episodes do
           |> Repo.update()
 
           DynamicSupervisor.terminate_child(WorkerSupervisor, pid)
-          broadcast_episode_state_change(:episode_processed, episode.id, episode.channel_id)
+          broadcast_episode_state_change(:episode_processed, episode.channel_id, episode.id)
 
         {:error, _} ->
           enqueue(episode.id)
@@ -178,7 +179,19 @@ defmodule Easypodcasts.Episodes do
   end
 
   defp broadcast_queue_changed() do
-    PubSub.broadcast(Easypodcasts.PubSub, "queue_state", {:queue_changed, queue_size()})
+    queue = queue_state()
+
+    PubSub.broadcast(
+      Easypodcasts.PubSub,
+      "queue_length",
+      {:queue_length_changed, length(queue)}
+    )
+
+    PubSub.broadcast(
+      Easypodcasts.PubSub,
+      "queue_state",
+      {:queue_state_changed, queue}
+    )
   end
 
   defp broadcast_episode_state_change(event, channel_id, episode_id) do

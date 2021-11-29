@@ -1,10 +1,8 @@
 defmodule EasypodcastsWeb.AboutLive.Index do
   use EasypodcastsWeb, :live_view
-  alias Phoenix.PubSub
 
   @impl true
   def mount(_params, _session, socket) do
-    if connected?(socket), do: PubSub.subscribe(Easypodcasts.PubSub, "queue_state")
     {:ok, assign(socket, :show_modal, false)}
   end
 
@@ -18,8 +16,8 @@ defmodule EasypodcastsWeb.AboutLive.Index do
   end
 
   @impl true
-  def handle_info({:queue_changed, queue_len}, socket) do
-    send_update(EasypodcastsWeb.QueueComponent, id: "queue_state", queue_len: queue_len)
+  def handle_info({:queue_length_changed, queue_length}, socket) do
+    send_update(EasypodcastsWeb.QueueComponent, id: "queue_state", queue_length: queue_length)
     {:noreply, socket}
   end
 

@@ -64,8 +64,8 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   end
 
   @impl true
-  def handle_info({:queue_changed, queue_len}, socket) do
-    send_update(EasypodcastsWeb.QueueComponent, id: "queue_state", queue_len: queue_len)
+  def handle_info({:queue_length_changed, queue_length}, socket) do
+    send_update(EasypodcastsWeb.QueueComponent, id: "queue_state", queue_length: queue_length)
     {:noreply, socket}
   end
 
