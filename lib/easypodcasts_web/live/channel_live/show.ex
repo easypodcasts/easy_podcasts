@@ -126,6 +126,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
         {:episode_processing, %{episode_id: episode_id}},
         socket
       ) do
+    IO.inspect("got episode processing")
     Process.send_after(self(), :clear_flash, 5000)
     episode = Map.get(socket.assigns.episodes_map, episode_id)
 
@@ -156,8 +157,8 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   end
 
   @impl true
-  def handle_info({:queue_changed, queue_len}, socket) do
-    send_update(EasypodcastsWeb.QueueComponent, id: "queue_state", queue_len: queue_len)
+  def handle_info({:queue_length_changed, queue_length}, socket) do
+    send_update(EasypodcastsWeb.QueueComponent, id: "queue_state", queue_length: queue_length)
     {:noreply, socket}
   end
 

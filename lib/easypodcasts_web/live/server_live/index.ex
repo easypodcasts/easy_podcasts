@@ -5,7 +5,10 @@ defmodule EasypodcastsWeb.ServerLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    if connected?(socket), do: PubSub.subscribe(Easypodcasts.PubSub, "queue_state")
+    if connected?(socket) do
+      PubSub.subscribe(Easypodcasts.PubSub, "queue_state")
+      PubSub.subscribe(Easypodcasts.PubSub, "queue_length")
+    end
 
     {_id, capacity, percent} =
       :disksup.get_disk_data()
@@ -17,12 +20,12 @@ defmodule EasypodcastsWeb.ServerLive.Index do
 
     socket =
       socket
-      |> assign(get_dynamic_assigns())
+      |> assign(get_dynamic_assigns(Episodes.queue_state()))
       |> assign(:disk_capacity, capacity)
       |> assign(:show_modal, false)
       |> assign(:disk_used, percent)
 
-    {:ok, assign(socket, get_dynamic_assigns())}
+    {:ok, socket}
   end
 
   @impl true
@@ -39,17 +42,18 @@ defmodule EasypodcastsWeb.ServerLive.Index do
     {:noreply, clear_flash(socket)}
   end
 
-  def handle_info({:queue_changed, queue_len}, socket) do
-    send_update(EasypodcastsWeb.QueueComponent, id: "queue_state", queue_len: queue_len)
-    # TODO: dont do this with every message
-    {:noreply, assign(socket, get_dynamic_assigns())}
+  def handle_info({:queue_length_changed, queue_length}, socket) do
+    send_update(EasypodcastsWeb.QueueComponent, id: "queue_state", queue_length: queue_length)
+    {:noreply, socket}
   end
 
-  defp get_dynamic_assigns() do
-    queued_episodes = Episodes.queue_state()
+  def handle_info({:queue_state_changed, queue_state}, socket) do
+    {:noreply, assign(socket, get_dynamic_assigns(queue_state))}
+  end
 
+  defp get_dynamic_assigns(queue_state) do
     channels_index =
-      queued_episodes
+      queue_state
       |> Enum.map(fn episode -> episode.channel_id end)
       |> Channels.get_channels_in()
 
@@ -57,7 +61,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
       Easypodcasts.get_channels_stats()
 
     [
-      queued_episodes: queued_episodes,
+      queued_episodes: queue_state,
       channels_index: channels_index,
       channels: channels,
       episodes: episodes,
