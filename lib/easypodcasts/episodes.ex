@@ -179,7 +179,7 @@ defmodule Easypodcasts.Episodes do
   defp valid_episode_duration(original_path, converted_path) do
     original_duration = Utils.get_audio_duration(original_path)
     converted_duration = Utils.get_audio_duration(converted_path)
-    converted_duration in (original_duration - 2)..(original_duration + 2)
+    converted_duration in (original_duration - 10)..(original_duration + 10)
   end
 
   defp lookup_worker(id) do
