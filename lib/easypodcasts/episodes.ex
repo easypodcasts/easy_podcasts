@@ -179,6 +179,7 @@ defmodule Easypodcasts.Episodes do
   defp valid_episode_duration(original_path, converted_path) do
     original_duration = Utils.get_audio_duration(original_path)
     converted_duration = Utils.get_audio_duration(converted_path)
+    Logger.info("Validating duration of #{original_path} = #{original_duration} vs #{converted_path} = #{converted_duration}")
     converted_duration in (original_duration - 10)..(original_duration + 10)
   end
 
