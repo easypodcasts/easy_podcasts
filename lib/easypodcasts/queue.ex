@@ -40,7 +40,6 @@ defmodule Easypodcasts.Queue do
   end
 
   def handle_call(:out, _from, queue) do
-    Logger.info("#{@name} extracting episode")
 
     {episode, queue} =
       case :queue.out(queue) do
@@ -48,6 +47,7 @@ defmodule Easypodcasts.Queue do
         {{:value, episode}, queue} -> {episode, queue}
       end
 
+    Logger.info("#{@name} extracting episode #{if episode != :empty, do: episode.id, else: episode}")
     {:reply, episode, queue}
   end
 end
