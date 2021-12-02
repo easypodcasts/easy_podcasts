@@ -20,10 +20,19 @@ defmodule EasypodcastsWeb.ApiController do
   end
 
   def cancel(conn, %{"id" => episode_id}) do
-    episode_id
-    |> String.to_integer()
-    |> Episodes.cancel(conn.assigns.current_worker)
+    {status, msg} =
+      case episode_id do
+        "" ->
+          {:bad_request, "episode id is required"}
 
-    json(conn, :ok)
+        episode_id ->
+          episode_id
+          |> String.to_integer()
+          |> Episodes.cancel(conn.assigns.current_worker)
+
+          {:ok, "episode cancelled"}
+      end
+
+    conn |> put_status(status) |> json(msg)
   end
 end
