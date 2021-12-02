@@ -183,14 +183,18 @@ defmodule Easypodcasts.Episodes do
   end
 
   defp valid_episode_duration(original_path, converted_path) do
-    original_duration = Utils.get_audio_duration(original_path)
-    converted_duration = Utils.get_audio_duration(converted_path)
+    true
+    # TODO: understand the difference between ffprobe results in client and
+    # server
 
-    Logger.info(
-      "Validating duration of #{original_path} = #{original_duration} vs #{converted_path} = #{converted_duration}"
-    )
+    # original_duration = Utils.get_audio_duration(original_path)
+    # converted_duration = Utils.get_audio_duration(converted_path)
 
-    converted_duration in (original_duration - 60)..(original_duration + 60)
+    # Logger.info(
+    #   "Validating duration of #{original_path} = #{original_duration} vs #{converted_path} = #{converted_duration}"
+    # )
+
+    # converted_duration in (original_duration - 60)..(original_duration + 60)
   end
 
   defp lookup_worker(id) do
