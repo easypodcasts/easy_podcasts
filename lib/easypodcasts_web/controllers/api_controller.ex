@@ -8,12 +8,15 @@ defmodule EasypodcastsWeb.ApiController do
   end
 
   def converted(conn, %{"id" => episode_id, "audio" => upload = %Plug.Upload{}}) do
-    resp =
-      episode_id
-      |> String.to_integer()
-      |> Episodes.converted(upload, conn.assigns.current_worker)
+    {status, msg} =
+      case episode_id
+           |> String.to_integer()
+           |> Episodes.converted(upload, conn.assigns.current_worker) do
+        :ok -> {:ok, "all good"}
+        msg -> {:bad_request, msg}
+      end
 
-    json(conn, resp)
+    conn |> put_status(status) |> json(msg)
   end
 
   def cancel(conn, %{"id" => episode_id}) do
