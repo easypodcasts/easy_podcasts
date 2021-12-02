@@ -12,7 +12,6 @@ defmodule Easypodcasts.Episodes do
   alias Easypodcasts.Episodes.{Episode, EpisodeAudio}
   alias Easypodcasts.Queue
   alias Easypodcasts.Workers.Worker
-  require Logger
 
   def list_episodes_guids(channel_id),
     do:
@@ -182,7 +181,7 @@ defmodule Easypodcasts.Episodes do
     end
   end
 
-  defp valid_episode_duration(original_path, converted_path) do
+  defp valid_episode_duration(_original_path, _converted_path) do
     true
     # TODO: understand the difference between ffprobe results in client and
     # server
