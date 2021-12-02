@@ -42,7 +42,9 @@ defmodule Easypodcasts.Helpers.Utils do
            "-v",
            "quiet",
            "-of",
-           "csv=p=0"
+           "csv=p=0",
+           "-user_agent",
+           "'Mozilla/5.0 (X11; Linux x86_64; rv:94.0) Gecko/20100101 Firefox/94.0'"
          ]) do
       {duration, 0} -> duration |> String.trim() |> String.to_float() |> trunc
       _ -> 0
