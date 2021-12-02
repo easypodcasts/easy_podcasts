@@ -98,18 +98,22 @@ defmodule Easypodcasts.Episodes do
     |> Repo.update_all([])
   end
 
+  def inc_episode_retries(episode_id) do
+    from(e in Episode, update: [inc: [retries: 1]], where: e.id == ^episode_id)
+    |> Repo.update_all([])
+  end
+
   def enqueue(episode_id) do
     episode = get_episode!(episode_id)
 
-    case episode.status do
-      status when status in [:new, :processing] ->
-        {:ok, episode} = update_episode(episode, %{status: :queued})
-        Queue.in_(episode)
-        broadcast_queue_changed()
-        :ok
-
-      _ ->
-        :error
+    if episode.status in [:new, :processing] and episode.retries < 3 do
+      {:ok, episode} = update_episode(episode, %{status: :queued})
+      Queue.in_(episode)
+      broadcast_queue_changed()
+      :ok
+    else
+      update_episode(episode, %{status: :new})
+      :error
     end
   end
 
@@ -125,6 +129,7 @@ defmodule Easypodcasts.Episodes do
         )
 
         {:ok, episode} = update_episode(episode, %{status: :processing})
+        inc_episode_retries(episode.id)
         broadcast_queue_changed()
         broadcast_episode_state_change(:episode_processing, episode.channel_id, episode.id)
         %{id: episode.id, url: episode.original_audio_url}
@@ -147,6 +152,7 @@ defmodule Easypodcasts.Episodes do
 
       DynamicSupervisor.terminate_child(WorkerSupervisor, pid)
       broadcast_episode_state_change(:episode_processed, episode.channel_id, episode.id)
+      broadcast_queue_changed()
       :ok
     else
       nil ->
@@ -179,7 +185,11 @@ defmodule Easypodcasts.Episodes do
   defp valid_episode_duration(original_path, converted_path) do
     original_duration = Utils.get_audio_duration(original_path)
     converted_duration = Utils.get_audio_duration(converted_path)
-    Logger.info("Validating duration of #{original_path} = #{original_duration} vs #{converted_path} = #{converted_duration}")
+
+    Logger.info(
+      "Validating duration of #{original_path} = #{original_duration} vs #{converted_path} = #{converted_duration}"
+    )
+
     converted_duration in (original_duration - 60)..(original_duration + 60)
   end
 
