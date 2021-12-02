@@ -8,7 +8,7 @@
 >
 <channel>
   <title><![CDATA[<%= @title %> ]]></title>
-  <copyright><%= @feed_data["copyright"] %></copyright>
+  <copyright><%= clear_ampersand(@feed_data["copyright"]) %></copyright>
   <link><![CDATA[<%= @link %>]]></link>
   <%= if @feed_data["extensions"]["atom"]["link"] do %>
     <%= for link <- @feed_data["extensions"]["atom"]["link"] do %>
