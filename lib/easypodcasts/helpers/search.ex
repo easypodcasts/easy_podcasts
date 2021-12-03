@@ -38,8 +38,8 @@ defmodule Easypodcasts.Helpers.Search do
   end
 
   defp search_changeset(attrs) do
-    cast(
-      {%{}, %{search_phrase: :string}},
+    {%{}, %{search_phrase: :string}}
+    |> cast(
       attrs,
       [:search_phrase]
     )
@@ -50,6 +50,6 @@ defmodule Easypodcasts.Helpers.Search do
   end
 
   def validate_search(search) do
-    %{search_phrase: search} |> search_changeset
+    search_changeset(%{search_phrase: search})
   end
 end

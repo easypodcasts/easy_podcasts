@@ -38,7 +38,7 @@ defmodule Easypodcasts.Channels.Channel do
       |> put_change(:feed_data, Map.drop(data, ["items"]))
     else
       {:error, msg} ->
-        validate_change(changeset, field, fn _, _link -> [{field, msg}] end)
+        validate_change(changeset, field, fn _field_name, _link -> [{field, msg}] end)
 
       changeset ->
         changeset

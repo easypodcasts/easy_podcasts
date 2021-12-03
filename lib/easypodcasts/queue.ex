@@ -30,9 +30,7 @@ defmodule Easypodcasts.Queue do
   def handle_continue(:get_queued_episodes, _state) do
     Logger.info("#{@name} getting queued episodes from database")
 
-    {:noreply,
-     Episodes.queue_state()
-     |> :queue.from_list()}
+    {:noreply, :queue.from_list(Episodes.queue_state())}
   end
 
   def handle_call({:in, episode}, _from, queue) do

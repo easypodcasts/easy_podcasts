@@ -13,10 +13,9 @@ defmodule EasypodcastsWeb.Api.Auth do
     with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
          {:ok, worker_id} <-
            Phoenix.Token.verify(EasypodcastsWeb.Endpoint, "worker auth", token, max_age: :infinity) do
-      conn
-      |> assign(:current_worker, worker_id)
+      assign(conn, :current_worker, worker_id)
     else
-      _error ->
+      _invalid ->
         conn
         |> put_status(:unauthorized)
         |> Phoenix.Controller.put_view(EasypodcastsWeb.ErrorView)
