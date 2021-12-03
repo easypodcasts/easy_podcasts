@@ -14,17 +14,20 @@ defmodule Easypodcasts.Channels do
 
   require Logger
 
-  def list_channels, do: Channel |> Repo.all()
+  def list_channels, do: Repo.all(Channel)
 
   def list_channels(search, page) do
-    case Search.validate_search(search) do
-      %{valid?: true, changes: %{search_phrase: search_phrase}} ->
-        Search.search(Channel, search_phrase)
+    query =
+      case Search.validate_search(search) do
+        %{valid?: true, changes: %{search_phrase: search_phrase}} ->
+          Search.search(Channel, search_phrase)
 
-      _ ->
-        # This should never happen when searching from the web
-        Channel
-    end
+        _invalid ->
+          # This should never happen when searching from the web
+          Channel
+      end
+
+    query
     |> then(
       &from(c in &1,
         left_join: e in Episode,
@@ -116,8 +119,7 @@ defmodule Easypodcasts.Channels do
   def process_all_channels() do
     Logger.info("Processing all channels")
 
-    list_channels()
-    |> Enum.each(&process_channel(&1, true))
+    Enum.each(list_channels(), &process_channel(&1, true))
   end
 
   def process_channel(channel, process_new_episodes \\ false) do
@@ -134,7 +136,7 @@ defmodule Easypodcasts.Channels do
 
       {:ok, new_episodes}
     else
-      _ ->
+      _error ->
         {:error, channel,
          "We can't process that podcast right now. Please create an issue with the feed url."}
     end

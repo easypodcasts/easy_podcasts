@@ -30,7 +30,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   end
 
   @impl true
-  def handle_params(params, _, socket) do
+  def handle_params(params, _url, socket) do
     {:noreply, assign(socket, list_episodes_for(socket.assigns.channel.id, params))}
   end
 
@@ -117,7 +117,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
               )
           )
 
-        _ ->
+        _invalid ->
           socket
       end
 
@@ -229,7 +229,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
         |> Map.get("value")
         |> format_duration
 
-      _ ->
+      _other ->
         "00:00"
     end
   end
@@ -243,7 +243,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   end
 
   defp format_duration(duration) when is_integer(duration) do
-    time = Time.new!(0, 0, 0) |> Time.add(duration)
+    time = Time.add(Time.new!(0, 0, 0), duration)
     "#{time.hour}:#{time.minute}:#{time.second}"
   end
 end

@@ -47,7 +47,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
               )
           )
 
-        _ ->
+        _invalid ->
           socket
       end
 

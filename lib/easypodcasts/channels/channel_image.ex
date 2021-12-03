@@ -21,16 +21,16 @@ defmodule Easypodcasts.Channels.ChannelImage do
   # end
 
   # Define a thumbnail transformation:
-  def transform(:thumb, _) do
+  def transform(:thumb, _file) do
     {:ffmpeg, &"-i #{&1} -vf scale=215x215 -f webp #{&2}", :webp}
   end
 
-  def transform(:original, _) do
+  def transform(:original, _file) do
     {:ffmpeg, &"-i #{&1} -vf scale=400x400 -f webp #{&2}", :webp}
   end
 
   # Override the persisted filenames:
-  def filename(version, _) do
+  def filename(version, _file) do
     version
   end
 

@@ -15,47 +15,51 @@ defmodule Easypodcasts.Episodes do
 
   def list_episodes_guids(channel_id),
     do:
-      from(e in Episode,
-        where: e.channel_id == ^channel_id,
-        select: e.guid
+      Repo.all(
+        from(e in Episode,
+          where: e.channel_id == ^channel_id,
+          select: e.guid
+        )
       )
-      |> Repo.all()
 
   def list_episodes_guids(),
-    do:
-      from(e in Episode, select: e.guid)
-      |> Repo.all()
+    do: Repo.all(from(e in Episode, select: e.guid))
 
   def list_episodes(channel_id, search, page) do
     episode_query = from(e in Episode, where: e.channel_id == ^channel_id)
 
-    case Search.validate_search(search) do
-      %{valid?: true, changes: %{search_phrase: search_phrase}} ->
-        Search.search(episode_query, search_phrase)
+    query =
+      case Search.validate_search(search) do
+        %{valid?: true, changes: %{search_phrase: search_phrase}} ->
+          Search.search(episode_query, search_phrase)
 
-      _ ->
-        # This should never happen when searching from the web
-        episode_query
-    end
+        _invalid ->
+          # This should never happen when searching from the web
+          episode_query
+      end
+
+    query
     |> order_by([{:desc, :publication_date}])
     |> Repo.paginate(page: page)
     |> Map.put(:params, search: search, page: page)
   end
 
   def queue_state() do
-    from(e in Episode,
-      where: e.status in [:processing, :queued],
-      order_by: [{:asc, :status}, {:asc, :updated_at}]
+    Repo.all(
+      from(e in Episode,
+        where: e.status in [:processing, :queued],
+        order_by: [{:asc, :status}, {:asc, :updated_at}]
+      )
     )
-    |> Repo.all()
   end
 
   def queue_length() do
-    from(e in Episode,
-      where: e.status in [:processing, :queued],
-      select: count(e)
+    Repo.one(
+      from(e in Episode,
+        where: e.status in [:processing, :queued],
+        select: count(e)
+      )
     )
-    |> Repo.one()
   end
 
   def query_done_episodes(channel_id) do
@@ -93,13 +97,17 @@ defmodule Easypodcasts.Episodes do
   end
 
   def inc_episode_downloads(episode_id) do
-    from(e in Episode, update: [inc: [downloads: 1]], where: e.id == ^episode_id)
-    |> Repo.update_all([])
+    Repo.update_all(
+      from(e in Episode, update: [inc: [downloads: 1]], where: e.id == ^episode_id),
+      []
+    )
   end
 
   def inc_episode_retries(episode_id) do
-    from(e in Episode, update: [inc: [retries: 1]], where: e.id == ^episode_id)
-    |> Repo.update_all([])
+    Repo.update_all(
+      from(e in Episode, update: [inc: [retries: 1]], where: e.id == ^episode_id),
+      []
+    )
   end
 
   def enqueue(episode_id) do
@@ -140,8 +148,6 @@ defmodule Easypodcasts.Episodes do
 
     with pid when is_pid(pid) <- lookup_worker(episode_id),
          {:worker_validation, true} <- {:worker_validation, Worker.worker_id(pid) == worker_id},
-         {:audio_validation, true} <-
-           {:audio_validation, valid_episode_duration(episode.original_audio_url, upload.path)},
          {:ok, _} <- EpisodeAudio.store({%{upload | filename: "episode.opus"}, episode}) do
       size = Utils.get_file_size(upload.path)
 
@@ -160,10 +166,6 @@ defmodule Easypodcasts.Episodes do
       {:worker_validation, false} ->
         "this episode was assigned to another worker"
 
-      {:audio_validation, false} ->
-        enqueue(episode.id)
-        "processed audio does not match original audio"
-
       {:error, _} ->
         enqueue(episode.id)
         "error saving the episode file"
@@ -181,20 +183,20 @@ defmodule Easypodcasts.Episodes do
     end
   end
 
-  defp valid_episode_duration(_original_path, _converted_path) do
-    true
-    # TODO: understand the difference between ffprobe results in client and
-    # server
+  # defp valid_episode_duration(_original_path, _converted_path) do
+  # true
+  # TODO: understand the difference between ffprobe results in client and
+  # server
 
-    # original_duration = Utils.get_audio_duration(original_path)
-    # converted_duration = Utils.get_audio_duration(converted_path)
+  # original_duration = Utils.get_audio_duration(original_path)
+  # converted_duration = Utils.get_audio_duration(converted_path)
 
-    # Logger.info(
-    #   "Validating duration of #{original_path} = #{original_duration} vs #{converted_path} = #{converted_duration}"
-    # )
+  # Logger.info(
+  #   "Validating duration of #{original_path} = #{original_duration} vs #{converted_path} = #{converted_duration}"
+  # )
 
-    # converted_duration in (original_duration - 60)..(original_duration + 60)
-  end
+  # converted_duration in (original_duration - 60)..(original_duration + 60)
+  # end
 
   defp lookup_worker(id) do
     case Registry.lookup(WorkerRegistry, id) do
@@ -248,7 +250,7 @@ defmodule Easypodcasts.Episodes do
            {:ok, shifted_datetime} <- DateTime.shift_zone(parsed_datetime, "Etc/UTC") do
         shifted_datetime
       else
-        _ -> DateTime.utc_now()
+        _error -> DateTime.utc_now()
       end
 
     %{
