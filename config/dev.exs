@@ -3,7 +3,7 @@ import Config
 # Configure your database
 config :easypodcasts, Easypodcasts.Repo,
   username: System.get_env("POSTGRES_USER", "postgres"),
-  password: System.get_env("POSTGRES_PASSWORD", "thepostgrespassword"),
+  password: System.get_env("POSTGRES_PASSWORD", "postgres"),
   database: System.get_env("POSTGRES_DB", "easypodcasts_dev"),
   hostname: System.get_env("PGHOST", "localhost"),
   show_sensitive_data_on_connection_error: true,
