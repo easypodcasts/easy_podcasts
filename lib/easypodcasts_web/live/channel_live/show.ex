@@ -127,11 +127,16 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
         socket
       ) do
     Process.send_after(self(), :clear_flash, 5000)
-    episode = Map.get(socket.assigns.episodes_map, episode_id)
+
+    msg =
+      case Map.get(socket.assigns.episodes_map, episode_id) do
+        nil -> "An episode from this is being processed"
+        episode -> "The episode '#{episode.title}' is being processed"
+      end
 
     socket =
       socket
-      |> put_flash(:info, "The episode '#{episode.title}' is being processed")
+      |> put_flash(:info, msg)
       |> update(:episodes_map, fn episodes ->
         put_in(episodes, [episode_id, :status], :processing)
       end)
