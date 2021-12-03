@@ -1,4 +1,7 @@
 defmodule EasypodcastsWeb.AboutLive.Index do
+  @moduledoc """
+  About view
+  """
   use EasypodcastsWeb, :live_view
 
   @impl true

@@ -1,4 +1,7 @@
 defmodule EasypodcastsWeb.Telemetry do
+  @moduledoc """
+  Phoenix telemetry configuration
+  """
   use Supervisor
   import Telemetry.Metrics
 

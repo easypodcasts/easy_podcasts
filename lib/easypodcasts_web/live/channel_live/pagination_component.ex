@@ -1,4 +1,7 @@
 defmodule EasypodcastsWeb.PaginationComponent do
+  @moduledoc """
+  Component to generate the pagination element
+  """
   use Phoenix.Component
 
   def pagination(

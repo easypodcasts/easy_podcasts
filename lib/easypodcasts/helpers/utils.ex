@@ -1,4 +1,8 @@
 defmodule Easypodcasts.Helpers.Utils do
+  @moduledoc """
+  Misc helpers
+  """
+
   def slugify(string) do
     string
     |> String.downcase()

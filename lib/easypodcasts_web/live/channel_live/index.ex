@@ -1,4 +1,7 @@
 defmodule EasypodcastsWeb.ChannelLive.Index do
+  @moduledoc """
+  Index view
+  """
   use EasypodcastsWeb, :live_view
 
   alias Easypodcasts.Channels

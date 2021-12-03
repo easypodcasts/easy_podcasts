@@ -1,6 +1,7 @@
 defmodule EasypodcastsWeb.QueueComponent do
-  # If you generated an app with mix phx.new --live,
-  # the line below would be: use MyAppWeb, :live_component
+  @moduledoc """
+  Live component to show the queue length
+  """
   use EasypodcastsWeb, :live_component
 
   alias Easypodcasts.Episodes

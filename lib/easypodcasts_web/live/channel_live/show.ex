@@ -1,4 +1,7 @@
 defmodule EasypodcastsWeb.ChannelLive.Show do
+  @moduledoc """
+  Channel details view
+  """
   use EasypodcastsWeb, :live_view
   import EasypodcastsWeb.PaginationComponent
 

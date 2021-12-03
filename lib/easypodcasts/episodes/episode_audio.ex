@@ -1,4 +1,7 @@
 defmodule Easypodcasts.Episodes.EpisodeAudio do
+  @moduledoc """
+  Episode audio uploader
+  """
   use Waffle.Definition
 
   @versions [:original]
@@ -35,5 +38,4 @@ defmodule Easypodcasts.Episodes.EpisodeAudio do
     # "uploads/user/avatars/#{scope.id}"
     "#{episode.channel_id}/episodes/#{episode.id}"
   end
-
 end

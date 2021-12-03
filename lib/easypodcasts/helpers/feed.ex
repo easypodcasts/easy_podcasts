@@ -1,4 +1,7 @@
 defmodule Easypodcasts.Helpers.Feed do
+  @moduledoc """
+  RSS feed helpers
+  """
   @feed_parser Path.expand("./priv/bin/feed-parser")
 
   def get_feed_data(url) do

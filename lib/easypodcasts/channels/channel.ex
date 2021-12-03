@@ -1,4 +1,7 @@
 defmodule Easypodcasts.Channels.Channel do
+  @moduledoc """
+  Channel schema
+  """
   use Ecto.Schema
   import Ecto.Changeset
   alias Easypodcasts.Helpers.Feed
