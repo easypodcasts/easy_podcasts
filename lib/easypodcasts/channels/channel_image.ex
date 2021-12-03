@@ -1,4 +1,7 @@
 defmodule Easypodcasts.Channels.ChannelImage do
+  @moduledoc """
+  Uploader for channel images
+  """
   use Waffle.Definition
 
   # Include ecto support (requires package waffle_ecto installed):

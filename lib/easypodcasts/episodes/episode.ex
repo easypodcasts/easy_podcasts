@@ -1,4 +1,7 @@
 defmodule Easypodcasts.Episodes.Episode do
+  @moduledoc """
+  Episode schema
+  """
   use Ecto.Schema
 
   @behaviour Access
@@ -28,5 +31,4 @@ defmodule Easypodcasts.Episodes.Episode do
 
     timestamps()
   end
-
 end

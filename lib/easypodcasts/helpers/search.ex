@@ -1,4 +1,7 @@
 defmodule Easypodcasts.Helpers.Search do
+  @moduledoc """
+  Postgres full text search helpers
+  """
   import Ecto.Query
   import Ecto.Changeset
 

@@ -1,4 +1,7 @@
 defmodule EasypodcastsWeb.ServerLive.Index do
+  @moduledoc """
+   Server status view
+  """
   use EasypodcastsWeb, :live_view
   alias Phoenix.PubSub
   alias Easypodcasts.{Channels, Episodes}

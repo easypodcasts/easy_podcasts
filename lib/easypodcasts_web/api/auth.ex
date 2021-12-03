@@ -1,4 +1,7 @@
 defmodule EasypodcastsWeb.Api.Auth do
+  @moduledoc """
+  Api authentication using Phoenix.Token
+  """
   import Plug.Conn
   require Logger
 
@@ -8,7 +11,8 @@ defmodule EasypodcastsWeb.Api.Auth do
 
   def call(conn, _opts) do
     with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
-         {:ok, worker_id} <- Phoenix.Token.verify(EasypodcastsWeb.Endpoint, "worker auth", token, max_age: :infinity) do
+         {:ok, worker_id} <-
+           Phoenix.Token.verify(EasypodcastsWeb.Endpoint, "worker auth", token, max_age: :infinity) do
       conn
       |> assign(:current_worker, worker_id)
     else

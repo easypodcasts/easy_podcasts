@@ -1,6 +1,7 @@
 defmodule EasypodcastsWeb.ModalComponent do
-  # If you generated an app with mix phx.new --live,
-  # the line below would be: use MyAppWeb, :live_component
+  @moduledoc """
+  Modal component to show the channel creation form
+  """
   use EasypodcastsWeb, :live_component
   alias Easypodcasts.Channels
   alias Easypodcasts.Channels.Channel

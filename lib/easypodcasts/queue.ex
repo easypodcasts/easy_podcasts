@@ -1,4 +1,7 @@
 defmodule Easypodcasts.Queue do
+  @moduledoc """
+  Episodes queue for processing
+  """
   use GenServer
   require Logger
   alias Easypodcasts.Episodes
@@ -40,14 +43,16 @@ defmodule Easypodcasts.Queue do
   end
 
   def handle_call(:out, _from, queue) do
-
     {episode, queue} =
       case :queue.out(queue) do
         {:empty, queue} -> {:empty, queue}
         {{:value, episode}, queue} -> {episode, queue}
       end
 
-    Logger.info("#{@name} extracting episode #{if episode != :empty, do: episode.id, else: episode}")
+    Logger.info(
+      "#{@name} extracting episode #{if episode != :empty, do: episode.id, else: episode}"
+    )
+
     {:reply, episode, queue}
   end
 end

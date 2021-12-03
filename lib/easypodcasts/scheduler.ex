@@ -1,4 +1,7 @@
 defmodule Easypodcasts.Scheduler do
+  @moduledoc """
+  GenServer that works as a scheduler for recurring tasks
+  """
   use GenServer
   require Logger
   alias Easypodcasts.{Channels, Episodes}

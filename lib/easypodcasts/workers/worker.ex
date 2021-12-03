@@ -1,4 +1,7 @@
 defmodule Easypodcasts.Workers.Worker do
+  @moduledoc """
+  Worker schema and genserver
+  """
   use Ecto.Schema
   import Ecto.Changeset
   require Logger
