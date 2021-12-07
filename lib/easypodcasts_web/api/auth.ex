@@ -4,6 +4,7 @@ defmodule EasypodcastsWeb.Api.Auth do
   """
   import Plug.Conn
   require Logger
+  alias Easypodcasts.Workers
 
   def init(opts) do
     opts
@@ -12,7 +13,8 @@ defmodule EasypodcastsWeb.Api.Auth do
   def call(conn, _opts) do
     with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
          {:ok, worker_id} <-
-           Phoenix.Token.verify(EasypodcastsWeb.Endpoint, "worker auth", token, max_age: :infinity) do
+           Phoenix.Token.verify(EasypodcastsWeb.Endpoint, "worker auth", token, max_age: :infinity),
+         true <- Workers.is_active(worker_id) do
       assign(conn, :current_worker, worker_id)
     else
       _invalid ->
