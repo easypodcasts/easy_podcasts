@@ -106,4 +106,9 @@ defmodule Easypodcasts.Workers do
   def change_worker(%Worker{} = worker, attrs \\ %{}) do
     Worker.changeset(worker, attrs)
   end
+
+  def is_active(worker_id) do
+    worker = get_worker!(worker_id)
+    worker.active
+  end
 end
