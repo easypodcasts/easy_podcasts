@@ -14,13 +14,7 @@ defmodule Easypodcasts.Episodes do
   alias Easypodcasts.Workers.Worker
 
   def list_episodes_guids(channel_id),
-    do:
-      Repo.all(
-        from(e in Episode,
-          where: e.channel_id == ^channel_id,
-          select: e.guid
-        )
-      )
+    do: Repo.all(from(e in Episode, where: e.channel_id == ^channel_id, select: e.guid))
 
   def list_episodes_guids(),
     do: Repo.all(from(e in Episode, select: e.guid))
@@ -88,6 +82,7 @@ defmodule Easypodcasts.Episodes do
 
   """
   def get_episode!(id), do: Repo.get!(Episode, id)
+
   def create_episodes(episodes), do: Repo.insert_all(Episode, episodes, returning: true)
 
   def update_episode(%Episode{} = episode, attrs \\ %{}) do

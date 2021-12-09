@@ -6,8 +6,6 @@ defmodule Easypodcasts.Scheduler do
   require Logger
   alias Easypodcasts.{Channels, Episodes}
 
-  # @drive_id = '/home/cloud/podcasts-storage'
-
   @name __MODULE__
 
   def start_link(_opts) do
