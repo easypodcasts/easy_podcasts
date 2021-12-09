@@ -1,7 +1,7 @@
-<section class="flex flex-col mb-6 mt-4">
+<section class="flex flex-col mt-4 mb-6">
   <div class="flex flex-wrap justify-between">
-    <div class="flex-col w-full md:w-5/12 border border-gray-200 dark:border-gray-600 rounded-lg mb-6">
-      <span class="text-white text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex w-full justify-center"> Podcasts </span>
+    <div class="flex-col mb-6 w-full rounded-lg border border-gray-200 md:w-5/12 dark:border-gray-600">
+      <span class="flex justify-center self-end p-2 w-full text-white bg-indigo-500 rounded-t-lg dark:bg-blue-400 text-md"> Podcasts </span>
         <ul class="p-2 dark:text-white">
           <li>Total Podcasts: <%= @channels %></li>
           <li>Total Episodes: <%= @episodes %></li>
@@ -10,8 +10,8 @@
           <li>Processed Size: <%= Float.floor(@size.processed  / 1_000_000_000, 2) %> GB</li>
         </ul>
     </div>
-    <div class="flex-col w-full md:w-5/12 border border-gray-200 dark:border-gray-600 rounded-lg mb-6">
-      <span class="text-white text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex w-full justify-center"> Storage </span>
+    <div class="flex-col mb-6 w-full rounded-lg border border-gray-200 md:w-5/12 dark:border-gray-600">
+      <span class="flex justify-center self-end p-2 w-full text-white bg-indigo-500 rounded-t-lg dark:bg-blue-400 text-md"> Storage </span>
       <ul class="p-2 dark:text-white">
         <li>Disk Capacity: <%= Float.floor(@disk_capacity/ 1_000_000, 2) %> GB</li>
         <li>Used: <%= @disk_used %> %</li>
@@ -19,25 +19,25 @@
     </div>
   </div>
   <div class="flex flex-wrap justify-between">
-    <div class="flex-col w-full md:w-5/12 border border-gray-200 dark:border-gray-600 rounded-lg mb-6">
-      <span class="text-white text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex w-full justify-center"> Latest Episodes </span>
-        <ol class="px-7 dark:text-white list-decimal">
+    <div class="flex-col mb-6 w-full rounded-lg border border-gray-200 md:w-5/12 dark:border-gray-600">
+      <span class="flex justify-center self-end p-2 w-full text-white bg-indigo-500 rounded-t-lg dark:bg-blue-400 text-md"> Latest Episodes </span>
+        <ol class="px-7 list-decimal dark:text-white">
           <%= for episode <- @latest_episodes do %>
             <li><%= episode %></li>
           <% end %>
         </ol>
     </div>
-    <div class="flex-col w-full md:w-5/12 border border-gray-200 dark:border-gray-600 rounded-lg mb-6">
-      <span class="text-white text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex w-full justify-center"> Latest Processed </span>
-      <ol class="px-7 dark:text-white list-decimal">
+    <div class="flex-col mb-6 w-full rounded-lg border border-gray-200 md:w-5/12 dark:border-gray-600">
+      <span class="flex justify-center self-end p-2 w-full text-white bg-indigo-500 rounded-t-lg dark:bg-blue-400 text-md"> Latest Processed </span>
+      <ol class="px-7 list-decimal dark:text-white">
           <%= for episode <- @latest_processed_episodes do %>
             <li><%= episode %></li>
           <% end %>
       </ol>
     </div>
   </div>
-  <div class="border border-gray-200 dark:border-gray-600 rounded-lg flex-col">
-      <span class="text-white text-md rounded-t-lg bg-indigo-500 p-2 dark:bg-blue-400 self-end flex w-full justify-center"> Queue </span>
+  <div class="flex-col rounded-lg border border-gray-200 dark:border-gray-600">
+      <span class="flex justify-center self-end p-2 w-full text-white bg-indigo-500 rounded-t-lg dark:bg-blue-400 text-md"> Queue </span>
       <%= if length(@queued_episodes) > 0 do %>
         <p class="p-2 dark:text-white">Episodes in queue:</p>
         <ol class="px-5 list-decimal dark:text-white">
