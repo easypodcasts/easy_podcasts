@@ -21,25 +21,4 @@ defmodule Easypodcasts.ChannelsFixtures do
 
     channel
   end
-
-  @doc """
-  Generate a episode.
-  """
-  def episode_fixture(attrs \\ %{}) do
-    {:ok, episode} =
-      attrs
-      |> Enum.into(%{
-        description: "some description",
-        link: "some link",
-        original_audio_url: "some original_audio_url",
-        original_size: 42,
-        processed: true,
-        processed_audio_url: "some processed_audio_url",
-        processed_size: 42,
-        title: "some title"
-      })
-      |> Easypodcasts.Channels.create_episode()
-
-    episode
-  end
 end

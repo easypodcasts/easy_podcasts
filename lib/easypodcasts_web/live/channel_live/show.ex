@@ -64,7 +64,6 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
   def handle_event("play_episode", %{"episode_id" => episode_id}, socket) do
     episode_id = String.to_integer(episode_id)
-
     socket =
       socket
       |> assign(:show_player, true)
