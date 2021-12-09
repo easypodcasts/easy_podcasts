@@ -28,7 +28,7 @@ defmodule EasypodcastsWeb.QueueComponent do
     ~H"""
     <div>
     <%= if @queue_length > 0 do %>
-      <div class="fixed bottom-6 right-6 rounded-lg bg-gray-200 px-3 py-1 text-xl">
+      <div class="fixed right-6 bottom-6 py-1 px-3 text-xl bg-gray-200 rounded-lg">
         <%= @queue_length %> episodes in queue
       </div>
     <% end %>
