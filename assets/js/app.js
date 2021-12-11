@@ -36,6 +36,15 @@ Hooks.PlayerHook = {
   destroyed() {
     this.player.unload();
   },
+  getElement(el) {
+    return this.el.querySelector(el)
+  },
+  formatTime(secs) {
+    const minutes = Math.floor(secs / 60) || 0;
+    const seconds = (secs - minutes * 60) || 0;
+
+    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+  }
   setupPlayer() {
     const audioUrl = this.el.dataset.audioUrl;
 
