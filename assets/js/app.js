@@ -48,8 +48,12 @@ Hooks.PlayerHook = {
   setupPlayer() {
     const audioUrl = this.el.dataset.audioUrl;
 
-    let progressWrapper = this.el.querySelector("#progress-wrapper");
-    let progress = this.el.querySelector("#progress");
+    let progressWrapper = this.getElement("#progress-wrapper");
+    let progress = this.getElement("#progress");
+    let loading = this.getElement("#loading");
+    let playButton = this.getElement("#play");
+    let pauseButton = this.getElement("#pause");
+    let currentTime = this.getElement("#current-time");
 
     progressWrapper.onclick = (event) => {
       console.log("clicked progress");
@@ -60,29 +64,23 @@ Hooks.PlayerHook = {
       progress.style.width = ((clickedValue / this.player.duration()) * 100 || 0) + "%";
     };
 
-    let currentTime = this.el.querySelector("#current-time");
-
     let step = () => {
       var seek = this.player.seek() || 0;
-      progress.style.width = ((seek / this.player.duration()) * 100 || 0) + "%";
-      let strCurrentTime = new Date(parseInt(seek) * 1000).toISOString().substr(11, 8);
+      let strCurrentTime = this.formatTime(Math.round(seek));
       currentTime.textContent = strCurrentTime;
+      progress.style.width = `${((seek / this.player.duration()) * 100 || 0)} %`;
       if (this.player.playing()) {
         requestAnimationFrame(step);
       }
     };
 
-    let loading = this.el.querySelector("#loading");
-    let play_button = this.el.querySelector("#play");
-    let pause_button = this.el.querySelector("#pause");
-
-    play_button.onclick = () => {
+    playButton.onclick = () => {
       this.player.play();
       play_button.classList.add("hidden");
       pause_button.classList.remove("hidden");
     };
 
-    pause_button.onclick = () => {
+    pauseButton.onclick = () => {
       this.player.pause();
       pause_button.classList.add("hidden");
       play_button.classList.remove("hidden");
