@@ -93,6 +93,9 @@ Hooks.PlayerHook = {
         pause_button.classList.add("hidden");
         play_button.classList.remove("hidden");
       },
+      onseek: function() {
+        requestAnimationFrame(step);
+      }
     });
 
     this.player.play();
