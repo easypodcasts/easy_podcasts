@@ -44,7 +44,7 @@ Hooks.PlayerHook = {
     const seconds = (secs - minutes * 60) || 0;
 
     return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
-  }
+  },
   setupPlayer() {
     const audioUrl = this.el.dataset.audioUrl;
 
