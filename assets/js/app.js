@@ -76,14 +76,14 @@ Hooks.PlayerHook = {
 
     playButton.onclick = () => {
       this.player.play();
-      play_button.classList.add("hidden");
-      pause_button.classList.remove("hidden");
+      playButton.classList.add("hidden");
+      pauseButton.classList.remove("hidden");
     };
 
     pauseButton.onclick = () => {
       this.player.pause();
-      pause_button.classList.add("hidden");
-      play_button.classList.remove("hidden");
+      pauseButton.classList.add("hidden");
+      playButton.classList.remove("hidden");
     };
 
     this.player = new this.Howl({
@@ -91,14 +91,14 @@ Hooks.PlayerHook = {
       html5: true,
       onload: function () {
         loading.classList.add("hidden");
-        pause_button.classList.remove("hidden");
+        pauseButton.classList.remove("hidden");
       },
       onplay: function () {
         requestAnimationFrame(step);
       },
       onend: function () {
-        pause_button.classList.add("hidden");
-        play_button.classList.remove("hidden");
+        pauseButton.classList.add("hidden");
+        playButton.classList.remove("hidden");
       },
       onseek: function() {
         requestAnimationFrame(step);
