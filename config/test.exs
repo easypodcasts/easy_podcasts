@@ -26,5 +26,9 @@ config :easypodcasts, Easypodcasts.Mailer, adapter: Swoosh.Adapters.Test
 # Print only warnings and errors during test
 config :logger, level: :warn
 
+config :waffle,
+  storage: Waffle.Storage.Local,
+  asset_host: "http://localhost:4000/uploads"
+
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
