@@ -51,13 +51,13 @@ defmodule Easypodcasts.Workers do
 
   """
   def create_worker(attrs \\ %{}) do
-    {:ok, worker} =
-      %Worker{}
-      |> Worker.changeset(attrs)
-      |> Repo.insert()
-
-    token = Phoenix.Token.sign(EasypodcastsWeb.Endpoint, "worker auth", worker.id)
-    worker |> Changeset.change(%{token: token}) |> Repo.update()
+    with {:ok, worker} <-
+           %Worker{}
+           |> Worker.changeset(attrs)
+           |> Repo.insert() do
+      token = Phoenix.Token.sign(EasypodcastsWeb.Endpoint, "worker auth", worker.id)
+      worker |> Changeset.change(%{token: token}) |> Repo.update()
+    end
   end
 
   @doc """
