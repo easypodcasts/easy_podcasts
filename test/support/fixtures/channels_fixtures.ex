@@ -11,11 +11,7 @@ defmodule Easypodcasts.ChannelsFixtures do
     {:ok, channel} =
       attrs
       |> Enum.into(%{
-        author: "some author",
-        description: "some description",
-        image_url: "some image_url",
-        link: "some link",
-        title: "some title"
+        link: "https://roig.is-a.dev/podcasts/feeds/64-thinking-elixir-podcast",
       })
       |> Easypodcasts.Channels.create_channel()
 
