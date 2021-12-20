@@ -8,7 +8,7 @@ defmodule Easypodcasts.WorkersTest do
 
     import Easypodcasts.WorkersFixtures
 
-    @invalid_attrs %{name: nil, token: nil}
+    @invalid_attrs %{name: nil}
 
     test "list_workers/0 returns all workers" do
       worker = worker_fixture()
@@ -21,30 +21,16 @@ defmodule Easypodcasts.WorkersTest do
     end
 
     test "create_worker/1 with valid data creates a worker" do
-      valid_attrs = %{name: "some name", token: "some token"}
+      valid_attrs = %{name: "some name"}
 
       assert {:ok, %Worker{} = worker} = Workers.create_worker(valid_attrs)
       assert worker.name == "some name"
-      assert worker.token == "some token"
+      id = worker.id
+      assert {:ok, ^id} = Phoenix.Token.verify(EasypodcastsWeb.Endpoint, "worker auth", worker.token, max_age: :infinity)
     end
 
     test "create_worker/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = Workers.create_worker(@invalid_attrs)
-    end
-
-    test "update_worker/2 with valid data updates the worker" do
-      worker = worker_fixture()
-      update_attrs = %{name: "some updated name", token: "some updated token"}
-
-      assert {:ok, %Worker{} = worker} = Workers.update_worker(worker, update_attrs)
-      assert worker.name == "some updated name"
-      assert worker.token == "some updated token"
-    end
-
-    test "update_worker/2 with invalid data returns error changeset" do
-      worker = worker_fixture()
-      assert {:error, %Ecto.Changeset{}} = Workers.update_worker(worker, @invalid_attrs)
-      assert worker == Workers.get_worker!(worker.id)
     end
 
     test "delete_worker/1 deletes the worker" do
