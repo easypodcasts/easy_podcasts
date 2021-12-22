@@ -47,12 +47,12 @@ defmodule EasypodcastsWeb.PaginationComponent do
     params =
       case search do
         nil -> [page: page_number]
-        other -> [page: page_number, search: search]
+        _other -> [page: page_number, search: search]
       end
 
     case object_id do
       nil -> route_func.(socket, action, params)
-      other -> route_func.(socket, action, object_id, params)
+      _other -> route_func.(socket, action, object_id, params)
     end
   end
 
