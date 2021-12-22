@@ -9,7 +9,6 @@ defmodule Easypodcasts.Channels do
   alias Easypodcasts.Repo
   alias Easypodcasts.Channels.{Channel, ChannelImage}
   alias Easypodcasts.Episodes
-  alias Easypodcasts.Episodes.Episode
   alias Easypodcasts.Helpers.{Search, Utils, Feed}
 
   require Logger
@@ -30,11 +29,10 @@ defmodule Easypodcasts.Channels do
     query
     |> then(
       &from(c in &1,
-        left_join: e in Episode,
-        on: c.id == e.channel_id,
+        left_join: e in assoc(c, :episodes),
         group_by: c.id,
         select_merge: %{episodes: count(e.id)},
-        order_by: [desc: c.inserted_at]
+        order_by: [desc: c.updated_at]
       )
     )
     |> Repo.paginate(page: page)
@@ -76,6 +74,12 @@ defmodule Easypodcasts.Channels do
         delete_channel(channel)
         {:error, msg}
     end
+  end
+
+  def update_channel(%Channel{} = channel, attrs \\ %{}) do
+    channel
+    |> Changeset.change(attrs)
+    |> Repo.update()
   end
 
   @doc """
@@ -134,6 +138,7 @@ defmodule Easypodcasts.Channels do
         Enum.each(new_episodes, &Episodes.enqueue(&1.id))
       end
 
+      update_channel(channel, %{updated_at: DateTime.utc_now()})
       {:ok, new_episodes}
     else
       _error ->
