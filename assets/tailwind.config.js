@@ -1,7 +1,6 @@
 const isProd = process.env.NODE_ENV === "production";
 
 module.exports = {
-    mode: "jit",
     content: ["./js/**/*.js", "../lib/*_web/**/*.*ex"],
     theme: {
         extend: {
