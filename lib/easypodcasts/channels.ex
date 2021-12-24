@@ -138,7 +138,10 @@ defmodule Easypodcasts.Channels do
         Enum.each(new_episodes, &Episodes.enqueue(&1.id))
       end
 
-      update_channel(channel, %{updated_at: DateTime.now!()})
+      datetime = DateTime.now!("UTC") |> DateTime.to_naive() |> NaiveDateTime.truncate(:second)
+
+      update_channel(channel, %{updated_at: datetime})
+
       {:ok, new_episodes}
     else
       _error ->
