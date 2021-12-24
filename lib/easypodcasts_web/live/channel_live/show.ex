@@ -233,6 +233,10 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
     end
   end
 
+  defp format_duration("") do
+    "00:00"
+  end
+
   defp format_duration(duration) when is_binary(duration) do
     if String.contains?(duration, ":") do
       duration
