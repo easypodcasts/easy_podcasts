@@ -54,5 +54,5 @@
 </section>
 
 <%= if @show_modal do %>
-  <.live_component module={EasypodcastsWeb.ModalComponent} id="new_podcast" return_to={Routes.server_index_path(@socket, :index)} />
+  <.live_component module={ModalComponent} id="new_podcast" return_to={Routes.server_index_path(@socket, :index)} />
 <% end %>

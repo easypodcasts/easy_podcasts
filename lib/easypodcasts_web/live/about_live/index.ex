@@ -3,19 +3,11 @@ defmodule EasypodcastsWeb.AboutLive.Index do
   About view
   """
   use EasypodcastsWeb, :live_view
+  use EasypodcastsWeb.ModalComponent
 
   @impl true
   def mount(_params, _session, socket) do
     {:ok, assign(socket, :show_modal, false)}
-  end
-
-  @impl true
-  def handle_event("show_modal", _params, socket) do
-    {:noreply, assign(socket, :show_modal, true)}
-  end
-
-  def handle_event("hide_modal", _params, socket) do
-    {:noreply, assign(socket, :show_modal, false)}
   end
 
   @impl true

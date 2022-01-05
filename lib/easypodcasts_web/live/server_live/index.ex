@@ -3,6 +3,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
    Server status view
   """
   use EasypodcastsWeb, :live_view
+  use EasypodcastsWeb.ModalComponent
   alias Phoenix.PubSub
   alias Easypodcasts.{Channels, Episodes}
 
@@ -29,15 +30,6 @@ defmodule EasypodcastsWeb.ServerLive.Index do
       |> assign(:disk_used, percent)
 
     {:ok, socket}
-  end
-
-  @impl true
-  def handle_event("show_modal", _params, socket) do
-    {:noreply, assign(socket, :show_modal, true)}
-  end
-
-  def handle_event("hide_modal", _params, socket) do
-    {:noreply, assign(socket, :show_modal, false)}
   end
 
   @impl true

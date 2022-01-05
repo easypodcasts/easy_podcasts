@@ -3,6 +3,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   Channel details view
   """
   use EasypodcastsWeb, :live_view
+  use EasypodcastsWeb.ModalComponent
   import EasypodcastsWeb.PaginationComponent
 
   alias Easypodcasts.{Channels, Episodes}
@@ -70,14 +71,6 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
       |> assign(:playing_episode, Map.get(socket.assigns.episodes_map, episode_id))
 
     {:noreply, socket}
-  end
-
-  def handle_event("show_modal", _params, socket) do
-    {:noreply, assign(socket, :show_modal, true)}
-  end
-
-  def handle_event("hide_modal", _params, socket) do
-    {:noreply, assign(socket, :show_modal, false)}
   end
 
   def handle_event("stop_playing", _params, socket) do

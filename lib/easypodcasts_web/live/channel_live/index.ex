@@ -3,6 +3,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   Index view
   """
   use EasypodcastsWeb, :live_view
+  use EasypodcastsWeb.ModalComponent
 
   alias Easypodcasts.Channels
   alias Easypodcasts.Channels.ChannelImage
@@ -52,14 +53,6 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
       end
 
     {:noreply, socket}
-  end
-
-  def handle_event("show_modal", _params, socket) do
-    {:noreply, assign(socket, :show_modal, true)}
-  end
-
-  def handle_event("hide_modal", _params, socket) do
-    {:noreply, assign(socket, :show_modal, false)}
   end
 
   def handle_info(:clear_flash, socket) do
