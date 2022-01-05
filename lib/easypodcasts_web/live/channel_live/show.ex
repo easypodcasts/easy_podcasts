@@ -3,8 +3,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   Channel details view
   """
   use EasypodcastsWeb, :live_view
-  use EasypodcastsWeb.ModalComponent
-  use EasypodcastsWeb.QueueComponent
+  use EasypodcastsWeb.{ModalComponent, QueueComponent}
   import EasypodcastsWeb.PaginationComponent
 
   alias Easypodcasts.{Channels, Episodes}
@@ -66,6 +65,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
   def handle_event("play_episode", %{"episode_id" => episode_id}, socket) do
     episode_id = String.to_integer(episode_id)
+
     socket =
       socket
       |> assign(:show_player, true)
@@ -155,7 +155,6 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
     {:noreply, socket}
   end
-
 
   def handle_info(:clear_flash, socket) do
     {:noreply, clear_flash(socket)}
