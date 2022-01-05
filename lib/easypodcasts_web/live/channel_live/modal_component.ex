@@ -7,6 +7,20 @@ defmodule EasypodcastsWeb.ModalComponent do
   alias Easypodcasts.Channels.Channel
   alias Phoenix.LiveView.JS
 
+  defmacro __using__(_opts) do
+    quote do
+      alias EasypodcastsWeb.ModalComponent
+      @impl true
+      def handle_event("show_modal", _params, socket) do
+        {:noreply, assign(socket, :show_modal, true)}
+      end
+
+      def handle_event("hide_modal", _params, socket) do
+        {:noreply, assign(socket, :show_modal, false)}
+      end
+    end
+  end
+
   @impl true
   def mount(socket) do
     {:ok,
@@ -17,7 +31,6 @@ defmodule EasypodcastsWeb.ModalComponent do
 
   @impl true
   def handle_event("save", %{"channel" => channel_params}, socket) do
-
     case Channels.create_channel(channel_params) do
       {:ok, channel} ->
         Process.send_after(self(), :clear_flash, 5000)
