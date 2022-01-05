@@ -4,6 +4,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
   """
   use EasypodcastsWeb, :live_view
   use EasypodcastsWeb.ModalComponent
+  use EasypodcastsWeb.QueueComponent
   alias Phoenix.PubSub
   alias Easypodcasts.{Channels, Episodes}
 
@@ -35,11 +36,6 @@ defmodule EasypodcastsWeb.ServerLive.Index do
   @impl true
   def handle_info(:clear_flash, socket) do
     {:noreply, clear_flash(socket)}
-  end
-
-  def handle_info({:queue_length_changed, queue_length}, socket) do
-    send_update(EasypodcastsWeb.QueueComponent, id: "queue_state", queue_length: queue_length)
-    {:noreply, socket}
   end
 
   def handle_info({:queue_state_changed, queue_state}, socket) do
