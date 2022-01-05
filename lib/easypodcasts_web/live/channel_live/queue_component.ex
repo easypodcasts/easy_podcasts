@@ -7,6 +7,18 @@ defmodule EasypodcastsWeb.QueueComponent do
   alias Easypodcasts.Episodes
   alias Phoenix.PubSub
 
+  defmacro __using__(_opts) do
+    quote do
+      alias EasypodcastsWeb.QueueComponent
+
+      @impl true
+      def handle_info({:queue_length_changed, queue_length}, socket) do
+        send_update(EasypodcastsWeb.QueueComponent, id: "queue_state", queue_length: queue_length)
+        {:noreply, socket}
+      end
+    end
+  end
+
   @impl true
   def mount(socket) do
     if connected?(socket), do: PubSub.subscribe(Easypodcasts.PubSub, "queue_length")
