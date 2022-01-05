@@ -3,8 +3,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   Index view
   """
   use EasypodcastsWeb, :live_view
-  use EasypodcastsWeb.ModalComponent
-  use EasypodcastsWeb.QueueComponent
+  use EasypodcastsWeb.{ModalComponent, QueueComponent}
 
   alias Easypodcasts.Channels
   alias Easypodcasts.Channels.ChannelImage

@@ -3,8 +3,7 @@ defmodule EasypodcastsWeb.AboutLive.Index do
   About view
   """
   use EasypodcastsWeb, :live_view
-  use EasypodcastsWeb.ModalComponent
-  use EasypodcastsWeb.QueueComponent
+  use EasypodcastsWeb.{ModalComponent, QueueComponent}
 
   @impl true
   def mount(_params, _session, socket) do
