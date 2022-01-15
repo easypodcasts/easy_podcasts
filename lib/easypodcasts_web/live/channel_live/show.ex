@@ -226,10 +226,10 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   end
 
   defp format_duration(duration) when is_binary(duration) do
-    if String.contains?(duration, ":") do
-      duration
-    else
-      format_duration(String.to_integer(duration))
+    cond do
+      String.contains?(duration, ":") -> duration
+      String.contains?(duration, ".") -> duration |> String.to_float() |> trunc |> format_duration
+      true -> format_duration(String.to_integer(duration))
     end
   end
 
