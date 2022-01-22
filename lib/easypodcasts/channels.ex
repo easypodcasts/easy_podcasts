@@ -15,7 +15,14 @@ defmodule Easypodcasts.Channels do
 
   def list_channels, do: Repo.all(Channel)
 
-  def list_channels(search, page) do
+  def list_channels(params) do
+    search = params["search"]
+
+    page =
+      if params["page"],
+        do: String.to_integer(params["page"]),
+        else: 0
+
     query =
       case Search.validate_search(search) do
         %{valid?: true, changes: %{search_phrase: search_phrase}} ->
@@ -36,7 +43,6 @@ defmodule Easypodcasts.Channels do
       )
     )
     |> Repo.paginate(page: page)
-    |> Map.put(:params, search: search, page: page)
   end
 
   def get_channel!(id), do: Repo.get!(Channel, id)

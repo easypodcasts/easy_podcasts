@@ -59,23 +59,15 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   end
 
   defp list_channels(params) do
-    search = params["search"]
-
-    page =
-      if params["page"],
-        do: String.to_integer(params["page"]),
-        else: 1
-
     %{
       entries: entries,
       page_number: page_number,
       page_size: page_size,
       total_entries: total_entries,
       total_pages: total_pages,
-      params: params
-    } = Channels.list_channels(search, page)
+    } = Channels.list_channels(params)
 
-    page_range = Utils.get_page_range(page, total_pages)
+    page_range = Utils.get_page_range(params["page"] || 0, total_pages)
 
     [
       channels: entries,
@@ -84,8 +76,8 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
       total_entries: total_entries || 0,
       total_pages: total_pages || 0,
       page_range: page_range,
-      search: search,
-      params: params
+      search: params["search"],
+      params: Utils.map_to_keywordlist(params, ~w(page search))
     ]
   end
 end
