@@ -4,6 +4,7 @@ defmodule Easypodcasts.Helpers.Search do
   """
   import Ecto.Query
   import Ecto.Changeset
+  alias Easypodcasts.Helpers.Utils
 
   @doc """
   Example Usage:
@@ -51,5 +52,27 @@ defmodule Easypodcasts.Helpers.Search do
 
   def validate_search(search) do
     search_changeset(%{search_phrase: search})
+  end
+
+  def parse_search_string(search, allowed_filters \\ [])
+  def parse_search_string(nil, _allowed_filters), do: {"", [], []}
+  def parse_search_string("", _allowed_filters), do: {"", [], []}
+
+  def parse_search_string(search, allowed_filters) do
+    values = String.split(search, " ")
+    {filters, values} = Enum.split_with(values, &String.contains?(&1, ":"))
+
+    filters =
+      filters
+      |> Enum.reduce(%{}, fn filter, acc ->
+        [key, value] = String.split(filter, ":")
+        Map.put_new(acc, key, value)
+      end)
+      |> Utils.map_to_keywordlist(allowed_filters)
+
+    {tags, values} = Enum.split_with(values, &String.starts_with?(&1, "#"))
+    tags = Enum.map(tags, &String.replace(&1, "#", ""))
+    search = Enum.join(values, " ")
+    {search, filters, tags}
   end
 end

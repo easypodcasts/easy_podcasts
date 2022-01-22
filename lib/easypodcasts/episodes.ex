@@ -21,7 +21,17 @@ defmodule Easypodcasts.Episodes do
 
   def list_episodes(channel_id, params) do
     episode_query = from(e in Episode, where: e.channel_id == ^channel_id)
-    search = params["search"]
+    {search, filters, tags} = Search.parse_search_string(params["search"], ~w(status))
+
+    {_, filters} =
+      Keyword.get_and_update(filters, :status, fn current_value ->
+        case current_value do
+          nil -> :pop
+          _ -> {current_value, String.to_existing_atom(current_value)}
+        end
+      end)
+
+    IO.inspect(filters)
 
     page =
       if params["page"],
@@ -39,6 +49,7 @@ defmodule Easypodcasts.Episodes do
       end
 
     query
+    |> where(^filters)
     |> order_by([{:desc, :publication_date}])
     |> Repo.paginate(page: page)
   end
