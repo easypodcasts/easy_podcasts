@@ -11,6 +11,11 @@
       </button>
     <% end %>
     <p class="mt-2 title-font text-md"> <%= sanitize(@channel.description) %></p>
+    <div class="mt-2">
+      <%= for category <- @channel.categories do %>
+         <%= live_redirect "##{category}", to: Routes.channel_index_path(@socket, :index, search: "##{category}"), class: "text-indigo-500" %>
+      <% end %>
+    </div>
     </div>
   </section>
 
