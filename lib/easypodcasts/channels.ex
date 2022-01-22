@@ -16,7 +16,7 @@ defmodule Easypodcasts.Channels do
   def list_channels, do: Repo.all(Channel)
 
   def list_channels(params) do
-    search = params["search"]
+    {search, filters, tags} = Search.parse_search_string(params["search"], ~w(lang))
 
     page =
       if params["page"],
@@ -34,6 +34,7 @@ defmodule Easypodcasts.Channels do
       end
 
     query
+    |> where(^filters)
     |> then(
       &from(c in &1,
         left_join: e in assoc(c, :episodes),
