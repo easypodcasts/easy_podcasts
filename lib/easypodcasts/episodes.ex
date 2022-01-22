@@ -225,6 +225,12 @@ defmodule Easypodcasts.Episodes do
       "channel#{channel_id}",
       {event, %{episode_id: episode_id}}
     )
+
+    PubSub.broadcast(
+      Easypodcasts.PubSub,
+      "episode#{episode_id}",
+      event
+    )
   end
 
   def save_new_episodes(channel, feed_data) do

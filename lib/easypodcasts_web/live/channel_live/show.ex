@@ -125,7 +125,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
     msg =
       case Map.get(socket.assigns.episodes_map, episode_id) do
-        nil -> "An episode from this is being processed"
+        nil -> "An episode from this podcast is being processed"
         episode -> "The episode '#{episode.title}' is being processed"
       end
 
@@ -201,39 +201,5 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
     episodes_index = Enum.map(episodes, & &1.id)
     {episodes_index, episodes_map}
-  end
-
-  defp format_date(date) do
-    localized = DateTime.shift_zone!(date, "America/Havana")
-    Calendar.strftime(localized, "%B %d, %Y")
-  end
-
-  defp get_duration(episode) do
-    case episode.feed_data["extensions"]["itunes"]["duration"] do
-      [head | _] ->
-        head
-        |> Map.get("value")
-        |> format_duration
-
-      _other ->
-        "00:00"
-    end
-  end
-
-  defp format_duration("") do
-    "00:00"
-  end
-
-  defp format_duration(duration) when is_binary(duration) do
-    cond do
-      String.contains?(duration, ":") -> duration
-      String.contains?(duration, ".") -> duration |> String.to_float() |> trunc |> format_duration
-      true -> format_duration(String.to_integer(duration))
-    end
-  end
-
-  defp format_duration(duration) when is_integer(duration) do
-    time = Time.add(Time.new!(0, 0, 0), duration)
-    "#{time.hour}:#{time.minute}:#{time.second}"
   end
 end
