@@ -9,7 +9,7 @@ defmodule Easypodcasts.Channels do
   alias Easypodcasts.Repo
   alias Easypodcasts.Channels.{Channel, ChannelImage}
   alias Easypodcasts.Episodes
-  alias Easypodcasts.Helpers.{Search, Utils, Feed}
+  alias Easypodcasts.Helpers.{Search, Feed}
 
   require Logger
 

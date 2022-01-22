@@ -58,4 +58,38 @@ defmodule Easypodcasts.Helpers.Utils do
       _ -> 0
     end
   end
+
+  def format_date(date) do
+    localized = DateTime.shift_zone!(date, "America/Havana")
+    Calendar.strftime(localized, "%B %d, %Y")
+  end
+
+  def get_duration(episode) do
+    case episode.feed_data["extensions"]["itunes"]["duration"] do
+      [head | _] ->
+        head
+        |> Map.get("value")
+        |> format_duration
+
+      _ ->
+        "00:00"
+    end
+  end
+
+  def format_duration("") do
+    "00:00"
+  end
+
+  def format_duration(duration) when is_binary(duration) do
+    cond do
+      String.contains?(duration, ":") -> duration
+      String.contains?(duration, ".") -> duration |> String.to_float() |> trunc |> format_duration
+      true -> format_duration(String.to_integer(duration))
+    end
+  end
+
+  def format_duration(duration) when is_integer(duration) do
+    time = Time.add(Time.new!(0, 0, 0), duration)
+    "#{time.hour}:#{time.minute}:#{time.second}"
+  end
 end
