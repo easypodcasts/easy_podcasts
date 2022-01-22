@@ -37,7 +37,16 @@ defmodule Easypodcasts.Channels.Channel do
       |> put_change(:description, data["description"])
       |> put_change(:image_url, data["image"]["url"])
       |> put_change(:title, data["title"])
-      |> put_change(:lang, data["language"])
+      |> put_change(
+        :lang,
+        (data["language"] || "") |> String.split("-") |> hd |> String.downcase()
+      )
+      |> put_change(
+        :categories,
+        Enum.map(data["categories"] || [], fn c ->
+          c |> String.replace(" ", "") |> String.downcase()
+        end)
+      )
       |> put_change(:feed_data, Map.drop(data, ["items"]))
     else
       {:error, msg} ->

@@ -281,6 +281,10 @@ defmodule Easypodcasts.Episodes do
           (hd(item["enclosures"])["length"] || "0") |> String.trim() |> String.to_integer(),
       channel_id: channel_id,
       publication_date: publication_date,
+      categories:
+        Enum.map(item["categories"] || [], fn c ->
+          c |> String.replace(" ", "") |> String.downcase()
+        end),
       feed_data: item
     }
   end
