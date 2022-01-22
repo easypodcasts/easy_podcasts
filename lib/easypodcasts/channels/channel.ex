@@ -13,6 +13,7 @@ defmodule Easypodcasts.Channels.Channel do
     field :link, :string
     field :title, :string
     field :feed_data, :map
+    field :lang, :string
     has_many :episodes, Easypodcasts.Episodes.Episode
 
     timestamps()
@@ -35,6 +36,7 @@ defmodule Easypodcasts.Channels.Channel do
       |> put_change(:description, data["description"])
       |> put_change(:image_url, data["image"]["url"])
       |> put_change(:title, data["title"])
+      |> put_change(:lang, data["language"])
       |> put_change(:feed_data, Map.drop(data, ["items"]))
     else
       {:error, msg} ->
