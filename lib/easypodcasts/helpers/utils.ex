@@ -14,6 +14,10 @@ defmodule Easypodcasts.Helpers.Utils do
     "#{thing.id}-#{slugify(thing.title)}"
   end
 
+  def get_page_range(current_page, total_pages) when is_binary(current_page) do
+    current_page |> String.to_integer() |> get_page_range(total_pages)
+  end
+
   def get_page_range(current_page, total_pages) do
     current_page =
       if is_binary(current_page) do
@@ -91,5 +95,11 @@ defmodule Easypodcasts.Helpers.Utils do
   def format_duration(duration) when is_integer(duration) do
     time = Time.add(Time.new!(0, 0, 0), duration)
     "#{time.hour}:#{time.minute}:#{time.second}"
+  end
+
+  def map_to_keywordlist(map, keys) do
+    map
+    |> Map.take(keys)
+    |> Enum.map(fn {k, v} -> {String.to_atom(k), v} end)
   end
 end

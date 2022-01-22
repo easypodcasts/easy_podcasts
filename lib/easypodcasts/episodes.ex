@@ -10,7 +10,7 @@ defmodule Easypodcasts.Episodes do
   alias Ecto.Changeset
   alias Easypodcasts.Helpers.{Utils, Search}
   alias Easypodcasts.Episodes.{Episode, EpisodeAudio}
-  alias Easypodcasts.Queue
+  alias Easypodcasts.{Queue}
   alias Easypodcasts.Workers.Worker
 
   def list_episodes_guids(channel_id),
@@ -19,8 +19,14 @@ defmodule Easypodcasts.Episodes do
   def list_episodes_guids(),
     do: Repo.all(from(e in Episode, select: e.guid))
 
-  def list_episodes(channel_id, search, page) do
+  def list_episodes(channel_id, params) do
     episode_query = from(e in Episode, where: e.channel_id == ^channel_id)
+    search = params["search"]
+
+    page =
+      if params["page"],
+        do: String.to_integer(params["page"]),
+        else: 0
 
     query =
       case Search.validate_search(search) do
@@ -35,7 +41,6 @@ defmodule Easypodcasts.Episodes do
     query
     |> order_by([{:desc, :publication_date}])
     |> Repo.paginate(page: page)
-    |> Map.put(:params, search: search, page: page)
   end
 
   def queue_state() do

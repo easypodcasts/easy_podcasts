@@ -25,7 +25,7 @@
       <div class="flex flex-wrap mb-4 md:flex-nowrap xl:py-8 xl:mb-0">
         <div class="flex flex-col w-full">
         <h2 class="mb-2 text-xl font-medium text-gray-900 dark:text-gray-200 title-font">
-         <%= live_redirect episode.title, to: Routes.episode_show_path(@socket, :show, Utils.slugify(@channel), Utils.slugify(episode)) %>
+         <%= live_redirect episode.title, to: Routes.episode_show_path(@socket, :show, Utils.slugify(@channel), Utils.slugify(episode)), class: "text-indigo-500" %>
         </h2>
           <div class="flex mb-3">
             <span class="mr-3 text-xs text-gray-500 md:text-sm dark:text-gray-100"><%= Utils.format_date(episode.publication_date) %></span>
