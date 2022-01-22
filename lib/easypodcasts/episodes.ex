@@ -25,9 +25,10 @@ defmodule Easypodcasts.Episodes do
 
     {_, filters} =
       Keyword.get_and_update(filters, :status, fn current_value ->
-        case current_value do
-          nil -> :pop
-          _ -> {current_value, String.to_existing_atom(current_value)}
+        if current_value in ["new", "queued", "processing", "done"] do
+          {current_value, String.to_existing_atom(current_value)}
+        else
+          :pop
         end
       end)
 
