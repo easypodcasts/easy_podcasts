@@ -7,12 +7,12 @@
         <%= for channel <- @channels do %>
         <div class="p-4 w-full md:w-1/5">
           <div class="flex flex-col w-auto h-full rounded-lg border-2 border-gray-300 border-opacity-60 dark:border-gray-600">
-            <%= live_redirect to: Routes.channel_show_path(@socket, :show, Channels.slugify_channel(channel)) do %>
+            <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(channel)) do %>
               <img class="object-cover object-center mx-auto mb-2 w-52 h-52 rounded-t bg-placeholder-small" src={ChannelImage.url({"thumb.webp", channel}, :thumb)} alt={channel.title} loading="lazy">
             <% end %>
               <p class="flex-1 px-2 mb-2 text-sm text-center line-clamp-5"> <%= sanitize(channel.description) %></p>
               <span class="flex justify-center self-end pt-1 pb-2 w-full text-sm text-white bg-indigo-500 rounded-b-lg border-t-2 dark:bg-blue-400 dark:border-gray-600">
-                <%= live_redirect to: Routes.channel_show_path(@socket, :show, Channels.slugify_channel(channel)) do %>
+                <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(channel)) do %>
                   <%= channel.episodes %> Episodes
                 <% end %>
               </span>
