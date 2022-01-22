@@ -26,8 +26,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
        to:
          Routes.channel_index_path(
            socket,
-           :index,
-           Keyword.drop(socket.assigns.params, [:search])
+           :index
          )
      )}
   end
@@ -44,7 +43,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
               Routes.channel_index_path(
                 socket,
                 :index,
-                Keyword.put(socket.assigns.params, :search, search)
+                search: search
               )
           )
 
