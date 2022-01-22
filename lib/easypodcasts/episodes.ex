@@ -31,8 +31,6 @@ defmodule Easypodcasts.Episodes do
         end
       end)
 
-    IO.inspect(filters)
-
     page =
       if params["page"],
         do: String.to_integer(params["page"]),
