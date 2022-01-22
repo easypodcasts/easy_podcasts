@@ -26,6 +26,7 @@ defmodule Easypodcasts.Episodes.Episode do
     field :guid, :string
     field :retries, :integer, default: 0
     field :reports, :integer, default: 0
+    field :categories, {:array, :string}
     belongs_to :channel, Easypodcasts.Channels.Channel
     belongs_to :worker, Easypodcasts.Workers.Worker
 

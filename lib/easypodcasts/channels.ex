@@ -35,6 +35,7 @@ defmodule Easypodcasts.Channels do
 
     query
     |> where(^filters)
+    |> where([c], fragment("? @> ?", c.categories, ^tags))
     |> then(
       &from(c in &1,
         left_join: e in assoc(c, :episodes),

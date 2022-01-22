@@ -49,6 +49,7 @@ defmodule Easypodcasts.Episodes do
 
     query
     |> where(^filters)
+    |> where([e], fragment("? @> ?", e.categories, ^tags))
     |> order_by([{:desc, :publication_date}])
     |> Repo.paginate(page: page)
   end
