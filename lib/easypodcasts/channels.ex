@@ -50,8 +50,6 @@ defmodule Easypodcasts.Channels do
     |> Map.from_struct()
   end
 
-  def slugify_channel(channel), do: "#{channel.id}-#{Utils.slugify(channel.title)}"
-
   def create_channel(attrs \\ %{}) do
     with {:ok, channel} <-
            %Channel{}

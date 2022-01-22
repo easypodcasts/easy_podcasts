@@ -87,7 +87,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
          Routes.channel_show_path(
            socket,
            :show,
-           Channels.slugify_channel(socket.assigns.channel)
+           Utils.slugify(socket.assigns.channel)
          )
      )}
   end
@@ -104,7 +104,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
               Routes.channel_show_path(
                 socket,
                 :show,
-                Channels.slugify_channel(socket.assigns.channel),
+                Utils.slugify(socket.assigns.channel),
                 search: search
               )
           )

@@ -3,11 +3,15 @@ defmodule Easypodcasts.Helpers.Utils do
   Misc helpers
   """
 
-  def slugify(string) do
-    string
+  def slugify(thing) when is_binary(thing) do
+    thing
     |> String.downcase()
     |> String.replace(~r/[^a-z0-9\s-]/, "")
     |> String.replace(~r/(\s|-)+/, "-")
+  end
+
+  def slugify(thing) do
+    "#{thing.id}-#{slugify(thing.title)}"
   end
 
   def get_page_range(current_page, total_pages) do
