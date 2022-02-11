@@ -1,6 +1,6 @@
 <section class="flex flex-col mt-4 mb-6">
-  <div class="flex flex-wrap justify-between">
-    <div class="flex-col mb-6 w-full rounded-lg border border-gray-200 md:w-5/12 dark:border-gray-600">
+  <div class="flex flex-wrap">
+    <div class="flex-col mb-6 w-full rounded-lg border border-gray-200 md:w-6/12 dark:border-gray-600">
       <span class="flex justify-center self-end p-2 w-full text-white bg-indigo-500 rounded-t-lg dark:bg-blue-400 text-md"> Podcasts </span>
         <ul class="p-2 dark:text-white">
           <li>Total Podcasts: <%= @channels %></li>
@@ -10,7 +10,7 @@
           <li>Processed Size: <%= Float.floor(@size.processed  / 1_000_000_000, 2) %> GB</li>
         </ul>
     </div>
-    <div class="flex-col mb-6 w-full rounded-lg border border-gray-200 md:w-5/12 dark:border-gray-600">
+    <div class="flex-col mb-6 w-full rounded-lg border border-gray-200 md:w-6/12 dark:border-gray-600">
       <span class="flex justify-center self-end p-2 w-full text-white bg-indigo-500 rounded-t-lg dark:bg-blue-400 text-md"> Storage </span>
       <ul class="p-2 dark:text-white">
         <li>Disk Capacity: <%= Float.floor(@disk_capacity/ 1_000_000, 2) %> GB</li>
@@ -18,8 +18,8 @@
       </ul>
     </div>
   </div>
-  <div class="flex flex-wrap justify-between">
-    <div class="flex-col mb-6 w-full rounded-lg border border-gray-200 md:w-5/12 dark:border-gray-600">
+  <div class="flex flex-wrap">
+    <div class="flex-col mb-6 w-full rounded-lg border border-gray-200 md:w-6/12 dark:border-gray-600">
       <span class="flex justify-center self-end p-2 w-full text-white bg-indigo-500 rounded-t-lg dark:bg-blue-400 text-md"> Latest Episodes </span>
         <ol class="px-7 list-decimal dark:text-white">
           <%= for episode <- @latest_episodes do %>
@@ -29,7 +29,7 @@
           <% end %>
         </ol>
     </div>
-    <div class="flex-col mb-6 w-full rounded-lg border border-gray-200 md:w-5/12 dark:border-gray-600">
+    <div class="flex-col mb-6 w-full rounded-lg border border-gray-200 md:w-6/12 dark:border-gray-600">
       <span class="flex justify-center self-end p-2 w-full text-white bg-indigo-500 rounded-t-lg dark:bg-blue-400 text-md"> Latest Processed </span>
       <ol class="px-7 list-decimal dark:text-white">
           <%= for episode <- @latest_processed_episodes do %>
@@ -46,12 +46,12 @@
         <p class="p-2 dark:text-white">Episodes in queue:</p>
         <ol class="px-5 list-decimal dark:text-white">
         <%= for episode <- @queued_episodes do %>
-          <li> 
-            <%= live_redirect episode.title, to: Routes.episode_show_path(@socket, :show, Utils.slugify(episode.channel), Utils.slugify(episode)) %> (<%= live_redirect episode.channel.title, to: Routes.channel_show_path(@socket, :show, Utils.slugify(episode.channel)) %>)
+          <li>
+            <%= live_redirect "#{episode.status} #{episode.title}", to: Routes.episode_show_path(@socket, :show, Utils.slugify(episode.channel), Utils.slugify(episode)) %> (<%= live_redirect episode.channel.title, to: Routes.channel_show_path(@socket, :show, Utils.slugify(episode.channel)) %>)
           </li>
         <% end %>
         </ol>
-      <% else %> 
+      <% else %>
         <span class="p-2 dark:text-white"> No episodes in queue </span>
       <% end %>
   </div>
