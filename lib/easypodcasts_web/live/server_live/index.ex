@@ -43,7 +43,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
   end
 
   defp get_dynamic_assigns(queue_state) do
-    {channels, episodes, size, latest_episodes, latest_processed_episodes} =
+    {channels, episodes, size, latest_episodes, latest_processed_episodes, workers} =
       Easypodcasts.get_channels_stats()
 
     [
@@ -52,7 +52,8 @@ defmodule EasypodcastsWeb.ServerLive.Index do
       episodes: episodes,
       size: size,
       latest_episodes: latest_episodes,
-      latest_processed_episodes: latest_processed_episodes
+      latest_processed_episodes: latest_processed_episodes,
+      workers: workers
     ]
   end
 end
