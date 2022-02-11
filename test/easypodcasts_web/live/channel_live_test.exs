@@ -4,7 +4,7 @@ defmodule EasypodcastsWeb.ChannelLiveTest do
   import Phoenix.LiveViewTest
   import Easypodcasts.ChannelsFixtures
 
-  @create_attrs %{link: "https://roig.is-a.dev/podcasts/feeds/58-elixir-mix"}
+  @create_attrs %{link: "https://easypodcasts.live/feeds/58-elixir-mix"}
 
   defp create_channel(_) do
     channel = channel_fixture()

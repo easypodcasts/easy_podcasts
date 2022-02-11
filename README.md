@@ -2,7 +2,7 @@
 
 Easy Podcasts es una solución comunitaria para la descarga de podcasts que tiene como objetivo ayudar a disminuir el consumo de datos: el servicio está alojado en .cu y los archivos de audio son comprimidos.
 
-Hosteado en: https://roig.is-a.dev/podcasts
+Hosteado en: https://easypodcasts.live
 
 ## Desarrollo
 
