@@ -22,7 +22,7 @@ defmodule Easypodcasts.Application do
       Easypodcasts.Scheduler,
       {Registry, keys: :unique, name: WorkerRegistry},
       {DynamicSupervisor, strategy: :one_for_one, name: WorkerSupervisor},
-      Easypodcasts.Queue,
+      Easypodcasts.Queue
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -1,46 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="keywords" content="podcasts, compression, audio, rss, feed">
     <meta property="og:url" content="https://roig.is-a.dev/podcasts">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="">
     <meta name="twitter:creator" content="">
     <%= if assigns[:episode] do %>
-    <meta property="og:title" content={"#{@episode.title} - Easy Podcasts"}>
-    <meta name="twitter:title" content={"#{@episode.title} - Easy Podcasts"}>
-    <meta name="description" content={sanitize(String.slice(@episode.description, 0..150))}>
-    <meta property="og:description" content={sanitize(String.slice(@episode.description, 0..150))}>
-    <meta name="twitter:description" content={sanitize(String.slice(@episode.description, 0..150))}>
-    <meta property="og:image" content={Easypodcasts.Channels.ChannelImage.url({"thumb.webp", @channel}, :thumb)}>
-    <meta name="twitter:image" content={Easypodcasts.Channels.ChannelImage.url({"thumb.webp", @channel}, :thumb)}>
-  <% else %>
-    <%= if assigns[:channel] do %>
-    <meta property="og:title" content={"#{@channel.title} - Easy Podcasts"}>
-    <meta name="twitter:title" content={"#{@channel.title} - Easy Podcasts"}>
-    <meta name="description" content={sanitize(String.slice(@channel.description, 0..150))}>
-    <meta property="og:description" content={sanitize(String.slice(@channel.description, 0..150))}>
-    <meta name="twitter:description" content={sanitize(String.slice(@channel.description, 0..150))}>
-    <meta property="og:image" content={Easypodcasts.Channels.ChannelImage.url({"thumb.webp", @channel}, :thumb)}>
-    <meta name="twitter:image" content={Easypodcasts.Channels.ChannelImage.url({"thumb.webp", @channel}, :thumb)}>
-  <% else %>
-    <meta name="twitter:title" content="Easy Podcasts">
-    <meta property="og:title" content="Easy Podcasts">
-    <meta name="description" content="Easy Podcasts es una solución comunitaria para la descarga de podcasts que tiene como objetivo ayudar a disminuir el consumo de datos: el servicio está alojado en .cu y los archivos de audio son comprimidos. Hecho con ♥ y Software Libre.">
-    <meta property="og:description" content="Easy Podcasts es una solución comunitaria para la descarga de podcasts que tiene como objetivo ayudar a disminuir el consumo de datos: el servicio está alojado en .cu y los archivos de audio son comprimidos. Hecho con ♥ y Software Libre.">
-    <meta name="twitter:description" content="Easy Podcasts es una solución comunitaria para la descarga de podcasts que tiene como objetivo ayudar a disminuir el consumo de datos: el servicio está alojado en .cu y los archivos de audio son comprimidos. Hecho con ♥ y Software Libre.">
-    <meta property="og:image" content="https://roig.is-a.dev/podcasts/images/easypodcasts-c15fb0619af7eeabd16d43b378e2354f.svg">
-    <meta name="twitter:image" content="https://roig.is-a.dev/podcasts/images/easypodcasts-c15fb0619af7eeabd16d43b378e2354f.svg">
-    <% end %>
+      <meta property="og:title" content={"#{@episode.title} - Easy Podcasts"}>
+      <meta name="twitter:title" content={"#{@episode.title} - Easy Podcasts"}>
+      <meta name="description" content={sanitize(String.slice(@episode.description, 0..150))}>
+      <meta property="og:description" content={sanitize(String.slice(@episode.description, 0..150))}>
+      <meta name="twitter:description" content={sanitize(String.slice(@episode.description, 0..150))}>
+      <meta property="og:image" content={Easypodcasts.Channels.ChannelImage.url({"thumb.webp", @channel}, :thumb)}>
+      <meta name="twitter:image" content={Easypodcasts.Channels.ChannelImage.url({"thumb.webp", @channel}, :thumb)}>
+    <% else %>
+      <%= if assigns[:channel] do %>
+        <meta property="og:title" content={"#{@channel.title} - Easy Podcasts"}>
+        <meta name="twitter:title" content={"#{@channel.title} - Easy Podcasts"}>
+        <meta name="description" content={sanitize(String.slice(@channel.description, 0..150))}>
+        <meta property="og:description" content={sanitize(String.slice(@channel.description, 0..150))}>
+        <meta name="twitter:description" content={sanitize(String.slice(@channel.description, 0..150))}>
+        <meta property="og:image" content={Easypodcasts.Channels.ChannelImage.url({"thumb.webp", @channel}, :thumb)}>
+        <meta name="twitter:image" content={Easypodcasts.Channels.ChannelImage.url({"thumb.webp", @channel}, :thumb)}>
+      <% else %>
+        <meta name="twitter:title" content="Easy Podcasts">
+        <meta property="og:title" content="Easy Podcasts">
+        <meta
+          name="description"
+          content="Easy Podcasts es una solución comunitaria para la descarga de podcasts que tiene como objetivo ayudar a disminuir el consumo de datos: el servicio está alojado en .cu y los archivos de audio son comprimidos. Hecho con ♥ y Software Libre."
+        >
+        <meta
+          property="og:description"
+          content="Easy Podcasts es una solución comunitaria para la descarga de podcasts que tiene como objetivo ayudar a disminuir el consumo de datos: el servicio está alojado en .cu y los archivos de audio son comprimidos. Hecho con ♥ y Software Libre."
+        >
+        <meta
+          name="twitter:description"
+          content="Easy Podcasts es una solución comunitaria para la descarga de podcasts que tiene como objetivo ayudar a disminuir el consumo de datos: el servicio está alojado en .cu y los archivos de audio son comprimidos. Hecho con ♥ y Software Libre."
+        >
+        <meta
+          property="og:image"
+          content="https://roig.is-a.dev/podcasts/images/easypodcasts-c15fb0619af7eeabd16d43b378e2354f.svg"
+        >
+        <meta
+          name="twitter:image"
+          content="https://roig.is-a.dev/podcasts/images/easypodcasts-c15fb0619af7eeabd16d43b378e2354f.svg"
+        >
+      <% end %>
     <% end %>
 
     <%= csrf_meta_tag() %>
-    <%= live_title_tag assigns[:page_title] || "Easypodcasts", suffix: " · Easy Podcasts" %>
-    <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
-    <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
+    <%= live_title_tag(assigns[:page_title] || "Easypodcasts", suffix: " · Easy Podcasts") %>
+    <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")} />
+    <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}>
+    </script>
   </head>
   <body class="bg-gray-100 dark:bg-gray-800">
     <%= @inner_content %>

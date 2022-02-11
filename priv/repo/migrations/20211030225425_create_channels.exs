@@ -11,6 +11,7 @@ defmodule Easypodcasts.Repo.Migrations.CreateChannels do
 
       timestamps()
     end
+
     create unique_index(:channels, [:link])
   end
 end

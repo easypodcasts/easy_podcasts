@@ -49,11 +49,13 @@ defmodule Easypodcasts do
       )
 
     workers =
-      Repo.all(from(w in Worker,
-        left_join: e in assoc(w, :episodes),
-        group_by: w.id,
-        select_merge: %{episodes: count(w.id)},
-      ))
+      Repo.all(
+        from(w in Worker,
+          left_join: e in assoc(w, :episodes),
+          group_by: w.id,
+          select_merge: %{episodes: count(w.id)}
+        )
+      )
 
     {channels, episodes, size_stats, latest_episodes, latest_processed_episodes, workers}
   end

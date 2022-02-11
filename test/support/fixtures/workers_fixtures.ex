@@ -11,7 +11,7 @@ defmodule Easypodcasts.WorkersFixtures do
     {:ok, worker} =
       attrs
       |> Enum.into(%{
-        name: "some name",
+        name: "some name"
       })
       |> Easypodcasts.Workers.create_worker()
 

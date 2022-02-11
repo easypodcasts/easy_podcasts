@@ -8,6 +8,5 @@ defmodule Easypodcasts.Repo.Migrations.MigrateEpisodesFromStringToText do
       modify :original_audio_url, :text
       modify :processed_audio_url, :text
     end
-
   end
 end
