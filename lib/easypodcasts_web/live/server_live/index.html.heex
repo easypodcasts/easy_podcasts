@@ -23,7 +23,9 @@
       <span class="flex justify-center self-end p-2 w-full text-white bg-indigo-500 rounded-t-lg dark:bg-blue-400 text-md"> Latest Episodes </span>
         <ol class="px-7 list-decimal dark:text-white">
           <%= for episode <- @latest_episodes do %>
-            <li><%= episode %></li>
+            <li>
+              <%= live_redirect episode.title, to: Routes.episode_show_path(@socket, :show, Utils.slugify(episode.channel), Utils.slugify(episode)) %> (<%= live_redirect episode.channel.title, to: Routes.channel_show_path(@socket, :show, Utils.slugify(episode.channel)) %>)
+            </li>
           <% end %>
         </ol>
     </div>
@@ -31,7 +33,9 @@
       <span class="flex justify-center self-end p-2 w-full text-white bg-indigo-500 rounded-t-lg dark:bg-blue-400 text-md"> Latest Processed </span>
       <ol class="px-7 list-decimal dark:text-white">
           <%= for episode <- @latest_processed_episodes do %>
-            <li><%= episode %></li>
+            <li>
+              <%= live_redirect episode.title, to: Routes.episode_show_path(@socket, :show, Utils.slugify(episode.channel), Utils.slugify(episode)) %> (<%= live_redirect episode.channel.title, to: Routes.channel_show_path(@socket, :show, Utils.slugify(episode.channel)) %>)
+            </li>
           <% end %>
       </ol>
     </div>
@@ -43,7 +47,7 @@
         <ol class="px-5 list-decimal dark:text-white">
         <%= for episode <- @queued_episodes do %>
           <li> 
-            <%= "#{episode.title} #{episode.status}" %>  ( <%= Map.get(@channels_index, episode.channel_id) %> )
+            <%= live_redirect episode.title, to: Routes.episode_show_path(@socket, :show, Utils.slugify(episode.channel), Utils.slugify(episode)) %> (<%= live_redirect episode.channel.title, to: Routes.channel_show_path(@socket, :show, Utils.slugify(episode.channel)) %>)
           </li>
         <% end %>
         </ol>
