@@ -23,13 +23,11 @@ defmodule EasypodcastsWeb.Router do
     plug EasypodcastsWeb.Api.Auth
   end
 
-  scope "/", EasypodcastsWeb do
-    pipe_through :browser
-    live "/about", AboutLive.Index, :index
-    live "/status", ServerLive.Index, :index
-    live "/:channel_slug/:episode_slug", EpisodeLive.Show, :show
-    live "/:slug", ChannelLive.Show, :show
-    live "/", ChannelLive.Index, :index
+  scope "/api", EasypodcastsWeb do
+    pipe_through :api
+    get "/next", ApiController, :next
+    post "/converted", ApiController, :converted
+    post "/cancel", ApiController, :cancel
   end
 
   scope "/feeds", EasypodcastsWeb do
@@ -38,11 +36,13 @@ defmodule EasypodcastsWeb.Router do
     get "/:slug", ChannelController, :feed
   end
 
-  scope "/api", EasypodcastsWeb do
-    pipe_through :api
-    get "/next", ApiController, :next
-    post "/converted", ApiController, :converted
-    post "/cancel", ApiController, :cancel
+  scope "/", EasypodcastsWeb do
+    pipe_through :browser
+    live "/about", AboutLive.Index, :index
+    live "/status", ServerLive.Index, :index
+    live "/:channel_slug/:episode_slug", EpisodeLive.Show, :show
+    live "/:slug", ChannelLive.Show, :show
+    live "/", ChannelLive.Index, :index
   end
 
   # Enables LiveDashboard only for development
