@@ -10,7 +10,8 @@ import Config
 # which you should run after static files are built and
 # before starting your production server.
 config :easypodcasts, EasypodcastsWeb.Endpoint,
-  url: [host: "roig.is-a.dev", path: "/podcasts", port: 4003],
+  url: [host: "easypodcasts.live", path: "/", port: 4003],
+  check_origin: ["https://easypodcasts.live", "https://www.easypodcasts.live"],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
@@ -18,7 +19,7 @@ config :logger, level: :info
 
 config :waffle,
   storage: Waffle.Storage.Local,
-  asset_host: "https://roig.is-a.dev/podcasts/uploads"
+  asset_host: "https://easypodcasts.live/uploads"
 
 # ## SSL Support
 #
