@@ -36,7 +36,7 @@
             </span>
             <span class="mr-3 text-xs text-gray-500 md:text-sm dark:text-gray-100">Downloads: <%= @episode.downloads %></span>
           </div>
-          <p> <%= sanitize(@episode.description) %></p>
+          <p> <%= sanitize(@episode.description, :basic_html) %></p>
           <%= if @episode.status == :done do %>
             <div class="flex items-center self-start">
               <a class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm text-white bg-purple-900 rounded border-0" href={EpisodeAudio.url({"episode.opus", @episode})} download={"#{@episode.title}.opus"}>
