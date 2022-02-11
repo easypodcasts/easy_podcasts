@@ -64,7 +64,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
       page_number: page_number,
       page_size: page_size,
       total_entries: total_entries,
-      total_pages: total_pages,
+      total_pages: total_pages
     } = Channels.list_channels(params)
 
     page_range = Utils.get_page_range(params["page"] || 0, total_pages)

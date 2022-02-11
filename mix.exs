@@ -39,7 +39,7 @@ defmodule Easypodcasts.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 3.0"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 0.17.0"},
+      {:phoenix_live_view, "~> 0.17.0", override: true},
       {:floki, ">= 0.30.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.6"},
       {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
@@ -55,7 +55,8 @@ defmodule Easypodcasts.MixProject do
       {:jaxon, "~> 2.0"},
       {:tzdata, "~> 1.1"},
       {:timex, "~> 3.7"},
-      {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:heex_formatter, github: "feliperenan/heex_formatter", only: [:dev]}
     ]
   end
 

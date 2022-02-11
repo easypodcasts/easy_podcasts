@@ -191,7 +191,7 @@
           # Checks scheduled for next check update (opt-in for now, just replace `false` with `[]`)
 
           {Credo.Check.Readability.Specs, []},
-          {Credo.Check.Readability.ImplTrue, []},
+          {Credo.Check.Readability.ImplTrue, []}
           #
           # Controversial and experimental checks (opt-in, just move the check to `:enabled`
           #   and be sure to use `mix credo --strict` to see low priority checks)

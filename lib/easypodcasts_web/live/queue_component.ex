@@ -39,11 +39,14 @@ defmodule EasypodcastsWeb.QueueComponent do
   def render(assigns) do
     ~H"""
     <div>
-    <%= if @queue_length > 0 do %>
-      <div class="fixed right-6 bottom-6 py-1 px-3 text-xl bg-gray-200 rounded-lg">
-         <%= live_redirect "#{@queue_length} episodes in queue", to: Routes.server_index_path(@socket, :index), class: "text-indigo-500" %>
-      </div>
-    <% end %>
+      <%= if @queue_length > 0 do %>
+        <div class="fixed right-6 bottom-6 py-1 px-3 text-xl bg-gray-200 rounded-lg">
+          <%= live_redirect("#{@queue_length} episodes in queue",
+            to: Routes.server_index_path(@socket, :index),
+            class: "text-indigo-500"
+          ) %>
+        </div>
+      <% end %>
     </div>
     """
   end

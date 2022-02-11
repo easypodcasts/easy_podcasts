@@ -26,7 +26,11 @@ defmodule Easypodcasts.WorkersTest do
       assert {:ok, %Worker{} = worker} = Workers.create_worker(valid_attrs)
       assert worker.name == "some name"
       id = worker.id
-      assert {:ok, ^id} = Phoenix.Token.verify(EasypodcastsWeb.Endpoint, "worker auth", worker.token, max_age: :infinity)
+
+      assert {:ok, ^id} =
+               Phoenix.Token.verify(EasypodcastsWeb.Endpoint, "worker auth", worker.token,
+                 max_age: :infinity
+               )
     end
 
     test "create_worker/1 with invalid data returns error changeset" do
