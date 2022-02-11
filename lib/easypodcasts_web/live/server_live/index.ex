@@ -5,7 +5,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
   use EasypodcastsWeb, :live_view
   use EasypodcastsWeb.{ModalComponent, QueueComponent}
   alias Phoenix.PubSub
-  alias Easypodcasts.{Channels, Episodes}
+  alias Easypodcasts.Episodes
   alias Easypodcasts.Helpers.Utils
 
   @impl true
