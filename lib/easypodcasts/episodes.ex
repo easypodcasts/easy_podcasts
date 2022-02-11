@@ -58,6 +58,7 @@ defmodule Easypodcasts.Episodes do
     Repo.all(
       from(e in Episode,
         where: e.status in [:processing, :queued],
+        preload: [:channel],
         order_by: [{:asc, :status}, {:asc, :updated_at}]
       )
     )

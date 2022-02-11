@@ -117,15 +117,6 @@ defmodule Easypodcasts.Channels do
     Repo.delete(channel)
   end
 
-  def get_channels_in(channels_id) do
-    {_, channels} =
-      from(c in Channel, where: c.id in ^channels_id, select: %{id: c.id, title: c.title})
-      |> Repo.all()
-      |> Enum.map_reduce(%{}, &{&1, Map.put_new(&2, &1.id, &1.title)})
-
-    channels
-  end
-
   def process_all_channels() do
     Logger.info("Processing all channels")
 

@@ -18,16 +18,20 @@ defmodule Easypodcasts do
 
     latest_episodes =
       Repo.all(
-        from(e in Episode, order_by: [{:desc, e.publication_date}], limit: 10, select: e.title)
+        from(e in Episode,
+          preload: [:channel],
+          order_by: [{:desc, e.publication_date}],
+          limit: 10
+        )
       )
 
     latest_processed_episodes =
       Repo.all(
         from(e in Episode,
           where: e.status == :done,
+          preload: [:channel],
           order_by: [{:desc, e.updated_at}],
-          limit: 10,
-          select: e.title
+          limit: 10
         )
       )
 
