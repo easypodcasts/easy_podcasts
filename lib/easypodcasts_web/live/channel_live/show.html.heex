@@ -17,7 +17,7 @@
     <div class="flex flex-col self-center pb-2 h-auto border-b-2 border-gray-300 md:border-0 xl:w-2/3">
       <img
         alt={@channel.title}
-        class="h-96 rounded bg-placeholder-big"
+        class="h-96 rounded bg-placeholder-big object-cover"
         src={ChannelImage.url({"original.webp", @channel}, :original)}
       />
       <%= link to: Routes.channel_path(@socket, :feed, Utils.slugify(@channel)),
