@@ -17,8 +17,8 @@ defmodule EasypodcastsWeb.ServerLive.Index do
     {_id, capacity, percent} =
       :disksup.get_disk_data()
       |> Enum.filter(fn {disk_id, _size, _percent} ->
-        # disk_id == '/home/cloud/podcasts-storage'
-        disk_id == '/'
+        disk_id == '/home/cloud/podcasts-storage'
+        # disk_id == '/'
       end)
       |> hd
 
