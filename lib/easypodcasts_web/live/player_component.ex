@@ -19,7 +19,6 @@ defmodule EasypodcastsWeb.PlayerComponent do
     {:noreply, socket |> assign(:show, false) |> assign(:episode, nil) |> assign(:channel, nil)}
   end
 
-  @impl true
   def handle_event("play", %{"episode" => episode_id}, socket) do
     episode = Episodes.get_episode!(episode_id)
     channel = Channels.get_channel!(episode.channel_id)
@@ -28,12 +27,12 @@ defmodule EasypodcastsWeb.PlayerComponent do
      socket |> assign(:show, true) |> assign(:episode, episode) |> assign(:channel, channel)}
   end
 
+  @impl true
   def render(assigns) do
     ~H"""
     <div id={@id}>
       <%= if @show do %>
         <section
-          id="player"
           class="flex fixed right-0 bottom-0 flex-col py-2 px-4 w-full bg-white border border-gray-200 shadow-2xl xl:right-5 xl:bottom-5 xl:py-4 xl:w-1/3 xl:rounded-xl"
           phx-hook="PlayerHook"
           data-audio-url={EpisodeAudio.url({"episode.opus", @episode})}
