@@ -38,11 +38,13 @@ defmodule EasypodcastsWeb.Router do
 
   scope "/", EasypodcastsWeb do
     pipe_through :browser
-    live "/about", AboutLive.Index, :index
-    live "/status", ServerLive.Index, :index
-    live "/:channel_slug/:episode_slug", EpisodeLive.Show, :show
-    live "/:slug", ChannelLive.Show, :show
-    live "/", ChannelLive.Index, :index
+    live_session :default do
+      live "/about", AboutLive.Index, :index
+      live "/status", ServerLive.Index, :index
+      live "/:channel_slug/:episode_slug", EpisodeLive.Show, :show
+      live "/:slug", ChannelLive.Show, :show
+      live "/", ChannelLive.Index, :index
+    end
   end
 
   # Enables LiveDashboard only for development
