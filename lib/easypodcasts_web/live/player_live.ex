@@ -30,9 +30,9 @@ defmodule EasypodcastsWeb.PlayerLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <div id="player">
+    <div>
       <%= if @show do %>
-        <section
+        <section id="player-element"
           class="flex fixed right-0 bottom-0 flex-col py-2 px-4 w-full bg-white border border-gray-200 shadow-2xl xl:right-5 xl:bottom-5 xl:py-4 xl:w-1/3 xl:rounded-xl"
           phx-hook="PlayerHook"
           data-audio-url={EpisodeAudio.url({"episode.opus", @episode})}
