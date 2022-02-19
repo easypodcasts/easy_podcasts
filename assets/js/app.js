@@ -23,40 +23,75 @@ import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
 
 let Hooks = {};
+
+Hooks.AutoFocus = {
+  mounted() {
+    this.el.focus();
+  },
+};
+
 Hooks.PlayerHook = {
   mounted() {
     this.player = this.getElement("audio");
-    let progressWrapper = this.getElement("#progress-wrapper");
-    let progress = this.getElement("#progress");
-    let loading = this.getElement("#loading");
-    let playButton = this.getElement("#play");
-    let pauseButton = this.getElement("#pause");
-    let currentTime = this.getElement("#current-time");
+    this.progressWrapper = this.getElement("#progress-wrapper");
+    this.progress = this.getElement("#progress");
+    this.loading = this.getElement("#loading");
+    this.playButton = this.getElement("#play");
+    this.pauseButton = this.getElement("#pause");
+    this.currentTime = this.getElement("#current-time");
 
     this.player.onloadeddata = (event) => {
-      loading.classList.add("hidden");
-      pauseButton.classList.remove("hidden");
-      this.player.play();
+      this.play();
     };
-    this.player.onplay = (event) => {
-      playButton.classList.add("hidden");
-      pauseButton.classList.remove("hidden");
+
+    this.player.onwaiting = (event) => {
+      this.loading.classList.remove("hidden");
+      this.pauseButton.classList.add("hidden");
+      this.playButton.classList.add("hidden");
     };
+
     this.player.onended = (event) => {
-      playButton.classList.remove("hidden");
-      pauseButton.classList.add("hidden");
+      this.playButton.classList.remove("hidden");
+      this.pauseButton.classList.add("hidden");
     };
-    playButton.onclick = () => {
-      this.player.play();
-      playButton.classList.add("hidden");
-      pauseButton.classList.remove("hidden");
+
+    this.playButton.onclick = () => {
+      this.play();
     };
-    pauseButton.onclick = () => {
-      this.player.pause();
-      pauseButton.classList.add("hidden");
-      playButton.classList.remove("hidden");
+
+    this.pauseButton.onclick = () => {
+      clearInterval(this.progressTimer);
+      this.pause();
     };
   },
+
+  play() {
+    this.loading.classList.add("hidden");
+    this.pauseButton.classList.remove("hidden");
+    this.playButton.classList.add("hidden");
+
+    this.progressTimer = setInterval(() => this.updateProgress(), 100);
+    this.player.play();
+  },
+
+  pause() {
+    this.pauseButton.classList.add("hidden");
+    this.playButton.classList.remove("hidden");
+    this.player.pause();
+  },
+
+  updateProgress() {
+    if (isNaN(this.player.duration)) {
+      return false;
+    }
+    this.progress.style.width = `${ (this.player.currentTime / this.player.duration) * 100 }%`;
+    this.currentTime.innerText = this.formatTime(this.player.currentTime);
+  },
+
+  formatTime(seconds) {
+    return new Date(1000 * seconds).toISOString().substr(14, 5);
+  },
+
   getElement(el) {
     return this.el.querySelector(el);
   },
