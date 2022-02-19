@@ -56,7 +56,8 @@ defmodule Easypodcasts.MixProject do
       {:tzdata, "~> 1.1"},
       {:timex, "~> 3.7"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
-      {:heex_formatter, github: "feliperenan/heex_formatter", only: [:dev]}
+      {:heex_formatter, github: "feliperenan/heex_formatter", only: [:dev]},
+      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev}
     ]
   end
 
@@ -72,11 +73,7 @@ defmodule Easypodcasts.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.deploy": [
-        "cmd --cd assets npm run deploy",
-        "esbuild default --minify",
-        "phx.digest"
-      ]
+      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
     ]
   end
 end
