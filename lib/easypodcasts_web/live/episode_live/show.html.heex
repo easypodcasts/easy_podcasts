@@ -1,7 +1,7 @@
 <div class="flex flex-col pt-5 xl:flex-row">
   <EasypodcastsWeb.ChannelLive.Show.channel_card channel={@channel} socket={@socket} />
-  <section class="mt-5 text-gray-600 xl:mt-0 xl:w-1/2 dark:text-gray-100 body-font">
-    <div class="divide-y-2 divide-gray-300">
+  <section class="mt-5 xl:mt-0 xl:w-1/2 body-font">
+    <div class="divide-y-2 divide-primary-dark">
       <.episode_card episode={@episode} socket={@socket} channel={@channel} full_description={true} />
     </div>
   </section>

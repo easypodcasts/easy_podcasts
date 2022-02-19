@@ -29,21 +29,18 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
   def channel_card(assigns) do
     ~H"""
-    <section class="flex relative top-2 flex-col items-center self-center w-full text-gray-600 xl:sticky xl:self-start xl:w-1/2 dark:text-gray-100 body-font">
-      <div class="flex flex-col self-center pb-2 h-auto border-b-2 border-gray-300 md:border-0 xl:w-2/3">
+    <section class="flex relative top-2 flex-col items-center self-center w-full xl:sticky xl:self-start xl:w-1/2 body-font">
+      <div class="flex flex-col self-center pb-2 h-auto md:border-0 xl:w-2/3">
         <img
           alt={@channel.title}
-          class="h-96 rounded bg-placeholder-big object-cover"
+          class="object-cover h-96 roundedbig"
           src={ChannelImage.url({"original.webp", @channel}, :original)}
         />
         <%= link to: Routes.channel_path(@socket, :feed, Utils.slugify(@channel)),
              class: "self-center xl:self-start" do %>
-          <button class="flex justify-between items-center py-2 px-2 mt-4 text-lg font-semibold text-white bg-indigo-500 rounded border-0 xl:self-start dark:bg-blue-400 focus:outline-none">
+          <button class="flex justify-between items-center py-2 px-2 mt-4 text-lg font-semibold rounded xl:self-start bg-secondary">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 32 32">
-              <path
-                fill="white"
-                d="M26.334 32c-0.025-14.351-12.547-26.079-26.334-26.106v-5.894c16.916 0 32 14.394 32 32h-5.666zM21.475 31.998h-5.663c0.019-3.524-1.771-7.468-4.604-10.421-2.817-2.977-7.81-4.853-11.194-4.835v-5.892c10.565 0.228 21.246 10.207 21.461 21.148zM4.016 23.997c2.207 0 3.996 1.791 3.996 4 0 2.208-1.789 3.999-3.996 3.999s-3.996-1.791-3.996-3.999c0-2.209 1.789-4 3.996-4z"
-              ></path>
+              <path d="M26.334 32c-0.025-14.351-12.547-26.079-26.334-26.106v-5.894c16.916 0 32 14.394 32 32h-5.666zM21.475 31.998h-5.663c0.019-3.524-1.771-7.468-4.604-10.421-2.817-2.977-7.81-4.853-11.194-4.835v-5.892c10.565 0.228 21.246 10.207 21.461 21.148zM4.016 23.997c2.207 0 3.996 1.791 3.996 4 0 2.208-1.789 3.999-3.996 3.999s-3.996-1.791-3.996-3.999c0-2.209 1.789-4 3.996-4z"></path>
             </svg>
             <span class="ml-1">
               Subscribe
@@ -57,7 +54,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
           <%= for category <- @channel.categories do %>
             <%= live_redirect("##{category}",
               to: Routes.channel_index_path(@socket, :index, search: "##{category}"),
-              class: "text-indigo-500"
+              class: ""
             ) %>
           <% end %>
         </div>

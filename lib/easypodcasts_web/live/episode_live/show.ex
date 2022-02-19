@@ -32,32 +32,32 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
     ~H"""
     <div class="flex flex-wrap mb-4 md:flex-nowrap xl:py-8 xl:mb-0">
       <div class="flex flex-col w-full">
-        <h2 class="mb-2 text-xl font-medium text-gray-900 dark:text-gray-200 title-font">
+        <h2 class="mb-2 text-xl font-medium title-font">
 
           <%= if @socket.view == EasypodcastsWeb.ChannelLive.Show do %>
             <%= live_redirect(@episode.title,
               to: Routes.episode_show_path(@socket, :show, Utils.slugify(@channel), Utils.slugify(@episode)),
-              class: "text-indigo-500"
+              class: "text-on-secondary"
             ) %>
           <% else %>
             <%= @episode.title %>
           <% end %>
         </h2>
         <div class="flex mb-3">
-          <span class="mr-3 text-xs text-gray-500 md:text-sm dark:text-gray-100">
+          <span class="mr-3 text-xs md:text-sm">
             <%= Utils.format_date(@episode.publication_date) %>
           </span>
-          <span class="mr-3 text-xs text-gray-500 md:text-sm dark:text-gray-100">
+          <span class="mr-3 text-xs md:text-sm">
             <%= Utils.get_duration(@episode) %>
           </span>
-          <span class="mr-3 text-xs text-gray-500 md:text-sm dark:text-gray-100">
+          <span class="mr-3 text-xs md:text-sm">
             <%= if @episode.status == :done do %>
               <%= Float.floor((@episode.processed_size || 0) / 1_000_000, 2) %> MB ( <%= Float.floor((@episode.original_size - (@episode.processed_size || 0)) / 1_000_000, 2) %> MB less)
             <% else %>
               <%= Float.floor(@episode.original_size / 1_000_000, 2) %> MB
             <% end %>
           </span>
-          <span class="mr-3 text-xs text-gray-500 md:text-sm dark:text-gray-100">
+          <span class="mr-3 text-xs md:text-sm">
             Downloads: <%= @episode.downloads %>
           </span>
         </div>
@@ -67,7 +67,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
         <%= if @episode.status == :done do %>
           <div class="flex items-center self-start">
             <a
-              class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm text-white bg-purple-900 rounded border-0"
+              class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm rounded border-0 bg-secondary hover:bg-secondary-dark"
               href={EpisodeAudio.url({"episode.opus", @episode})}
               download={"#{@episode.title}.opus"}
             >
@@ -82,7 +82,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
               Download
             </a>
             <button
-              class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm text-white bg-purple-900 rounded border-0"
+              class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm rounded border-0 bg-secondary hover:bg-secondary-dark"
               phx-click="play"
               phx-target="#player"
               phx-value-episode={@episode.id}
@@ -102,7 +102,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
         <% end %>
         <%= if @episode.status == :queued do %>
           <button
-            class="flex self-start py-2 px-2 mt-4 text-sm text-white bg-gray-400 rounded border-0 cursor-wait dark:bg-gray-200 focus:outline-none"
+            class="flex self-start py-2 px-2 mt-4 text-sm rounded border-0 cursor-wait focus:outline-none bg-tertiary"
             disabled
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="mr-1 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -117,16 +117,8 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
           </button>
         <% end %>
         <%= if @episode.status == :processing do %>
-          <button
-            class="flex self-start py-2 px-2 mt-4 text-sm text-white bg-gray-400 rounded border-0 cursor-wait dark:bg-gray-600 focus:outline-none"
-            disabled
-          >
-            <svg
-              class="mr-1 -ml-1 w-5 h-5 text-white animate-spin"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
+          <button class="flex self-start py-2 px-2 mt-4 text-sm rounded border-0 cursor-wait bg-tertiary" disabled>
+            <svg class="mr-1 -ml-1 w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path
                 class="opacity-75"
@@ -139,7 +131,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
         <% end %>
         <%= if @episode.status == :new and @episode.retries < 3 do %>
           <button
-            class="flex justify-between self-start py-2 px-2 mt-4 text-sm text-white bg-indigo-500 rounded border-0 dark:bg-blue-400 focus:outline-none disabled:bg-gray-400 disabled:cursor-wait lg: dark:disabled:bg-gray-200"
+            class="flex justify-between self-start py-2 px-2 mt-4 text-sm rounded border-0 disabled:cursor-wait bg-secondary hover:bg-secondary-dark"
             phx-click="process_episode"
             phx-value-episode_id={@episode.id}
             phx-disable-with="Queuing..."
