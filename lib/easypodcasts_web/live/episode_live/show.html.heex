@@ -2,10 +2,7 @@
   <EasypodcastsWeb.ChannelLive.Show.channel_card channel={@channel} socket={@socket} />
   <section class="mt-5 text-gray-600 xl:mt-0 xl:w-1/2 dark:text-gray-100 body-font">
     <div class="divide-y-2 divide-gray-300">
-      <.episode_card
-        episode={@episode}
-        full_description={true}
-      />
+      <.episode_card episode={@episode} socket={@socket} channel={@channel} full_description={true} />
     </div>
   </section>
 </div>
