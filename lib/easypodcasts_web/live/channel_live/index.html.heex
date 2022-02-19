@@ -29,7 +29,7 @@
             <p class="flex-1 px-2 mb-2 text-sm text-center line-clamp-5">
               <%= sanitize(channel.description) %>
             </p>
-            <span class="flex justify-center self-end pt-1 pb-2 w-full text-sm rounded-b-lg border-t-2 border-t-primary-dark bg-secondary">
+            <span class="flex justify-center self-end pt-1 pb-2 w-full text-sm rounded-b-lg border-t-2 border-t-primary-dark bg-secondary hover:bg-secondary-dark">
               <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(channel)) do %>
                 <%= channel.episodes %> Episodes
               <% end %>
