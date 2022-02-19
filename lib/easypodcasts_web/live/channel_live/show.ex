@@ -54,7 +54,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
           <%= for category <- @channel.categories do %>
             <%= live_redirect("##{category}",
               to: Routes.channel_index_path(@socket, :index, search: "##{category}"),
-              class: ""
+              class: "text-tertiary-dark"
             ) %>
           <% end %>
         </div>
