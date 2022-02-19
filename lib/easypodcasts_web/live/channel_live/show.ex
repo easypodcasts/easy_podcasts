@@ -7,7 +7,6 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
   alias Easypodcasts.{Channels, Episodes}
   alias Easypodcasts.Channels.ChannelImage
-  alias Easypodcasts.Episodes.EpisodeAudio
   alias Easypodcasts.Helpers.{Search, Utils}
   alias Phoenix.PubSub
 
@@ -23,7 +22,6 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
       socket
       |> assign(:channel, channel)
       |> assign(:show_modal, false)
-      |> assign(:show_player, false)
       |> assign(:page_title, "#{channel.title}")
 
     {:ok, socket}
@@ -98,22 +96,6 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
           put_flash(socket, :error, "Sorry. That episode can't be processed right now")
       end
 
-    {:noreply, socket}
-  end
-
-  def handle_event("play_episode", %{"episode_id" => episode_id}, socket) do
-    episode_id = String.to_integer(episode_id)
-
-    socket =
-      socket
-      |> assign(:show_player, true)
-      |> assign(:playing_episode, Map.get(socket.assigns.episodes_map, episode_id))
-
-    {:noreply, socket}
-  end
-
-  def handle_event("stop_playing", _params, socket) do
-    socket = socket |> assign(:show_player, false) |> assign(:playing_episode, nil)
     {:noreply, socket}
   end
 
