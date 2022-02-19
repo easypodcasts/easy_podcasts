@@ -38,6 +38,7 @@ defmodule EasypodcastsWeb.Router do
 
   scope "/", EasypodcastsWeb do
     pipe_through :browser
+
     live_session :default do
       live "/about", AboutLive.Index, :index
       live "/status", ServerLive.Index, :index
