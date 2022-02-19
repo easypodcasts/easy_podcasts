@@ -38,3 +38,9 @@ npm-debug.log
 /assets/node_modules/
 
 TODO
+/.nix-mix/
+/.envrc
+/postgres/
+/postgres_data/
+/sockets/
+/.nix-hex/
