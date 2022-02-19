@@ -46,7 +46,9 @@ defmodule EasypodcastsWeb.PlayerLive do
             >
             <div class="flex flex-col flex-1 px-2">
               <span class="hidden mb-2 lg:block">
-            <%= live_redirect @channel.title, to: Routes.channel_show_path(@socket, :show, Utils.slugify(@channel)) %>
+                <%= live_redirect(@channel.title,
+                  to: Routes.channel_show_path(@socket, :show, Utils.slugify(@channel))
+                ) %>
               </span>
               <span class="font-semibold">
                 <%= live_redirect(@episode.title,
