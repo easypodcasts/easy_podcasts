@@ -18,6 +18,8 @@
       <%= for episode_id <- @episodes_index do %>
         <EasypodcastsWeb.EpisodeLive.Show.episode_card
           episode={Map.get(@episodes_map, episode_id)}
+          socket={@socket}
+          channel={@channel}
           full_description={false}
         />
       <% end %>
