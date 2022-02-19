@@ -7,25 +7,12 @@ defmodule EasypodcastsWeb.ModalComponent do
   alias Easypodcasts.Channels.Channel
   alias Phoenix.LiveView.JS
 
-  defmacro __using__(_opts) do
-    quote do
-      alias EasypodcastsWeb.ModalComponent
-      @impl true
-      def handle_event("show_modal", _params, socket) do
-        {:noreply, assign(socket, :show_modal, true)}
-      end
-
-      def handle_event("hide_modal", _params, socket) do
-        {:noreply, assign(socket, :show_modal, false)}
-      end
-    end
-  end
-
   @impl true
   def mount(socket) do
     {:ok,
      socket
      |> assign(:page_title, "New Podcast")
+     |> assign(:show_modal, false)
      |> assign(:changeset, Channels.change_channel(%Channel{}))}
   end
 
@@ -47,6 +34,14 @@ defmodule EasypodcastsWeb.ModalComponent do
       {:error, msg} ->
         {:noreply, socket |> assign(:show_modal, false) |> put_flash(:error, msg)}
     end
+  end
+
+  def handle_event("show_modal", _params, socket) do
+    {:noreply, assign(socket, :show_modal, true)}
+  end
+
+  def handle_event("hide_modal", _params, socket) do
+    {:noreply, assign(socket, :show_modal, false)}
   end
 
   def show_modal(js \\ %JS{}) do

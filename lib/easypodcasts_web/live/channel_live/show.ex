@@ -3,7 +3,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   Channel details view
   """
   use EasypodcastsWeb, :live_view
-  use EasypodcastsWeb.{ModalComponent, QueueComponent}
+  use EasypodcastsWeb.QueueComponent
   import EasypodcastsWeb.PaginationComponent
 
   alias Easypodcasts.{Channels, Episodes}

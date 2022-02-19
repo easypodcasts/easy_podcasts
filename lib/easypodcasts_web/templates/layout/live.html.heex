@@ -34,6 +34,7 @@
       ) %>
       <button
         phx-click="show_modal"
+        phx-target="#new_podcast"
         id="add-podcast"
         class="py-2 px-4 font-semibold text-white bg-indigo-500 rounded dark:bg-blue-400 hover:bg-indigo-600 text-md dark:hover:bg-blue-500"
       >
@@ -97,6 +98,7 @@
     ) %>
     <button
       phx-click="show_modal"
+      phx-target="new_podcast"
       class="py-3 px-4 font-semibold text-white bg-indigo-500 rounded dark:bg-blue-400 hover:bg-indigo-600 text-md dark:hover:bg-blue-500"
     >
       Add Podcast
@@ -135,7 +137,7 @@
 
     <%= if live_flash(@flash, :error) do %>
       <div
-        class="p-4 mb-3 mb-4 text-sm text-center text-red-700 bg-red-100 rounded-lg"
+        class="p-4mb-3 text-sm text-center text-red-700 bg-red-100 rounded-lg"
         role="alert"
         phx-click="lv:clear-flash"
         phx-value-key="error"
@@ -148,5 +150,6 @@
     <% end %>
   </div>
   <%= @inner_content %>
-  <.live_component module={EasypodcastsWeb.QueueComponent} id={"queue_state"} />
+  <.live_component module={EasypodcastsWeb.QueueComponent} id="queue_state" />
+  <.live_component module={EasypodcastsWeb.ModalComponent} id="new_podcast" return_to={Routes.channel_index_path(@socket, :index)} />
 </main>

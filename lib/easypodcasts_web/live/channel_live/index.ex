@@ -3,7 +3,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   Index view
   """
   use EasypodcastsWeb, :live_view
-  use EasypodcastsWeb.{ModalComponent, QueueComponent}
+  use EasypodcastsWeb.QueueComponent
 
   alias Easypodcasts.Channels
   alias Easypodcasts.Channels.ChannelImage
@@ -15,7 +15,6 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
     {:noreply,
      socket
      |> assign(:page_title, "Home")
-     |> assign(:show_modal, false)
      |> assign(list_channels(params))}
   end
 

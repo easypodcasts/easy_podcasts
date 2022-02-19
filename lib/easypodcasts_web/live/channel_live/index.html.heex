@@ -59,7 +59,3 @@
     search={@search}
   />
 <% end %>
-
-<%= if @show_modal do %>
-  <.live_component module={ModalComponent} id="new_podcast" return_to={Routes.channel_index_path(@socket, :index)} />
-<% end %>
