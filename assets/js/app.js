@@ -24,30 +24,8 @@ import topbar from "../vendor/topbar";
 
 let Hooks = {};
 Hooks.PlayerHook = {
-  async mounted() {
-    const { Howl } = await import("howler");
-    this.Howl = Howl;
-    this.setupPlayer();
-  },
-  updated() {
-    this.player.unload();
-    this.setupPlayer();
-  },
-  destroyed() {
-    this.player.unload();
-  },
-  getElement(el) {
-    return this.el.querySelector(el);
-  },
-  formatTime(secs) {
-    const minutes = Math.floor(secs / 60) || 0;
-    const seconds = secs - minutes * 60 || 0;
-
-    return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-  },
-  setupPlayer() {
-    const audioUrl = this.el.dataset.audioUrl;
-
+  mounted() {
+    this.player = this.getElement("audio");
     let progressWrapper = this.getElement("#progress-wrapper");
     let progress = this.getElement("#progress");
     let loading = this.getElement("#loading");
@@ -55,59 +33,32 @@ Hooks.PlayerHook = {
     let pauseButton = this.getElement("#pause");
     let currentTime = this.getElement("#current-time");
 
-    progressWrapper.onclick = (event) => {
-      console.log("clicked progress");
-      let rect = event.target.getBoundingClientRect();
-      let x = event.clientX - rect.left;
-      let clickedValue =
-        (x * this.player.duration()) / progressWrapper.offsetWidth;
-      this.player.seek(clickedValue);
-      progress.style.width =
-        ((clickedValue / this.player.duration()) * 100 || 0) + "%";
+    this.player.onloadeddata = (event) => {
+      loading.classList.add("hidden");
+      pauseButton.classList.remove("hidden");
+      this.player.play();
     };
-
-    let step = () => {
-      var seek = this.player.seek() || 0;
-      let strCurrentTime = this.formatTime(Math.round(seek));
-      currentTime.textContent = strCurrentTime;
-      progress.style.width = `${(seek / this.player.duration()) * 100 || 0} %`;
-      if (this.player.playing()) {
-        requestAnimationFrame(step);
-      }
+    this.player.onplay = (event) => {
+      playButton.classList.add("hidden");
+      pauseButton.classList.remove("hidden");
     };
-
+    this.player.onended = (event) => {
+      playButton.classList.remove("hidden");
+      pauseButton.classList.add("hidden");
+    };
     playButton.onclick = () => {
       this.player.play();
       playButton.classList.add("hidden");
       pauseButton.classList.remove("hidden");
     };
-
     pauseButton.onclick = () => {
       this.player.pause();
       pauseButton.classList.add("hidden");
       playButton.classList.remove("hidden");
     };
-
-    this.player = new this.Howl({
-      src: [audioUrl],
-      html5: true,
-      onload: function () {
-        loading.classList.add("hidden");
-        pauseButton.classList.remove("hidden");
-      },
-      onplay: function () {
-        requestAnimationFrame(step);
-      },
-      onend: function () {
-        pauseButton.classList.add("hidden");
-        playButton.classList.remove("hidden");
-      },
-      onseek: function () {
-        requestAnimationFrame(step);
-      },
-    });
-
-    this.player.play();
+  },
+  getElement(el) {
+    return this.el.querySelector(el);
   },
 };
 
