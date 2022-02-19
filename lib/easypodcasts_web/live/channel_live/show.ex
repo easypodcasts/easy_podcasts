@@ -136,6 +136,11 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
     {:noreply, socket}
   end
 
+  def handle_event(_, _, socket) do
+    # TODO: Find out how to target another live view rendered with live_render
+    {:noreply, socket}
+  end
+
   @impl true
   def handle_info(
         {:episode_processing, %{episode_id: episode_id}},

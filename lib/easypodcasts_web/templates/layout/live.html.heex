@@ -156,5 +156,5 @@
     id="new_podcast"
     return_to={Routes.channel_index_path(@socket, :index)}
   />
-  <.live_component module={EasypodcastsWeb.PlayerComponent} id="player" />
+  <%= live_render(@socket, EasypodcastsWeb.PlayerLive, id: "player", sticky: true) %>
 </main>

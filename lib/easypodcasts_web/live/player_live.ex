@@ -1,17 +1,17 @@
-defmodule EasypodcastsWeb.PlayerComponent do
-  use EasypodcastsWeb, :live_component
+defmodule EasypodcastsWeb.PlayerLive do
+  use EasypodcastsWeb, :live_view
   alias Easypodcasts.{Channels, Episodes}
   alias Easypodcasts.Episodes.EpisodeAudio
   alias Easypodcasts.Channels.ChannelImage
   alias Easypodcasts.Helpers.Utils
 
   @impl true
-  def mount(socket) do
+  def mount(_, _, socket) do
     {:ok,
      socket
      |> assign(:show, false)
      |> assign(:episode, nil)
-     |> assign(:channel, nil)}
+     |> assign(:channel, nil), layout: false}
   end
 
   @impl true
@@ -30,7 +30,7 @@ defmodule EasypodcastsWeb.PlayerComponent do
   @impl true
   def render(assigns) do
     ~H"""
-    <div id={@id}>
+    <div id="player">
       <%= if @show do %>
         <section
           class="flex fixed right-0 bottom-0 flex-col py-2 px-4 w-full bg-white border border-gray-200 shadow-2xl xl:right-5 xl:bottom-5 xl:py-4 xl:w-1/3 xl:rounded-xl"
@@ -58,7 +58,6 @@ defmodule EasypodcastsWeb.PlayerComponent do
               viewBox="0 0 24 24"
               stroke="currentColor"
               phx-click="close"
-              phx-target={@myself}
             >
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
