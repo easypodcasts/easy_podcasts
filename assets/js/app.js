@@ -65,6 +65,10 @@ Hooks.PlayerHook = {
     };
   },
 
+  destroyed() {
+    clearInterval(this.progressTimer);
+  },
+
   play() {
     this.loading.classList.add("hidden");
     this.pauseButton.classList.remove("hidden");
@@ -84,7 +88,9 @@ Hooks.PlayerHook = {
     if (isNaN(this.player.duration)) {
       return false;
     }
-    this.progress.style.width = `${ (this.player.currentTime / this.player.duration) * 100 }%`;
+    this.progress.style.width = `${
+      (this.player.currentTime / this.player.duration) * 100
+    }%`;
     this.currentTime.innerText = this.formatTime(this.player.currentTime);
   },
 
