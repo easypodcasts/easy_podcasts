@@ -3,7 +3,6 @@ defmodule EasypodcastsWeb.ServerLive.Index do
    Server status view
   """
   use EasypodcastsWeb, :live_view
-  use EasypodcastsWeb.QueueComponent
   alias Phoenix.PubSub
   alias Easypodcasts.Episodes
   alias Easypodcasts.Helpers.Utils
