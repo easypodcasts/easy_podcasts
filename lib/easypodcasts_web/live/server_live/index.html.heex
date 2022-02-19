@@ -8,8 +8,10 @@
       </li>
       <li>Total Episodes: <%= @episodes %>
       </li>
+      <li>Original Size: <%= Float.floor(@size.original / 1_000_000_000, 2) %> GB</li>
       <li>Processed Episodes: <%= @size.total %>
       </li>
+      <li>Processed Size: <%= Float.floor(@size.processed / 1_000_000_000, 2) %> GB</li>
     </ul>
   </div>
   <div class="flex-col mb-6 w-full rounded-lg border border-primary-dark">
