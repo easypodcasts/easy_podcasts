@@ -44,12 +44,6 @@ Hooks.PlayerHook = {
       this.play();
     };
 
-    this.player.onwaiting = (event) => {
-      this.loading.classList.remove("hidden");
-      this.pauseButton.classList.add("hidden");
-      this.playButton.classList.add("hidden");
-    };
-
     this.player.onended = (event) => {
       this.playButton.classList.remove("hidden");
       this.pauseButton.classList.add("hidden");
@@ -63,6 +57,15 @@ Hooks.PlayerHook = {
       clearInterval(this.progressTimer);
       this.pause();
     };
+
+    this.progressWrapper.onclick = (event) => {
+      let rect = event.target.getBoundingClientRect();
+      let x = event.clientX - rect.left;
+      let clickedValue =
+        (x * this.player.duration) / this.progressWrapper.offsetWidth;
+      this.player.currentTime = clickedValue;
+      this.updateProgress();
+    };
   },
 
   destroyed() {
@@ -74,7 +77,7 @@ Hooks.PlayerHook = {
     this.pauseButton.classList.remove("hidden");
     this.playButton.classList.add("hidden");
 
-    this.progressTimer = setInterval(() => this.updateProgress(), 100);
+    this.progressTimer = setInterval(() => this.updateProgress(), 500);
     this.player.play();
   },
 
