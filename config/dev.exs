@@ -1,13 +1,24 @@
 import Config
 
 # Configure your database
-config :easypodcasts, Easypodcasts.Repo,
-  username: System.get_env("POSTGRES_USER", "postgres"),
-  password: System.get_env("POSTGRES_PASSWORD", "postgres"),
-  database: System.get_env("POSTGRES_DB", "easypodcasts_dev"),
-  hostname: System.get_env("PGHOST", "localhost"),
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+if System.get_env("PGSOCKET") != nil do
+  config :easypodcasts, Easypodcasts.Repo,
+    username: System.get_env("POSTGRES_USER", "postgres"),
+    password: System.get_env("POSTGRES_PASSWORD", "postgres"),
+    database: System.get_env("POSTGRES_DB", "easypodcasts_dev"),
+    # hostname: System.get_env("DATABASE_URL", "localhost"),
+    socket_dir: System.get_env("PGSOCKET"),
+    show_sensitive_data_on_connection_error: true,
+    pool_size: 10
+else
+  config :easypodcasts, Easypodcasts.Repo,
+    username: System.get_env("POSTGRES_USER", "postgres"),
+    password: System.get_env("POSTGRES_PASSWORD", "postgres"),
+    database: System.get_env("POSTGRES_DB", "easypodcasts_dev"),
+    hostname: System.get_env("DATABASE_URL", "localhost"),
+    show_sensitive_data_on_connection_error: true,
+    pool_size: 10
+end
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
