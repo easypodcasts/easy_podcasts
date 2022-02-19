@@ -9,7 +9,6 @@ Hosteado en: https://easypodcasts.live
 ### Requisitos:
 
  * Elixir 1.12
- * NodeJS 16
  * PostgreSQL
  * ffmpeg
 
