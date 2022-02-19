@@ -4,7 +4,6 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
   """
   use EasypodcastsWeb, :live_view
   alias Easypodcasts.{Channels, Episodes}
-  alias Easypodcasts.Channels.ChannelImage
   alias Easypodcasts.Episodes.EpisodeAudio
   alias Easypodcasts.Helpers.Utils
   alias Phoenix.PubSub
@@ -24,7 +23,6 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
       |> assign(:channel, channel)
       |> assign(:episode, episode)
       |> assign(:show_modal, false)
-      |> assign(:show_player, false)
       |> assign(:page_title, "#{episode.title}")
 
     {:ok, socket}
@@ -46,7 +44,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
           </span>
           <span class="mr-3 text-xs text-gray-500 md:text-sm dark:text-gray-100">
             <%= if @episode.status == :done do %>
-              <%= Float.floor(@episode.processed_size / 1_000_000, 2) %> MB ( <%= Float.floor((@episode.original_size - @episode.processed_size) / 1_000_000, 2) %> MB less)
+              <%= Float.floor((@episode.processed_size || 0) / 1_000_000, 2) %> MB ( <%= Float.floor((@episode.original_size - (@episode.processed_size || 0)) / 1_000_000, 2) %> MB less)
             <% else %>
               <%= Float.floor(@episode.original_size / 1_000_000, 2) %> MB
             <% end %>
@@ -75,23 +73,23 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
               </svg>
               Download
             </a>
-            <%= if not @show_player or @playing_episode.id != @episode.id do %>
-              <button
-                class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm text-white bg-purple-900 rounded border-0"
-                phx-click="play_episode"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-                  />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Play
-              </button>
-            <% end %>
+            <button
+              class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm text-white bg-purple-900 rounded border-0"
+              phx-click="play"
+              phx-target="#player"
+              phx-value-episode={@episode.id}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+                />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Play
+            </button>
           </div>
         <% end %>
         <%= if @episode.status == :queued do %>
@@ -135,6 +133,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
           <button
             class="flex justify-between self-start py-2 px-2 mt-4 text-sm text-white bg-indigo-500 rounded border-0 dark:bg-blue-400 focus:outline-none disabled:bg-gray-400 disabled:cursor-wait lg: dark:disabled:bg-gray-200"
             phx-click="process_episode"
+            phx-value-episode_id={@episode.id}
             phx-disable-with="Queuing..."
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="mr-1 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -177,20 +176,6 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
           put_flash(socket, :error, "Sorry. That episode can't be processed right now")
       end
 
-    {:noreply, socket}
-  end
-
-  def handle_event("play_episode", _value, socket) do
-    socket =
-      socket
-      |> assign(:show_player, true)
-      |> assign(:playing_episode, socket.assigns.episode)
-
-    {:noreply, socket}
-  end
-
-  def handle_event("stop_playing", _value, socket) do
-    socket = socket |> assign(:show_player, false) |> assign(:playing_episode, nil)
     {:noreply, socket}
   end
 
