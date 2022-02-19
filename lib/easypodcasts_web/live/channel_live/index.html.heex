@@ -12,15 +12,15 @@
     search={@search}
   />
 <% end %>
-<section class="mx-auto text-gray-600 dark:text-gray-100 body-font">
+<section class="mx-auto body-font">
   <div class="flex flex-wrap pl-0">
     <%= if @total_entries > 0 do %>
       <%= for channel <- @channels do %>
         <div class="p-4 w-full md:w-1/5">
-          <div class="flex flex-col w-auto h-full rounded-lg border-2 border-gray-300 border-opacity-60 dark:border-gray-600">
+          <div class="flex flex-col w-auto h-full rounded-lg border-2 border-primary-dark bg-primary">
             <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(channel)) do %>
               <img
-                class="object-cover object-center mx-auto mb-2 w-52 h-52 rounded-t bg-placeholder-small"
+                class="xl:object-cover w-full mb-2 rounded-t-lg"
                 src={ChannelImage.url({"thumb.webp", channel}, :thumb)}
                 alt={channel.title}
                 loading="lazy"
@@ -29,7 +29,7 @@
             <p class="flex-1 px-2 mb-2 text-sm text-center line-clamp-5">
               <%= sanitize(channel.description) %>
             </p>
-            <span class="flex justify-center self-end pt-1 pb-2 w-full text-sm text-white bg-indigo-500 rounded-b-lg border-t-2 dark:bg-blue-400 dark:border-gray-600">
+            <span class="flex justify-center self-end pt-1 pb-2 w-full text-sm rounded-b-lg border-t-2 border-t-primary-dark bg-secondary">
               <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(channel)) do %>
                 <%= channel.episodes %> Episodes
               <% end %>
@@ -39,7 +39,7 @@
       <% end %>
     <% else %>
       <div class="w-full text-center">
-        <h1 class="mb-4 text-3xl font-medium text-gray-900 sm:text-4xl title-font">
+        <h1 class="mb-4 text-3xl font-medium sm:text-4xl title-font">
           No podcasts to show
         </h1>
       </div>

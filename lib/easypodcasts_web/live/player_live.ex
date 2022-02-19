@@ -34,16 +34,12 @@ defmodule EasypodcastsWeb.PlayerLive do
       <%= if @show do %>
         <section
           id="player-element"
-          class="flex fixed right-0 bottom-0 flex-col py-2 px-4 w-full bg-white border border-gray-200 shadow-2xl xl:right-5 xl:bottom-5 xl:py-4 xl:w-1/3 xl:rounded-xl"
+          class="flex fixed right-0 bottom-0 flex-col py-2 px-4 w-full border shadow-2xl xl:right-5 xl:bottom-5 xl:py-4 xl:w-1/3 xl:rounded-xl border-primary-dark bg-primary"
           phx-hook="PlayerHook"
         >
           <audio src={EpisodeAudio.url({"episode.opus", @episode})}></audio>
           <div class="flex mb-2">
-            <img
-              src={ChannelImage.url({"thumb.webp", @channel}, :thumb)}
-              alt={@channel.title}
-              class="w-16 h-16 rounded-xl bg-placeholder-small"
-            >
+            <img src={ChannelImage.url({"thumb.webp", @channel}, :thumb)} alt={@channel.title} class="w-16 h-16 rounded-xlsmall">
             <div class="flex flex-col flex-1 px-2">
               <span class="hidden mb-2 lg:block">
                 <%= live_redirect(@channel.title,
@@ -58,7 +54,7 @@ defmodule EasypodcastsWeb.PlayerLive do
             </div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="w-8 h-8 text-indigo-500 cursor-pointer"
+              class="w-8 h-8 cursor-pointer"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -69,9 +65,9 @@ defmodule EasypodcastsWeb.PlayerLive do
           </div>
           <div class="flex justify-between">
             <div class="flex flex-col flex-1 py-3 px-2">
-              <div class="mb-1 w-full h-5 rounded-2xl cursor-pointer grid content-center" id="progress-wrapper">
-                <div class="w-full h-1 bg-indigo-200 rounded-2xl">
-                  <div style="width:0%" id="progress" class="mb-1 h-1 bg-indigo-500 rounded-2xl"></div>
+              <div class="grid content-center mb-1 w-full h-5 rounded-2xl cursor-pointer" id="progress-wrapper">
+                <div class="w-full h-1 rounded-2xl bg-secondary-light">
+                  <div style="width:0%" id="progress" class="mb-1 h-1 rounded-2xl bg-secondary-dark"></div>
                 </div>
               </div>
               <div class="flex justify-between">
@@ -84,7 +80,7 @@ defmodule EasypodcastsWeb.PlayerLive do
               </div>
             </div>
             <svg
-              class="mr-1 -ml-1 w-8 h-8 text-indigo-500 animate-spin"
+              class="mr-1 -ml-1 w-8 h-8 animate-spin"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               id="loading"
@@ -99,7 +95,7 @@ defmodule EasypodcastsWeb.PlayerLive do
             </svg>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="hidden w-8 h-8 text-indigo-500"
+              class="hidden w-8 h-8"
               fill="none"
               title="Play"
               id="play"
@@ -116,7 +112,7 @@ defmodule EasypodcastsWeb.PlayerLive do
             </svg>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="hidden w-8 h-8 text-indigo-500"
+              class="hidden w-8 h-8"
               title="Pause"
               id="pause"
               fill="none"

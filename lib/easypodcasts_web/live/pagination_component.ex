@@ -23,7 +23,7 @@ defmodule EasypodcastsWeb.PaginationComponent do
     <nav class={nav_classes(is_top)}>
       <%= live_redirect to: get_route(socket, route, action, object_id, search, page_number - 1),
                     class:
-                      "block bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-500 text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 hover:text-gray-700 ml-0 rounded-l-lg leading-tight py-2 px-3 #{if page_number == 1, do: "pointer-events-none text-gray-600"}" do %>
+                      "block border border-primary-dark bg-primary ml-0 rounded-l-lg leading-tight py-2 px-3 #{if page_number == 1, do: "pointer-events-none"}" do %>
         <span class="sr-only">
           Previous
         </span>
@@ -40,21 +40,19 @@ defmodule EasypodcastsWeb.PaginationComponent do
         <%= if page_number == idx do %>
           <%= live_redirect(idx,
             to: get_route(socket, route, action, object_id, search, idx),
-            class:
-              "bg-indigo-50 dark:bg-gray-600 border border-indigo-300 dark:border-blue-500 text-indigo-600 dark:text-blue-500 hover:bg-indigo-100 dark:hover:bg-gray-500 hover:text-indigo-700 leading-tight py-2 px-3 pointer-events-none"
+            class: "border border-secondary-dark bg-secondary leading-tight py-2 px-3 pointer-events-none"
           ) %>
         <% else %>
           <%= live_redirect(idx,
             to: get_route(socket, route, action, object_id, search, idx),
-            class:
-              "bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-500 text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 hover:text-gray-700 leading-tight py-2 px-3"
+            class: "leading-tight py-2 px-3 border border-primary-dark bg-primary"
           ) %>
         <% end %>
       <% end %>
 
       <%= live_redirect to: get_route(socket, route, action, object_id, search, page_number + 1),
                     class:
-                      "block bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-500 text-gray-500 dark:text-gray-300 hover:bg-gray-100 hover:text-gray-700 rounded-r-lg leading-tight py-2 px-3 #{if page_number == total_pages, do: "pointer-events-none text-gray-600"}" do %>
+                      "block border border-primary-dark bg-primary rounded-r-lg leading-tight py-2 px-3 #{if page_number == total_pages, do: "pointer-events-none"}" do %>
         <span class="sr-only">
           Next
         </span>
