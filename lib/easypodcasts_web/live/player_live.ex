@@ -32,11 +32,12 @@ defmodule EasypodcastsWeb.PlayerLive do
     ~H"""
     <div>
       <%= if @show do %>
-        <section id="player-element"
+        <section
+          id="player-element"
           class="flex fixed right-0 bottom-0 flex-col py-2 px-4 w-full bg-white border border-gray-200 shadow-2xl xl:right-5 xl:bottom-5 xl:py-4 xl:w-1/3 xl:rounded-xl"
           phx-hook="PlayerHook"
         >
-        <audio src={EpisodeAudio.url({"episode.opus", @episode})}></audio>
+          <audio src={EpisodeAudio.url({"episode.opus", @episode})}></audio>
           <div class="flex mb-2">
             <img
               src={ChannelImage.url({"thumb.webp", @channel}, :thumb)}
@@ -64,8 +65,10 @@ defmodule EasypodcastsWeb.PlayerLive do
           </div>
           <div class="flex justify-between">
             <div class="flex flex-col flex-1 py-3 px-2">
-              <div class="mb-1 w-full h-1 bg-indigo-200 rounded-2xl" id="progress-wrapper">
-                <div style="width:0%" id="progress" class="mb-1 h-1 bg-indigo-500 rounded-2xl"></div>
+              <div class="mb-1 w-full h-5 rounded-2xl cursor-pointer grid content-center" id="progress-wrapper">
+                <div class="w-full h-1 bg-indigo-200 rounded-2xl">
+                  <div style="width:0%" id="progress" class="mb-1 h-1 bg-indigo-500 rounded-2xl"></div>
+                </div>
               </div>
               <div class="flex justify-between">
                 <span id="current-time">
