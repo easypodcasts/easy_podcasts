@@ -1,38 +1,51 @@
 <div id={@id}>
   <%= if @show_modal do %>
-    <div
-      class="flex fixed top-0 left-0 justify-center w-screen h-screen bg-gray-500 bg-opacity-90 dark:bg-gray-700">
+    <div class="flex fixed top-0 left-0 justify-center w-screen h-screen bg-gray-500 bg-opacity-90 dark:bg-gray-700">
       <div class="p-5 mt-10 max-h-52 bg-white rounded-md shadow-xl xl:mt-24 dark:bg-gray-800">
         <h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-gray-300">
           Add New Podcast
         </h3>
-        <.form let={f} for={@changeset} id="channel-form" phx-submit="save" phx-target={@myself} phx-page-loading
-          class="mt-5 h-4/6">
+        <.form
+          let={f}
+          for={@changeset}
+          id="channel-form"
+          phx-submit="save"
+          phx-target={@myself}
+          phx-page-loading
+          class="mt-5 h-4/6"
+        >
           <%= error_tag(f, :link) %>
-            <div class="flex flex-col justify-between h-full">
-              <div class="flex flex-col">
-                <%= url_input(f, :link, placeholder: "https://example.podcast.com/rss" ,
-                  class: "bg-white dark:bg-gray-900 rounded border border-gray-300 dark:border-gray-600 focus:border-indigo-500 dark:focus:border-blue-500 focus:ring-2 dark:focus:ring-0 focus:ring-indigo-200 outline-none text-gray-700 dark:text-gray-300 py-1 px-3 leading-8"
-                  ) %>
-                  <spam class="px-1 text-xs dark:text-gray-200">
-                    Lea sobre nuestra política de contenidos
-                    <a href={"#{Routes.about_index_path(@socket, :index)}#disclaimer"}
-                      class="text-indigo-500 dark:text-blue-500">
-                      aquí
-                    </a>
-                  </spam>
-              </div>
-              <div class="flex justify-between justify-self-end">
-                <button type="button" phx-click="hide_modal" phx-target={@myself}
-                  class="inline-flex items-center py-2 px-4 ml-1 text-sm text-white align-middle bg-gray-500 rounded border-0">
-                  Cancel
-                </button>
-                <%= submit("Save", phx_disable_with: "Saving..." ,
-                  class: "text-white bg-green-500 border-0 ml-1 px-5 focus:outline-none rounded text-sm" ) %>
-              </div>
+          <div class="flex flex-col justify-between h-full">
+            <div class="flex flex-col">
+              <%= url_input(f, :link,
+                placeholder: "https://example.podcast.com/rss",
+                class:
+                  "bg-white dark:bg-gray-900 rounded border border-gray-300 dark:border-gray-600 focus:border-indigo-500 dark:focus:border-blue-500 focus:ring-2 dark:focus:ring-0 focus:ring-indigo-200 outline-none text-gray-700 dark:text-gray-300 py-1 px-3 leading-8"
+              ) %>
+              <spam class="px-1 text-xs dark:text-gray-200">
+                Lea sobre nuestra política de contenidos
+                <a href={"#{Routes.about_index_path(@socket, :index)}#disclaimer"} class="text-indigo-500 dark:text-blue-500">
+                  aquí
+                </a>
+              </spam>
             </div>
+            <div class="flex justify-between justify-self-end">
+              <button
+                type="button"
+                phx-click="hide_modal"
+                phx-target={@myself}
+                class="inline-flex items-center py-2 px-4 ml-1 text-sm text-white align-middle bg-gray-500 rounded border-0"
+              >
+                Cancel
+              </button>
+              <%= submit("Save",
+                phx_disable_with: "Saving...",
+                class: "text-white bg-green-500 border-0 ml-1 px-5 focus:outline-none rounded text-sm"
+              ) %>
+            </div>
+          </div>
         </.form>
       </div>
     </div>
-    <% end %>
+  <% end %>
 </div>

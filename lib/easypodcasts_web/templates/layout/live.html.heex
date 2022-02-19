@@ -151,5 +151,9 @@
   </div>
   <%= @inner_content %>
   <.live_component module={EasypodcastsWeb.QueueComponent} id="queue_state" />
-  <.live_component module={EasypodcastsWeb.ModalComponent} id="new_podcast" return_to={Routes.channel_index_path(@socket, :index)} />
+  <.live_component
+    module={EasypodcastsWeb.ModalComponent}
+    id="new_podcast"
+    return_to={Routes.channel_index_path(@socket, :index)}
+  />
 </main>
