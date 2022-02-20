@@ -33,7 +33,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
       <div class="flex flex-col self-center pb-2 h-auto md:border-0 xl:w-2/3">
         <img
           alt={@channel.title}
-          class="object-cover h-96 roundedbig"
+          class="object-cover roundedbig"
           src={ChannelImage.url({"original.webp", @channel}, :original)}
         />
         <%= link to: Routes.channel_path(@socket, :feed, Utils.slugify(@channel)),
