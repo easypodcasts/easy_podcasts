@@ -34,7 +34,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
         <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(@channel)) do %>
           <img
             alt={@channel.title}
-            class="object-cover roundedbig bg-placeholder-big"
+            class="object-cover roundedbig bg-placeholder-big h-[400px] rounded-lg"
             src={ChannelImage.url({"original.webp", @channel}, :original)}
           />
         <% end %>
