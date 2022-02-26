@@ -14,7 +14,7 @@
 <div class="flex flex-col pt-5 xl:flex-row">
   <.channel_card channel={@channel} socket={@socket} />
   <section class="mt-5 xl:mt-0 xl:w-1/2 body-font">
-    <div class="divide-y-2">
+    <div class="divide-y-2 divide-primary/20">
       <%= for episode_id <- @episodes_index do %>
         <EasypodcastsWeb.EpisodeLive.Show.episode_card
           episode={Map.get(@episodes_map, episode_id)}

@@ -1,7 +1,7 @@
 <div id={@id}>
   <%= if @show_modal do %>
-    <div class="flex fixed top-0 left-0 justify-center w-screen h-screen bg-gray-200/80">
-      <div class="p-5 mt-10 max-h-52 bg-gray-200 rounded-md border border-gray-300 shadow-2xl xl:mt-24">
+    <div class="flex fixed top-0 left-0 justify-center w-screen h-screen bg-surface/80">
+      <div class="p-5 mt-10 max-h-52 rounded-md border shadow-2xl xl:mt-24 border-primary bg-surface">
         <h3 class="text-lg font-medium leading-6">
           Add New Podcast
         </h3>
@@ -21,11 +21,11 @@
                 phx_hook: "AutoFocus",
                 placeholder: "https://example.podcast.com/rss",
                 class:
-                  "rounded border  outline-none py-1 px-3 leading-8 mb-2 focus:ring-2 focus:ring-blue-500 hover:ring-1 hover:ring-blue-300"
+                  "rounded border border-primary-light  outline-none py-1 px-3 leading-8 mb-2 focus:ring-2 focus:ring-primary hover:ring-1 hover:ring-primary-light bg-surface shadow-inner"
               ) %>
               <spam class="px-1 text-xs">
                 Lea sobre nuestra política de contenidos
-                <a href={"#{Routes.about_index_path(@socket, :index)}#disclaimer"} class="text-blue-500">
+                <a href={"#{Routes.about_index_path(@socket, :index)}#disclaimer"} class="text-primary">
                   aquí
                 </a>
               </spam>
@@ -42,7 +42,7 @@
               <%= submit("Save",
                 phx_disable_with: "Saving...",
                 class:
-                  "border-0 ml-1 px-5 focus:outline-none rounded text-sm bg-blue-500 text-gray-200 hover:bg-blue-700"
+                  "border-0 ml-1 px-5 focus:outline-none rounded text-sm bg-primary text-gray-200 hover:bg-primary-dark"
               ) %>
             </div>
           </div>

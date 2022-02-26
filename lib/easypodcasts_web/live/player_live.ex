@@ -34,7 +34,7 @@ defmodule EasypodcastsWeb.PlayerLive do
       <%= if @show do %>
         <section
           id="player-element"
-          class="flex fixed right-0 bottom-0 flex-col py-2 px-4 w-full bg-gray-200 border border-gray-300 shadow-2xl xl:right-5 xl:bottom-5 xl:py-4 xl:w-1/3 xl:rounded-xl"
+          class="flex fixed right-0 bottom-0 flex-col py-2 px-4 w-full border shadow-2xl xl:right-5 xl:bottom-5 xl:py-4 xl:w-1/3 xl:rounded-xl border-primary bg-surface"
           phx-hook="PlayerHook"
         >
           <audio src={EpisodeAudio.url({"episode.opus", @episode})}></audio>
@@ -66,8 +66,8 @@ defmodule EasypodcastsWeb.PlayerLive do
           <div class="flex justify-between">
             <div class="flex flex-col flex-1 py-3 px-2">
               <div class="grid content-center mb-1 w-full h-5 rounded-2xl cursor-pointer" id="progress-wrapper">
-                <div class="w-full h-1 bg-blue-200 rounded-2xl">
-                  <div style="width:0%" id="progress" class="mb-1 h-1 bg-blue-500 rounded-2xl"></div>
+                <div class="w-full h-1 rounded-2xl bg-primary-light/30">
+                  <div style="width:0%" id="progress" class="mb-1 h-1 rounded-2xl bg-primary-dark"></div>
                 </div>
               </div>
               <div class="flex justify-between">
