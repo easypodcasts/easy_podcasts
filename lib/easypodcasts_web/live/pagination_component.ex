@@ -21,21 +21,20 @@ defmodule EasypodcastsWeb.PaginationComponent do
     # after changing page
     ~H"""
     <nav class={nav_classes(is_top)}>
-        <%= if page_number != 1 do %>
-      <%= live_redirect to: get_route(socket, route, action, object_id, search, page_number - 1),
-                    class:
-                      "block ml-0 rounded-l-lg leading-tight py-2 px-3 hover:bg-primary" do %>
-        <span class="sr-only">
-          Previous
-        </span>
-        <svg class="w-6 h-6 text-primary-dark" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-          <path
-            fill-rule="evenodd"
-            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-            clip-rule="evenodd"
-          ></path>
-        </svg>
-      <% end %>
+      <%= if page_number != 1 do %>
+        <%= live_redirect to: get_route(socket, route, action, object_id, search, page_number - 1),
+                      class: "block ml-0 rounded-l-lg mr-1 leading-tight py-2 px-3 hover:bg-primary" do %>
+          <span class="sr-only">
+            Previous
+          </span>
+          <svg class="w-6 h-6 text-primary-dark" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path
+              fill-rule="evenodd"
+              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        <% end %>
       <% end %>
 
       <%= for idx <- Enum.to_list(page_range) do %>
@@ -43,31 +42,31 @@ defmodule EasypodcastsWeb.PaginationComponent do
           <%= live_redirect(idx,
             to: get_route(socket, route, action, object_id, search, idx),
             class:
-              "leading-tight py-2 px-3 pointer-events-none bg-primary text-text-light text-xl"
+              "leading-tight rounded mr-1 py-2 px-3 pointer-events-none bg-primary text-text-light text-xl"
           ) %>
         <% else %>
           <%= live_redirect(idx,
             to: get_route(socket, route, action, object_id, search, idx),
-            class: "leading-tight py-2 px-3 hover:bg-primary text-primary-dark hover:text-light text-xl"
+            class:
+              "leading-tight rounded mr-1 py-2 px-3 hover:bg-primary text-primary-dark hover:text-light text-xl"
           ) %>
         <% end %>
       <% end %>
 
-        <%= if page_number != total_pages do %>
-      <%= live_redirect to: get_route(socket, route, action, object_id, search, page_number + 1),
-                    class:
-                      "block rounded-r-lg leading-tight py-2 px-3 hover:bg-primary" do %>
-        <span class="sr-only">
-          Next
-        </span>
-        <svg class="w-6 h-6 text-primary-dark" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-          <path
-            fill-rule="evenodd"
-            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-            clip-rule="evenodd"
-          ></path>
-        </svg>
-      <% end %>
+      <%= if page_number != total_pages do %>
+        <%= live_redirect to: get_route(socket, route, action, object_id, search, page_number + 1),
+                      class: "block rounded-r-lg leading-tight py-2 px-3 hover:bg-primary" do %>
+          <span class="sr-only">
+            Next
+          </span>
+          <svg class="w-6 h-6 text-primary-dark" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path
+              fill-rule="evenodd"
+              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        <% end %>
       <% end %>
 
     </nav>

@@ -1,6 +1,6 @@
 <section class="flex flex-col mt-4 mb-6 dark:text-d-text-dark">
   <div class="flex-col mb-6 rounded-lg border">
-    <span class="flex justify-center self-end p-2 w-full text-text-light rounded-t-lg bg-primary text-md">
+    <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-text-light bg-primary text-md">
       Queue
     </span>
     <%= if length(@queued_episodes) > 0 do %>
@@ -49,7 +49,7 @@
     <% end %>
   </div>
   <div class="flex-col mb-6 w-full rounded-lg border">
-    <span class="flex justify-center self-end p-2 w-full text-text-light rounded-t-lg bg-primary text-md">
+    <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-text-light bg-primary text-md">
       Latest Episodes
     </span>
     <ol class="px-7 list-decimal">
@@ -71,7 +71,7 @@
     </ol>
   </div>
   <div class="flex-col mb-6 w-full rounded-lg border">
-    <span class="flex justify-center self-end p-2 w-full text-text-light rounded-t-lg bg-primary text-md">
+    <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-text-light bg-primary text-md">
       Latest Processed
     </span>
     <ol class="px-7 list-decimal">
@@ -94,7 +94,7 @@
   </div>
   <div class="flex">
     <div class="flex-col mb-6 w-1/2 rounded-lg border">
-      <span class="flex justify-center self-end p-2 w-full text-text-light rounded-t-lg bg-primary text-md">
+      <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-text-light bg-primary text-md">
         Podcasts
       </span>
       <ul class="p-2">
@@ -109,7 +109,7 @@
       </ul>
     </div>
     <div class="flex-col mb-6 w-1/2 rounded-lg border">
-      <span class="flex justify-center self-end p-2 w-full text-text-light rounded-t-lg bg-primary text-md">
+      <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-text-light bg-primary text-md">
         Storage
       </span>
       <ul class="p-2">
@@ -119,7 +119,7 @@
     </div>
   </div>
   <div class="flex-col mb-6 w-full rounded-lg border">
-    <span class="flex justify-center self-end p-2 w-full text-text-light rounded-t-lg bg-primary text-md">
+    <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-text-light bg-primary text-md">
       Workers
     </span>
     <%= for worker <- @workers do %>
