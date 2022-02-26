@@ -54,14 +54,14 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
             </span>
           </button>
         <% end %>
-        <p class="mt-2 title-font text-md">
+        <p class="mt-2 title-font text-md dark:text-d-text-dark">
           <%= sanitize(@channel.description) %>
         </p>
         <div class="mt-2">
           <%= for category <- @channel.categories do %>
             <%= live_redirect("##{category}",
               to: Routes.channel_index_path(@socket, :index, search: "##{category}"),
-              class: ""
+              class: "text-primary"
             ) %>
           <% end %>
         </div>

@@ -40,28 +40,30 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
               class: "text-primary"
             ) %>
           <% else %>
+            <span class="dark:text-d-text-dark">
             <%= @episode.title %>
+            </span>
           <% end %>
         </h2>
         <div class="flex mb-3">
-          <span class="mr-3 text-xs md:text-sm">
+          <span class="mr-3 text-xs md:text-sm dark:text-d-text-dark">
             <%= Utils.format_date(@episode.publication_date) %>
           </span>
-          <span class="mr-3 text-xs md:text-sm">
+          <span class="mr-3 text-xs md:text-sm dark:text-d-text-dark">
             <%= Utils.get_duration(@episode) %>
           </span>
-          <span class="mr-3 text-xs md:text-sm">
+          <span class="mr-3 text-xs md:text-sm dark:text-d-text-dark">
             <%= if @episode.status == :done do %>
               <%= Float.floor((@episode.processed_size || 0) / 1_000_000, 2) %> MB ( <%= Float.floor((@episode.original_size - (@episode.processed_size || 0)) / 1_000_000, 2) %> MB less)
             <% else %>
               <%= Float.floor(@episode.original_size / 1_000_000, 2) %> MB
             <% end %>
           </span>
-          <span class="mr-3 text-xs md:text-sm">
+          <span class="mr-3 text-xs md:text-sm dark:text-d-text-dark">
             Downloads: <%= @episode.downloads %>
           </span>
         </div>
-        <p class={ if not @full_description, do: "line-clamp-6" }>
+        <p class={"dark:text-d-text-dark #{if not @full_description, do: "line-clamp-6"}"  }>
           <%= sanitize(@episode.description) %>
         </p>
         <%= if @episode.status == :done do %>
