@@ -39,22 +39,20 @@ defmodule EasypodcastsWeb.PlayerLive do
         >
           <audio src={EpisodeAudio.url({"episode.opus", @episode})}></audio>
           <div class="flex mb-2">
-            <img src={ChannelImage.url({"thumb.webp", @channel}, :thumb)} alt={@channel.title} class="w-16 h-16 rounded-xlsmall">
+            <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(@channel)) do %>
+              <img src={ChannelImage.url({"thumb.webp", @channel}, :thumb)} alt={@channel.title} class="w-16 h-16 rounded-xlsmall">
+            <% end %>
             <div class="flex flex-col flex-1 px-2">
-              <span class="hidden mb-2 lg:block">
-                <%= live_redirect(@channel.title,
-                  to: Routes.channel_show_path(@socket, :show, Utils.slugify(@channel))
-                ) %>
-              </span>
               <span class="font-semibold">
                 <%= live_redirect(@episode.title,
-                  to: Routes.episode_show_path(@socket, :show, Utils.slugify(@channel), Utils.slugify(@episode))
+                  to: Routes.episode_show_path(@socket, :show, Utils.slugify(@channel), Utils.slugify(@episode)),
+                  class: "text-primary"
                 ) %>
               </span>
             </div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="w-8 h-8 cursor-pointer"
+              class="w-8 h-8 cursor-pointer text-primary"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -71,16 +69,16 @@ defmodule EasypodcastsWeb.PlayerLive do
                 </div>
               </div>
               <div class="flex justify-between">
-                <span id="current-time">
+                <span id="current-time" class="text-primary">
                   0:00
                 </span>
-                <span>
+                <span class="text-primary">
                   <%= Utils.get_duration(@episode) %>
                 </span>
               </div>
             </div>
             <svg
-              class="mr-1 -ml-1 w-8 h-8 animate-spin"
+              class="mr-1 -ml-1 w-8 h-8 animate-spin text-primary"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               id="loading"
@@ -95,7 +93,7 @@ defmodule EasypodcastsWeb.PlayerLive do
             </svg>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="hidden w-8 h-8 cursor-pointer"
+              class="hidden w-8 h-8 cursor-pointer text-primary"
               fill="none"
               title="Play"
               id="play"
@@ -112,7 +110,7 @@ defmodule EasypodcastsWeb.PlayerLive do
             </svg>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="hidden w-8 h-8:cursor-pointer"
+              class="hidden w-8 h-8 cursor-pointer text-primary"
               title="Pause"
               id="pause"
               fill="none"
