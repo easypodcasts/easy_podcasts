@@ -37,7 +37,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
           <%= if @socket.view == EasypodcastsWeb.ChannelLive.Show do %>
             <%= live_redirect(@episode.title,
               to: Routes.episode_show_path(@socket, :show, Utils.slugify(@channel), Utils.slugify(@episode)),
-              class: "text-blue-500"
+              class: "text-primary"
             ) %>
           <% else %>
             <%= @episode.title %>
@@ -67,7 +67,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
         <%= if @episode.status == :done do %>
           <div class="flex items-center self-start">
             <a
-              class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm text-gray-200 bg-blue-500 rounded border-0 hover:bg-blue-700"
+              class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm text-gray-200 rounded border-0 bg-primary hover:bg-primary-dark"
               href={EpisodeAudio.url({"episode.opus", @episode})}
               download={"#{@episode.title}.opus"}
             >
@@ -82,7 +82,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
               Download
             </a>
             <button
-              class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm text-gray-200 bg-blue-500 rounded border-0 hover:bg-blue-700"
+              class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm text-gray-200 rounded border-0 bg-primary hover:bg-primary-dark"
               phx-click="play"
               phx-target="#player"
               phx-value-episode={@episode.id}
@@ -131,7 +131,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
         <% end %>
         <%= if @episode.status == :new and @episode.retries < 3 do %>
           <button
-            class="flex justify-between self-start py-2 px-2 mt-4 text-sm text-gray-200 bg-blue-500 rounded border-0 hover:bg-blue-700 disabled:text-black disabled:bg-gray-300 disabled:cursor-wait"
+            class="flex justify-between self-start py-2 px-2 mt-4 text-sm text-gray-200 rounded border-0 disabled:text-black disabled:bg-gray-300 disabled:cursor-wait bg-primary hover:bg-primary-dark"
             phx-click="process_episode"
             phx-value-episode_id={@episode.id}
             phx-disable-with="Queuing..."

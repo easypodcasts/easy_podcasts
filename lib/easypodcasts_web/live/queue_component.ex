@@ -43,7 +43,7 @@ defmodule EasypodcastsWeb.QueueComponent do
         <%= live_redirect("#{@queue_length} episodes in queue",
           to: Routes.server_index_path(@socket, :index),
           class:
-            "block fixed right-6 bottom-6 py-1 px-3 text-xl rounded-lg shadow-2xl bg-blue-500 hover:bg-blue-700 text-gray-200"
+            "block fixed right-6 bottom-6 py-1 px-3 text-xl rounded-lg shadow-2xl bg-primary hover:bg-primary-dark text-gray-200"
         ) %>
       <% end %>
     </div>

@@ -23,11 +23,11 @@ defmodule EasypodcastsWeb.PaginationComponent do
     <nav class={nav_classes(is_top)}>
       <%= live_redirect to: get_route(socket, route, action, object_id, search, page_number - 1),
                     class:
-                      "block border   ml-0 rounded-l-lg leading-tight py-2 px-3 #{if page_number == 1, do: "pointer-events-none"}" do %>
+                      "block border border-primary ml-0 rounded-l-lg leading-tight py-2 px-3 hover:bg-primary #{if page_number == 1, do: "pointer-events-none"}" do %>
         <span class="sr-only">
           Previous
         </span>
-        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <svg class="w-5 h-5 text-primary-dark" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
           <path
             fill-rule="evenodd"
             d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
@@ -40,23 +40,24 @@ defmodule EasypodcastsWeb.PaginationComponent do
         <%= if page_number == idx do %>
           <%= live_redirect(idx,
             to: get_route(socket, route, action, object_id, search, idx),
-            class: "border leading-tight py-2 px-3 pointer-events-none"
+            class:
+              "border leading-tight py-2 px-3 pointer-events-none bg-primary border-primary text-gray-200"
           ) %>
         <% else %>
           <%= live_redirect(idx,
             to: get_route(socket, route, action, object_id, search, idx),
-            class: "leading-tight py-2 px-3 border  "
+            class: "leading-tight py-2 px-3 border border-primary hover:bg-primary hover:text-gray-200"
           ) %>
         <% end %>
       <% end %>
 
       <%= live_redirect to: get_route(socket, route, action, object_id, search, page_number + 1),
                     class:
-                      "block border   rounded-r-lg leading-tight py-2 px-3 #{if page_number == total_pages, do: "pointer-events-none"}" do %>
+                      "block border border-primary  rounded-r-lg leading-tight py-2 px-3 hover:bg-primary #{if page_number == total_pages, do: "pointer-events-none"}" do %>
         <span class="sr-only">
           Next
         </span>
-        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <svg class="w-5 h-5 text-primary-dark" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
           <path
             fill-rule="evenodd"
             d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
