@@ -20,7 +20,7 @@
           <div class="flex flex-col w-auto h-full rounded-lg border border-primary">
             <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(channel)) do %>
               <img
-                class="mb-2 w-full rounded-t-lg xl:object-cover bg-placeholder-small h-[215px]"
+                class="mb-2 w-full rounded-t-lg xl:object-cover bg-placeholder-small"
                 src={ChannelImage.url({"thumb.webp", channel}, :thumb)}
                 alt={channel.title}
                 loading="lazy"
