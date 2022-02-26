@@ -1,7 +1,7 @@
 <div id={@id}>
   <%= if @show_modal do %>
-    <div class="flex fixed top-0 left-0 justify-center w-screen h-screen bg-primary/80 backdrop-blur-3xl">
-      <div class="p-5 mt-10 max-h-52 rounded-md shadow-xl xl:mt-24 bg-primary border border-primary-dark">
+    <div class="flex fixed top-0 left-0 justify-center w-screen h-screen bg-gray-200/80">
+      <div class="p-5 mt-10 max-h-52 bg-gray-200 rounded-md border border-gray-300 shadow-2xl xl:mt-24">
         <h3 class="text-lg font-medium leading-6">
           Add New Podcast
         </h3>
@@ -21,11 +21,11 @@
                 phx_hook: "AutoFocus",
                 placeholder: "https://example.podcast.com/rss",
                 class:
-                  "rounded border border-primary-dark outline-none py-1 px-3 leading-8 bg-surface focus:ring-2 focus:ring-primary-dark"
+                  "rounded border  outline-none py-1 px-3 leading-8 mb-2 focus:ring-2 focus:ring-blue-500 hover:ring-1 hover:ring-blue-300"
               ) %>
               <spam class="px-1 text-xs">
                 Lea sobre nuestra política de contenidos
-                <a href={"#{Routes.about_index_path(@socket, :index)}#disclaimer"} class="text-tertiary-dark">
+                <a href={"#{Routes.about_index_path(@socket, :index)}#disclaimer"} class="text-blue-500">
                   aquí
                 </a>
               </spam>
@@ -35,14 +35,14 @@
                 type="button"
                 phx-click="hide_modal"
                 phx-target={@myself}
-                class="inline-flex items-center py-2 px-4 ml-1 text-sm align-middle rounded border-0 bg-tertiary hover:bg-tertiary-dark"
+                class="inline-flex items-center py-2 px-4 ml-1 text-sm text-gray-200 align-middle bg-gray-500 rounded border-0 hover:bg-gray-700"
               >
                 Cancel
               </button>
               <%= submit("Save",
                 phx_disable_with: "Saving...",
                 class:
-                  "border-0 ml-1 px-5 focus:outline-none rounded text-sm bg-secondary hover:bg-secondary-dark"
+                  "border-0 ml-1 px-5 focus:outline-none rounded text-sm bg-blue-500 text-gray-200 hover:bg-blue-700"
               ) %>
             </div>
           </div>
