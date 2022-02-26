@@ -41,7 +41,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
             ) %>
           <% else %>
             <span class="dark:text-d-text-dark">
-            <%= @episode.title %>
+              <%= @episode.title %>
             </span>
           <% end %>
         </h2>
@@ -69,7 +69,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
         <%= if @episode.status == :done do %>
           <div class="flex items-center self-start">
             <a
-              class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm text-text-light rounded border-0 bg-primary hover:bg-primary-dark"
+              class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm rounded border-0 text-text-light bg-primary hover:bg-primary-dark"
               href={EpisodeAudio.url({"episode.opus", @episode})}
               download={"#{@episode.title}.opus"}
             >
@@ -84,7 +84,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
               Download
             </a>
             <button
-              class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm text-text-light rounded border-0 bg-primary hover:bg-primary-dark"
+              class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm rounded border-0 text-text-light bg-primary hover:bg-primary-dark"
               phx-click="play"
               phx-target="#player"
               phx-value-episode={@episode.id}
@@ -104,7 +104,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
         <% end %>
         <%= if @episode.status == :queued do %>
           <button
-            class="flex self-start py-2 px-2 mt-4 text-sm bg-disabled rounded border-0 cursor-wait focus:outline-none"
+            class="flex self-start py-2 px-2 mt-4 text-sm rounded border-0 cursor-wait focus:outline-none bg-disabled"
             disabled
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="mr-1 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -119,7 +119,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
           </button>
         <% end %>
         <%= if @episode.status == :processing do %>
-          <button class="flex self-start py-2 px-2 mt-4 text-sm bg-disabled rounded border-0 cursor-wait" disabled>
+          <button class="flex self-start py-2 px-2 mt-4 text-sm rounded border-0 cursor-wait bg-disabled" disabled>
             <svg class="mr-1 -ml-1 w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path
@@ -133,7 +133,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
         <% end %>
         <%= if @episode.status == :new and @episode.retries < 3 do %>
           <button
-            class="flex justify-between self-start py-2 px-2 mt-4 text-sm text-text-light rounded border-0 disabled:text-black disabled:bg-disabled disabled:cursor-wait bg-primary hover:bg-primary-dark"
+            class="flex justify-between self-start py-2 px-2 mt-4 text-sm rounded border-0 disabled:text-black disabled:cursor-wait text-text-light bg-primary hover:bg-primary-dark disabled:bg-disabled"
             phx-click="process_episode"
             phx-value-episode_id={@episode.id}
             phx-disable-with="Queuing..."

@@ -40,7 +40,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
         <% end %>
         <%= link to: Routes.channel_path(@socket, :feed, Utils.slugify(@channel)),
              class: "self-center xl:self-start" do %>
-          <button class="flex justify-between items-center py-2 px-2 mt-4 text-lg font-semibold text-text-light rounded xl:self-start bg-primary hover:bg-primary-dark">
+          <button class="flex justify-between items-center py-2 px-2 mt-4 text-lg font-semibold rounded xl:self-start text-text-light bg-primary hover:bg-primary-dark">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path
                 stroke-linecap="round"
