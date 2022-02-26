@@ -20,7 +20,7 @@
           <div class="flex flex-col w-auto h-full rounded-lg border border-primary-light">
             <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(channel)) do %>
               <img
-                class="mb-2 w-full rounded-t-lg xl:object-cover"
+                class="mb-2 w-full rounded-t-lg xl:object-cover bg-placeholder-small bg-cover bg-no-repeat"
                 src={ChannelImage.url({"thumb.webp", channel}, :thumb)}
                 alt={channel.title}
                 loading="lazy"
@@ -30,7 +30,7 @@
               <%= sanitize(channel.description) %>
             </p>
             <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(channel)) do %>
-              <span class="flex justify-center self-end pt-1 pb-2 w-full text-sm text-gray-200 rounded-b-lg border-t bg-primary border-primary-light hover:bg-primary-dark">
+              <span class="flex justify-center self-end pt-1 pb-2 w-full text-sm text-text-light rounded-b-lg border-t bg-primary border-primary-light hover:bg-primary-dark">
                 <%= channel.episodes %> Episodes
               </span>
             <% end %>
