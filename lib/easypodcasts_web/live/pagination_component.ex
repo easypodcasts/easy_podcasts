@@ -41,12 +41,12 @@ defmodule EasypodcastsWeb.PaginationComponent do
           <%= live_redirect(idx,
             to: get_route(socket, route, action, object_id, search, idx),
             class:
-              "border leading-tight py-2 px-3 pointer-events-none bg-primary border-primary text-gray-200"
+              "border leading-tight py-2 px-3 pointer-events-none bg-primary border-primary text-text-light"
           ) %>
         <% else %>
           <%= live_redirect(idx,
             to: get_route(socket, route, action, object_id, search, idx),
-            class: "leading-tight py-2 px-3 border border-primary hover:bg-primary hover:text-gray-200"
+            class: "leading-tight py-2 px-3 border border-primary hover:bg-primary hover:text-text-light"
           ) %>
         <% end %>
       <% end %>

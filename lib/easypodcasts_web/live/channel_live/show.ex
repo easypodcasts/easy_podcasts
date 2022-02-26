@@ -34,13 +34,13 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
         <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(@channel)) do %>
           <img
             alt={@channel.title}
-            class="object-cover roundedbig"
+            class="object-cover roundedbig bg-placeholder-big"
             src={ChannelImage.url({"original.webp", @channel}, :original)}
           />
         <% end %>
         <%= link to: Routes.channel_path(@socket, :feed, Utils.slugify(@channel)),
              class: "self-center xl:self-start" do %>
-          <button class="flex justify-between items-center py-2 px-2 mt-4 text-lg font-semibold text-gray-200 rounded xl:self-start bg-primary hover:bg-primary-dark">
+          <button class="flex justify-between items-center py-2 px-2 mt-4 text-lg font-semibold text-text-light rounded xl:self-start bg-primary hover:bg-primary-dark">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path
                 stroke-linecap="round"
