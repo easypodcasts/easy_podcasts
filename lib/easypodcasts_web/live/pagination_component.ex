@@ -23,7 +23,7 @@ defmodule EasypodcastsWeb.PaginationComponent do
     <nav class={nav_classes(is_top)}>
       <%= live_redirect to: get_route(socket, route, action, object_id, search, page_number - 1),
                     class:
-                      "block border border-primary-dark bg-primary ml-0 rounded-l-lg leading-tight py-2 px-3 #{if page_number == 1, do: "pointer-events-none"}" do %>
+                      "block border   ml-0 rounded-l-lg leading-tight py-2 px-3 #{if page_number == 1, do: "pointer-events-none"}" do %>
         <span class="sr-only">
           Previous
         </span>
@@ -40,19 +40,19 @@ defmodule EasypodcastsWeb.PaginationComponent do
         <%= if page_number == idx do %>
           <%= live_redirect(idx,
             to: get_route(socket, route, action, object_id, search, idx),
-            class: "border border-secondary-dark bg-secondary leading-tight py-2 px-3 pointer-events-none"
+            class: "border leading-tight py-2 px-3 pointer-events-none"
           ) %>
         <% else %>
           <%= live_redirect(idx,
             to: get_route(socket, route, action, object_id, search, idx),
-            class: "leading-tight py-2 px-3 border border-primary-dark bg-primary"
+            class: "leading-tight py-2 px-3 border  "
           ) %>
         <% end %>
       <% end %>
 
       <%= live_redirect to: get_route(socket, route, action, object_id, search, page_number + 1),
                     class:
-                      "block border border-primary-dark bg-primary rounded-r-lg leading-tight py-2 px-3 #{if page_number == total_pages, do: "pointer-events-none"}" do %>
+                      "block border   rounded-r-lg leading-tight py-2 px-3 #{if page_number == total_pages, do: "pointer-events-none"}" do %>
         <span class="sr-only">
           Next
         </span>

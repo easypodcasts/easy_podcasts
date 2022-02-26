@@ -1,4 +1,4 @@
-<header class="body-font bg-primary">
+<header class="body-font">
   <nav class="container flex justify-between items-center px-4 mx-auto h-16 rounded-md">
     <div class="hidden w-1/3 md:flex">
       <%= live_redirect to: Routes.channel_index_path(@socket, :index), class: "" do %>
@@ -17,7 +17,7 @@
             phx-debounce="400"
             value={@search}
             name="search"
-            class="py-1 px-3 leading-8 rounded border outline-none focus:ring-2 border-primary-dark bg-surface focus:ring-primary-dark"
+            class="py-1 px-3 leading-8 rounded border outline-none hover:ring-1 hover:ring-blue-300 focus:ring-2 focus:ring-blue-500"
             placeholder={if @socket.view == EasypodcastsWeb.ChannelLive.Index, do: "Search Podcasts", else: "Search Episodes"}
           >
         </form>
@@ -26,17 +26,17 @@
     <div class="hidden justify-end w-1/3 md:flex">
       <%= live_redirect("Status",
         to: Routes.server_index_path(@socket, :index),
-        class: "mr-5 self-center hover:text-secondary-dark"
+        class: "mr-5 self-center text-blue-500"
       ) %>
       <%= live_redirect("About",
         to: Routes.about_index_path(@socket, :index),
-        class: "mr-5 self-center hover:text-secondary-dark"
+        class: "mr-5 self-center text-blue-500"
       ) %>
       <button
         phx-click="show_modal"
         phx-target="#new_podcast"
         id="add-podcast"
-        class="py-2 px-4 font-semibold rounded text-md bg-secondary hover:bg-secondary-dark"
+        class="py-2 px-4 font-semibold text-gray-200 bg-blue-500 rounded hover:bg-blue-700 text-md"
       >
         Add Podcast
       </button>
@@ -83,23 +83,20 @@
   >
     <%= live_redirect("Home",
       to: Routes.channel_index_path(@socket, :index),
-      class:
-        "text-md py-3 mb-2 border-2 border-primary-dark rounded font-semibold text-center hover:bg-primary-dark"
+      class: "text-md py-3 mb-2 border-2  rounded font-semibold text-center text-blue-500"
     ) %>
     <%= live_redirect("Status",
       to: Routes.server_index_path(@socket, :index),
-      class:
-        "text-md py-3 mb-2 border-2 border-primary-dark rounded font-semibold text-center hover:bg-primary-dark"
+      class: "text-md py-3 mb-2 border-2  rounded font-semibold text-center text-blue-500"
     ) %>
     <%= live_redirect("About",
       to: Routes.about_index_path(@socket, :index),
-      class:
-        "text-md py-3 mb-2 border-2 border-primary-dark rounded font-semibold text-center hover:bg-primary-dark"
+      class: "text-md py-3 mb-2 border-2  rounded font-semibold text-center text-blue-500"
     ) %>
     <button
       phx-click="show_modal"
       phx-target="#new_podcast"
-      class="py-3 px-4 mb-2 font-semibold rounded border-2 text-md border-secondary-dark bg-secondary hover:bg-secondary-dark"
+      class="py-3 px-4 mb-2 font-semibold text-gray-200 bg-blue-500 rounded border-2 hover:bg-blue-700 text-md"
     >
       Add Podcast
     </button>
@@ -109,7 +106,7 @@
   <div class="flex fixed inset-x-0 top-6 z-50 flex-col mx-auto max-w-md">
     <%= if live_flash(@flash, :success) do %>
       <div
-        class="p-4 mb-3 text-sm text-center rounded-lg border bg-secondary border-secondary-dark"
+        class="p-4 mb-3 text-sm text-center bg-green-200 rounded-lg border"
         role="alert"
         phx-click="lv:clear-flash"
         phx-value-key="success"
@@ -123,7 +120,7 @@
 
     <%= if live_flash(@flash, :info) do %>
       <div
-        class="p-4 mb-3 text-sm text-center rounded-lg border bg-primary border-primary-dark"
+        class="p-4 mb-3 text-sm text-center bg-blue-200 rounded-lg border"
         role="alert"
         phx-click="lv:clear-flash"
         phx-value-key="info"
@@ -137,7 +134,7 @@
 
     <%= if live_flash(@flash, :error) do %>
       <div
-        class="text-sm text-center rounded-lg border p-4mb-3 bg-tertiary border-tertiary-dark"
+        class="p-4 mb-3 text-sm text-center bg-red-200 rounded-lg border"
         role="alert"
         phx-click="lv:clear-flash"
         phx-value-key="error"
