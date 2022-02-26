@@ -27,17 +27,17 @@ defmodule Easypodcasts.Helpers.Utils do
       end
 
     cond do
-      total_pages < 6 ->
+      total_pages <= 5 ->
         1..total_pages
 
       current_page <= 3 ->
-        1..6
+        1..5
 
       current_page > 3 and current_page < total_pages - 3 ->
         (current_page - 2)..(current_page + 2)
 
-      current_page >= total_pages - 6 ->
-        (total_pages - 6)..total_pages
+      current_page >= total_pages - 3 ->
+        (total_pages - 4)..total_pages
     end
   end
 
