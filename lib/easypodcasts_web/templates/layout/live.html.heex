@@ -5,13 +5,13 @@
         <img class="h-10" src={Routes.static_path(@socket, "/images/easypodcasts.svg")} alt="Easy Podcasts" />
       <% end %>
     </div>
-    <div class="flex justify-center md:w-full md:w-1/3">
+    <div class="flex justify-center md:w-1/3 flex-1">
       <%= if @socket.view not in [
            EasypodcastsWeb.ServerLive.Index,
            EasypodcastsWeb.AboutLive.Index,
            EasypodcastsWeb.EpisodeLive.Show
          ] do %>
-        <form phx-change="search" class="w-full">
+        <form phx-change="search" class="md:w-full">
           <input
             type="text"
             phx-debounce="400"
@@ -44,7 +44,7 @@
     <div class="flex items-center md:hidden">
       <button
         id="open-mobile-menu"
-        class="outline-none"
+        class="outline-none text-primary"
         phx-click={JS.remove_class("hidden", to: "#mobile-menu") |> JS.add_class("hidden", to: "#open-mobile-menu") |> JS.remove_class("hidden", to: "#close-mobile-menu")}
       >
         <svg
@@ -61,7 +61,7 @@
       </button>
       <button
         id="close-mobile-menu"
-        class="hidden outline-none"
+        class="hidden outline-none text-primary"
         phx-click={JS.add_class("hidden", to: "#mobile-menu") |> JS.remove_class("hidden", to: "#open-mobile-menu") |> JS.add_class("hidden", to: "#close-mobile-menu")}
       >
         <svg
