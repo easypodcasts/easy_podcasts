@@ -58,15 +58,22 @@ defmodule Easypodcasts.Channels do
     |> Map.from_struct()
   end
 
+  def store_channel_image(channel) do
+    if channel.image_url do
+      case ChannelImage.store({channel.image_url, channel}) do
+        {:ok, _} -> nil
+        {:error, _} -> ChannelImage.store({"priv/static/images/placeholder-big.webp", channel})
+      end
+    end
+  end
+
   def create_channel(attrs \\ %{}) do
     with {:ok, channel} <-
            %Channel{}
            |> Channel.changeset(attrs)
            |> Repo.insert(),
          {:ok, _episodes} <- process_channel(channel) do
-      if channel.image_url do
-        ChannelImage.store({channel.image_url, channel})
-      end
+      store_channel_image(channel)
 
       {:ok, channel}
     else
