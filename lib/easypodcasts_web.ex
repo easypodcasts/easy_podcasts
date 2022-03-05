@@ -47,6 +47,8 @@ defmodule EasypodcastsWeb do
       use Phoenix.LiveView,
         layout: {EasypodcastsWeb.LayoutView, "live.html"}
 
+      on_mount PhoenixProfiler
+
       use EasypodcastsWeb.QueueComponent
       unquote(view_helpers())
     end

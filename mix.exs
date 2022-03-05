@@ -57,6 +57,7 @@ defmodule Easypodcasts.MixProject do
       {:timex, "~> 3.7"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:heex_formatter, github: "feliperenan/heex_formatter", only: [:dev]},
+      {:phoenix_profiler, "~> 0.1.0", github: "mcrumm/phoenix_profiler"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev}
     ]
   end
