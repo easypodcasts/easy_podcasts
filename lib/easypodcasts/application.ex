@@ -14,6 +14,7 @@ defmodule Easypodcasts.Application do
       EasypodcastsWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Easypodcasts.PubSub},
+      {PhoenixProfiler, name: Easypodcasts.Profiler},
       # Start the Endpoint (http/https)
       EasypodcastsWeb.Endpoint,
       # Start a worker by calling: Easypodcasts.Worker.start_link(arg)
