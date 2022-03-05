@@ -12,6 +12,13 @@ defmodule EasypodcastsWeb.ChannelController do
     |> render("feed.xml", channel: channel)
   end
 
+  def tag_feed(conn, %{"tag" => tag} = _params) do
+    conn
+    |> put_resp_content_type("text/xml")
+    |> put_layout(false)
+    |> render("tag_feed.xml", tag: tag, episodes: Episodes.list_episodes_for_tag(tag))
+  end
+
   def counter(conn, _params) do
     case Plug.Conn.get_req_header(conn, "x-original-uri") do
       [] ->
