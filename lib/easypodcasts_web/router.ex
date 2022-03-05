@@ -37,18 +37,6 @@ defmodule EasypodcastsWeb.Router do
     get "/:slug", ChannelController, :feed
   end
 
-  scope "/", EasypodcastsWeb do
-    pipe_through :browser
-
-    live_session :default do
-      live "/about", AboutLive.Index, :index
-      live "/status", ServerLive.Index, :index
-      live "/:channel_slug/:episode_slug", EpisodeLive.Show, :show
-      live "/:slug", ChannelLive.Show, :show
-      live "/", ChannelLive.Index, :index
-    end
-  end
-
   # Enables LiveDashboard only for development
   #
   # If you want to use the LiveDashboard in production, you should put
@@ -72,6 +60,7 @@ defmodule EasypodcastsWeb.Router do
   #
   # Note that preview only shows emails that were sent by the same
   # node running the Phoenix server.
+
   if Mix.env() == :dev do
     scope "/dev" do
       pipe_through :browser
@@ -79,4 +68,16 @@ defmodule EasypodcastsWeb.Router do
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end
+  scope "/", EasypodcastsWeb do
+    pipe_through :browser
+
+    live_session :default do
+      live "/about", AboutLive.Index, :index
+      live "/status", ServerLive.Index, :index
+      live "/:channel_slug/:episode_slug", EpisodeLive.Show, :show
+      live "/:slug", ChannelLive.Show, :show
+      live "/", ChannelLive.Index, :index
+    end
+  end
+
 end
