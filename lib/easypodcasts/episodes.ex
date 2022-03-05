@@ -19,6 +19,18 @@ defmodule Easypodcasts.Episodes do
   def list_episodes_guids(),
     do: Repo.all(from(e in Episode, select: e.guid))
 
+  def list_episodes_for_tag(tag) do
+    tags = [tag]
+
+    from(e in Episode,
+      join: c in assoc(e, :channel),
+      where: e.status == :done,
+      where: fragment("? @> ?", c.categories, ^tags),
+      order_by: [{:desc, e.updated_at}]
+    )
+    |> Repo.all()
+  end
+
   def list_episodes(channel_id, params) do
     episode_query = from(e in Episode, where: e.channel_id == ^channel_id)
     {search, filters, tags} = Search.parse_search_string(params["search"], ~w(status))
