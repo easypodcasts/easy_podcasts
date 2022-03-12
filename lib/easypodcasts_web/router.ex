@@ -8,6 +8,7 @@ defmodule EasypodcastsWeb.Router do
     plug :put_root_layout, {EasypodcastsWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug EasypodcastsWeb.Locale.Plug
   end
 
   pipeline :feed do
@@ -73,7 +74,7 @@ defmodule EasypodcastsWeb.Router do
   scope "/", EasypodcastsWeb do
     pipe_through :browser
 
-    live_session :default do
+    live_session :default, on_mount: EasypodcastsWeb.Locale.Plug do
       live "/about", AboutLive.Index, :index
       live "/status", ServerLive.Index, :index
       live "/:channel_slug/:episode_slug", EpisodeLive.Show, :show
