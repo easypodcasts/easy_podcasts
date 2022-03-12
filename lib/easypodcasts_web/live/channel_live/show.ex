@@ -52,7 +52,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
               />
             </svg>
             <span class="ml-1">
-              Subscribe
+              <%= gettext("Subscribe") %>
             </span>
           </button>
         <% end %>
@@ -87,19 +87,19 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
         :ok ->
           msg =
             Enum.random([
-              "Sit and relax",
-              "Go grab a drink",
-              "Do some stretching"
+              gettext("Sit and relax"),
+              gettext("Go grab a drink"),
+              gettext("Do some stretching")
             ])
 
           socket
           |> update(:episodes_map, fn episodes ->
             put_in(episodes, [episode_id, :status], :queued)
           end)
-          |> put_flash(:info, "The episode is in queue. #{msg}")
+          |> put_flash(:info, gettext("The episode is in queue. %{msg}", msg: msg))
 
         :error ->
-          put_flash(socket, :error, "Sorry. That episode can't be processed right now")
+          put_flash(socket, :error, gettext("Sorry. That episode can't be processed right now"))
       end
 
     {:noreply, socket}
@@ -151,8 +151,8 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
     msg =
       case Map.get(socket.assigns.episodes_map, episode_id) do
-        nil -> "An episode from this podcast is being processed"
-        episode -> "The episode '#{episode.title}' is being processed"
+        nil -> gettext("An episode from this podcast is being processed")
+        episode -> gettext("The episode '%{title}' is being processed", title: episode.title)
       end
 
     socket =
@@ -175,7 +175,10 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
     socket =
       socket
-      |> put_flash(:success, "The episode '#{episode.title}' was processed successfully")
+      |> put_flash(
+        :success,
+        gettext("The episode '%{title}' was processed successfully", title: episode.title)
+      )
       |> update(:episodes_map, fn episodes -> put_in(episodes, [episode_id], episode) end)
 
     {:noreply, socket}

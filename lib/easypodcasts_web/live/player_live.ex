@@ -100,7 +100,7 @@ defmodule EasypodcastsWeb.PlayerLive do
               xmlns="http://www.w3.org/2000/svg"
               class="hidden w-8 h-8 cursor-pointer text-primary"
               fill="none"
-              title="Play"
+              title={gettext("Play")}
               id="play"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -116,7 +116,7 @@ defmodule EasypodcastsWeb.PlayerLive do
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="hidden w-8 h-8 cursor-pointer text-primary"
-              title="Pause"
+              title={gettext("Pause")}
               id="pause"
               fill="none"
               viewBox="0 0 24 24"

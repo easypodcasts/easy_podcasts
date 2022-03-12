@@ -29,6 +29,9 @@ config :easypodcasts, Easypodcasts.Mailer, adapter: Swoosh.Adapters.Local
 # Swoosh API client is needed for adapters other than SMTP.
 config :swoosh, :api_client, false
 
+# i80n
+config :easypodcasts, EasypodcastsWeb.Gettext, default_locale: "es", locales: ~w(en es)
+
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.12.18",

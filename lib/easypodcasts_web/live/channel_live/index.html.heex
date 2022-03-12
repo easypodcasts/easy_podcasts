@@ -33,7 +33,7 @@
               <span
                 class="flex justify-center self-end pt-1 pb-2 w-full text-sm rounded-b-lg border-t text-text-light bg-primary border-primary hover:bg-primary-dark"
               >
-                <%= channel.episodes %> Episodes
+              <%= ngettext("%{episodes} Episode", "%{episodes} Episodes", channel.episodes, episodes: channel.episodes) %>
               </span>
             <% end %>
           </div>
@@ -42,7 +42,7 @@
     <% else %>
       <div class="w-full text-center">
         <h1 class="mb-4 text-3xl font-medium sm:text-4xl title-font">
-          No podcasts to show
+          <%= gettext("No podcasts to show") %>
         </h1>
       </div>
     <% end %>

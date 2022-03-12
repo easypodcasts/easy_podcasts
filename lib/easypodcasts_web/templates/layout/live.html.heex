@@ -19,29 +19,31 @@
             name="search"
             class="py-1 px-3 leading-8 rounded border shadow-inner outline-none md:w-full hover:ring-1 focus:ring-2 bg-surface text-primary border-primary-light hover:ring-primary-light focus:ring-primary"
             placeholder={
-              if @socket.view == EasypodcastsWeb.ChannelLive.Index, do: "Search Podcasts", else: "Search Episodes"
+              if @socket.view == EasypodcastsWeb.ChannelLive.Index, do: gettext("Search Podcasts"), else: gettext("Search Episodes")
             }
           />
         </form>
       <% end %>
     </div>
     <div class="hidden justify-end w-1/3 md:flex">
-      <%= live_redirect("Status",
+      <%= live_redirect(gettext("Status"),
         to: Routes.server_index_path(@socket, :index),
         class: "mr-5 self-center text-primary"
       ) %>
-      <%= live_redirect("About",
+      <%= live_redirect(gettext("About"),
         to: Routes.about_index_path(@socket, :index),
         class: "mr-5 self-center text-primary"
       ) %>
-      <a href="https://t.me/soporte_easypodcasts" class="self-center mr-5 text-primary">Contact</a>
+      <a href="https://t.me/soporte_easypodcasts" class="self-center mr-5 text-primary">
+        <%= gettext("Contact") %>
+      </a>
       <button
         phx-click="show_modal"
         phx-target="#new_podcast"
         id="add-podcast"
         class="py-2 px-4 font-semibold rounded text-text-light bg-primary text-md hover:bg-primary-dark"
       >
-        Add Podcast
+        <%= gettext("Add Podcast") %>
       </button>
     </div>
     <div class="flex items-center md:hidden">
@@ -96,15 +98,15 @@
       |> JS.add_class("hidden", to: "#close-mobile-menu")
     }
   >
-    <%= live_redirect("Home",
+    <%= live_redirect(gettext("Home"),
       to: Routes.channel_index_path(@socket, :index),
       class: "text-md py-3 mb-2 border-2 border-primary-light  rounded font-semibold text-center text-primary"
     ) %>
-    <%= live_redirect("Status",
+    <%= live_redirect(gettext("Status"),
       to: Routes.server_index_path(@socket, :index),
       class: "text-md py-3 mb-2 border-2  border-primary-light rounded font-semibold text-center text-primary"
     ) %>
-    <%= live_redirect("About",
+    <%= live_redirect(gettext("About"),
       to: Routes.about_index_path(@socket, :index),
       class: "text-md py-3 mb-2 border-2  border-primary-light rounded font-semibold text-center text-primary"
     ) %>
@@ -112,14 +114,14 @@
       href="https://t.me/soporte_easypodcasts"
       class="py-3 mb-2 font-semibold text-center rounded border-2 text-md border-primary-light text-primary"
     >
-      Contact
+        <%= gettext("Contact") %>
     </a>
     <button
       phx-click="show_modal"
       phx-target="#new_podcast"
       class="py-3 px-4 mb-2 font-semibold rounded text-text-light bg-primary text-md hover:bg-primary-dark"
     >
-      Add Podcast
+      <%= gettext("Add Podcast") %>
     </button>
   </div>
 </header>
@@ -133,7 +135,7 @@
         phx-value-key="success"
       >
         <span class="font-medium">
-          Success!
+          <%= gettext("Success!") %>
         </span>
         <%= live_flash(@flash, :success) %>
       </div>
@@ -147,7 +149,7 @@
         phx-value-key="info"
       >
         <span class="font-medium">
-          Info!
+          <%= gettext("Info") %>
         </span>
         <%= live_flash(@flash, :info) %>
       </div>
@@ -161,7 +163,7 @@
         phx-value-key="error"
       >
         <span class="font-medium">
-          Error!
+          <%= gettext("Error!") %>
         </span>
         <%= live_flash(@flash, :error) %>
       </div>

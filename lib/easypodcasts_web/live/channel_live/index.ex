@@ -13,7 +13,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   def handle_params(params, _url, socket) do
     {:noreply,
      socket
-     |> assign(:page_title, "Home")
+     |> assign(:page_title, gettext("Home"))
      |> assign(list_channels(params))}
   end
 

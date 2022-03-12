@@ -3,6 +3,7 @@ defmodule EasypodcastsWeb.PaginationComponent do
   Component to generate the pagination element
   """
   use Phoenix.Component
+  import EasypodcastsWeb.Gettext
 
   def pagination(
         %{
@@ -25,7 +26,7 @@ defmodule EasypodcastsWeb.PaginationComponent do
         <%= live_redirect to: get_route(socket, route, action, object_id, search, page_number - 1),
                       class: "block ml-0 rounded-l-lg mr-1 leading-tight py-2 px-3 hover:bg-primary" do %>
           <span class="sr-only">
-            Previous
+            <%= gettext("Previous") %>
           </span>
           <svg class="w-6 h-6 text-primary-dark" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -56,7 +57,7 @@ defmodule EasypodcastsWeb.PaginationComponent do
         <%= live_redirect to: get_route(socket, route, action, object_id, search, page_number + 1),
                       class: "block rounded-r-lg leading-tight py-2 px-3 hover:bg-primary" do %>
           <span class="sr-only">
-            Next
+            <%= gettext("Next") %>
           </span>
           <svg class="w-6 h-6 text-primary-dark" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <path

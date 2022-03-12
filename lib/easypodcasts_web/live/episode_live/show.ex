@@ -60,7 +60,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
             <% end %>
           </span>
           <span class="mr-3 text-xs md:text-sm dark:text-d-text-dark">
-            Downloads: <%= @episode.downloads %>
+            <%= "#{gettext("Downloads:")} #{@episode.downloads}" %>
           </span>
         </div>
         <p class={"dark:text-d-text-dark #{if not @full_description, do: "line-clamp-6"}"}>
@@ -87,7 +87,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
                   d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                 />
               </svg>
-              Download
+              <%= gettext("Download") %>
             </a>
             <button
               class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm rounded border-0 text-text-light bg-primary hover:bg-primary-dark"
@@ -115,7 +115,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
                   d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              Play
+              <%= gettext("Play") %>
             </button>
           </div>
         <% end %>
@@ -138,7 +138,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
                 d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
               />
             </svg>
-            Queued
+            <%= gettext("Queued") %>
           </button>
         <% end %>
         <%= if @episode.status == :processing do %>
@@ -152,7 +152,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
               >
               </path>
             </svg>
-            Processing
+            <%= gettext("Processing") %>
           </button>
         <% end %>
         <%= if @episode.status == :new and @episode.retries < 3 do %>
@@ -160,7 +160,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
             class="flex justify-between self-start py-2 px-2 mt-4 text-sm rounded border-0 disabled:text-black disabled:cursor-wait text-text-light bg-primary hover:bg-primary-dark disabled:bg-disabled"
             phx-click="process_episode"
             phx-value-episode_id={@episode.id}
-            phx-disable-with="Queuing..."
+            phx-disable-with={gettext("Queuing...")}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -176,12 +176,12 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
                 d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
               />
             </svg>
-            Process Episode
+            <%= gettext("Process Episode") %>
           </button>
         <% end %>
         <%= if @episode.retries >= 3 do %>
           <div class="flex items-center self-start">
-            <span class="mt-4 text-red-500">La conversión de este episodio falló</span>
+          <span class="mt-4 text-red-500"><%= gettext("This episode has failed processing")%></span>
             <a
               class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm rounded border-0 text-text-light bg-primary hover:bg-primary-dark"
               href={@episode.original_audio_url}
@@ -200,7 +200,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
                   d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                 />
               </svg>
-              Original Audio
+            <%= gettext("Original Audio") %>
             </a>
           </div>
         <% end %>
@@ -220,17 +220,17 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
         :ok ->
           msg =
             Enum.random([
-              "Sit and relax",
-              "Go grab a drink",
-              "Do some stretching"
+              gettext("Sit and relax"),
+              gettext("Go grab a drink"),
+              gettext("Do some stretching")
             ])
 
           socket
           |> update(:episode, &%{&1 | status: :queued})
-          |> put_flash(:info, "The episode is in queue. #{msg}")
+          |> put_flash(:info, gettext("The episode is in queue. %{msg}", msg: msg))
 
         :error ->
-          put_flash(socket, :error, "Sorry. That episode can't be processed right now")
+          put_flash(socket, :error, gettext("Sorry. That episode can't be processed right now"))
       end
 
     {:noreply, socket}
@@ -242,7 +242,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
 
     socket =
       socket
-      |> put_flash(:info, "The episode is being processed")
+      |> put_flash(:info, gettext("The episode is being processed"))
       |> update(:episode, &%{&1 | status: :processing})
 
     {:noreply, socket}
@@ -255,7 +255,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
 
     socket =
       socket
-      |> put_flash(:success, "The episode was processed successfully")
+      |> put_flash(:success, gettext("The episode was processed successfully"))
       |> assign(:episode, episode)
 
     {:noreply, socket}
