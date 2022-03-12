@@ -3,7 +3,7 @@
     <div class="flex fixed top-0 left-0 justify-center w-screen h-screen bg-surface/80 dark:bg-d-surface/80">
       <div class="p-5 mt-10 max-h-52 rounded-md border shadow-2xl xl:mt-24 border-primary bg-surface dark:bg-d-surface">
         <h3 class="text-lg font-medium leading-6 dark:text-d-text-dark">
-          Add New Podcast
+          <%= gettext("Add New Podcast") %>
         </h3>
         <.form
           let={f}
@@ -24,9 +24,9 @@
                   "rounded border border-primary-light  outline-none py-1 px-3 leading-8 mb-2 focus:ring-2 focus:ring-primary hover:ring-1 hover:ring-primary-light bg-surface shadow-inner"
               ) %>
               <spam class="px-1 text-xs dark:text-d-text-dark">
-                Lea sobre nuestra política de contenidos
+                <%= gettext("Read about our content policies") %>
                 <a href={"#{Routes.about_index_path(@socket, :index)}#disclaimer"} class="text-primary">
-                  aquí
+                  <%= gettext("here") %>
                 </a>
               </spam>
             </div>
@@ -37,10 +37,10 @@
                 phx-target={@myself}
                 class="inline-flex items-center py-2 px-4 ml-1 text-sm align-middle rounded border-0 text-text-light bg-cancel hover:bg-cancel-dark"
               >
-                Cancel
+                <%= gettext("Cancel") %>
               </button>
-              <%= submit("Save",
-                phx_disable_with: "Saving...",
+              <%= submit(gettext("Save"),
+                phx_disable_with: gettext("Saving..."),
                 class:
                   "border-0 ml-1 px-5 focus:outline-none rounded text-sm bg-primary text-text-light hover:bg-primary-dark"
               ) %>

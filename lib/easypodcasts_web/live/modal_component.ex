@@ -25,7 +25,10 @@ defmodule EasypodcastsWeb.ModalComponent do
         {:noreply,
          socket
          |> assign(:show_modal, false)
-         |> put_flash(:success, "Podcast '#{channel.title}' created successfully")
+         |> put_flash(
+           :success,
+           gettext("Podcast '%{title}' created successfully", title: channel.title)
+         )
          |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, changeset = %Ecto.Changeset{}} ->
