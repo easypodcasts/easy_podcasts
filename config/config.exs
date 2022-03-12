@@ -30,7 +30,7 @@ config :easypodcasts, Easypodcasts.Mailer, adapter: Swoosh.Adapters.Local
 config :swoosh, :api_client, false
 
 # i80n
-config :easypodcasts, EasypodcastsWeb.Gettext, default_locale: "es", locales: ~w(es en)
+config :easypodcasts, EasypodcastsWeb.Gettext, default_locale: "es", locales: ~w(es en fr de pt eo)
 
 # Configure esbuild (the version is required)
 config :esbuild,
