@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+  xmlns:podcast="https://podcastindex.org/namespace/1.0"
+>
+<channel>
+  <title><%= "Feed de podcasts combinados en EasyPodcasts" %></title>
+  <link>https://easypodcasts.live</link>
+  <description>
+    <![CDATA[
+    <p>Feed generado por EasyPodcasts con todos los episodios de los siguientes canales:
+      </p>
+    <ul>
+      <%= for title <- @titles do %>
+      <li><%= title %></li>
+      <% end %>
+    </ul>
+    <%=  %>
+    ]]>
+  </description>
+  <%= for episode <- @episodes do %>
+   <item>
+     <title><![CDATA[<%= episode.feed_data["title"] %>]]></title>
+      <link><%= episode.feed_data["link"] %></link>
+      <guid isPermaLink="false"><%= clear_ampersand(episode.feed_data["guid"]) %></guid>
+      <pubDate><%= episode.feed_data["published"] %></pubDate>
+      <%= for enclosure <- episode.feed_data["enclosures"] do %>
+        <enclosure url="<%= EpisodeAudio.url({"episode.opus", episode}) %>" length="<%= episode.processed_size %>" type="<%= enclosure["type"] %>" />
+      <% end %>
+        <description><![CDATA[<%= episode.feed_data["description"] %>]]></description>
+        <content:encoded><![CDATA[<%= episode.feed_data["content"]  %> ]]></content:encoded>
+        <itunes:episodeType><%= episode.feed_data["itunesExt"]["episodeType"] %></itunes:episodeType>
+        <itunes:episode><%= episode.feed_data["itunesExt"]["episode"]  %></itunes:episode>
+
+        <itunes:image href="<%= clear_ampersand(episode.feed_data["itunesExt"]["image"]) %>"/>
+        <itunes:duration><%= episode.feed_data["itunesExt"]["duration"] %></itunes:duration>
+        <itunes:explicit><%= episode.feed_data["itunesExt"]["explicit"] %></itunes:explicit>
+        <itunes:keywords><%= episode.feed_data["itunesExt"]["keywords"] %></itunes:keywords>
+        <itunes:subtitle><![CDATA[<%= episode.feed_data["itunesExt"]["subtitle"] %>]]></itunes:subtitle>
+        <itunes:summary><![CDATA[<%= episode.feed_data["itunesExt"]["summary"] %> ]]></itunes:summary>
+        <%= if episode.feed_data["dcExt"]["creator"] do %>
+          <%= for creator <- episode.feed_data["dcExt"]["creator"] do %>
+            <dc:creator><%= creator %></dc:creator>
+          <% end %>
+        <% end %>
+        <itunes:author><%= episode.feed_data["itunesExt"]["author"] %></itunes:author>
+
+        <%= if episode.feed_data["extensions"]["podcast"]["person"] do %>
+          <%= for person <- episode.feed_data["extensions"]["podcast"]["person"] do %>
+              <podcast:person role="<%= person["attrs"]["role"] %>" img="<%= clear_ampersand(person["attrs"]["img"]) %>" href="<%= person["attrs"]["href"] %>"><%= person["value"] %></podcast:person>
+          <% end %>
+        <% end %>
+      </item>
+  <% end %>
+</channel>
+</rss>
