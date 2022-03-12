@@ -47,6 +47,10 @@ defmodule Easypodcasts.Channels do
     |> Repo.paginate(page: page)
   end
 
+  def list_channels_titles(channels) do
+    from(c in Channel, where: c.id in ^channels, select: c.title) |> Repo.all()
+  end
+
   def get_channel!(id), do: Repo.get!(Channel, id)
 
   def get_channel_for_feed(id) do

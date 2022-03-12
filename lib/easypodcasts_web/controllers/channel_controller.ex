@@ -12,6 +12,18 @@ defmodule EasypodcastsWeb.ChannelController do
     |> render("feed.xml", channel: channel)
   end
 
+  def list_feed(conn, %{"channels" => channels} = _params) do
+    titles = Channels.list_channels_titles(channels)
+
+    conn
+    |> put_resp_content_type("text/xml")
+    |> put_layout(false)
+    |> render("list_feed.xml",
+      titles: titles,
+      episodes: Episodes.list_episodes_for_channels(channels)
+    )
+  end
+
   def tag_feed(conn, %{"tag" => tag} = _params) do
     conn
     |> put_resp_content_type("text/xml")
