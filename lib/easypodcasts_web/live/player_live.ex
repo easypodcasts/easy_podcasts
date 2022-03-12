@@ -40,7 +40,11 @@ defmodule EasypodcastsWeb.PlayerLive do
           <audio src={EpisodeAudio.url({"episode.opus", @episode})}></audio>
           <div class="flex mb-2">
             <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(@channel)) do %>
-              <img src={ChannelImage.url({"thumb.webp", @channel}, :thumb)} alt={@channel.title} class="w-16 h-16 rounded-xlsmall">
+              <img
+                src={ChannelImage.url({"thumb.webp", @channel}, :thumb)}
+                alt={@channel.title}
+                class="w-16 h-16 rounded-xlsmall"
+              />
             <% end %>
             <div class="flex flex-col flex-1 px-2">
               <span class="font-semibold">
@@ -89,7 +93,8 @@ defmodule EasypodcastsWeb.PlayerLive do
                 class="opacity-75"
                 fill="currentColor"
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
+              >
+              </path>
             </svg>
             <svg
               xmlns="http://www.w3.org/2000/svg"
