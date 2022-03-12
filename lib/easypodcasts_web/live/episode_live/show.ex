@@ -33,7 +33,6 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
     <div class="flex flex-wrap mb-4 md:flex-nowrap xl:py-8 xl:mb-0">
       <div class="flex flex-col w-full">
         <h2 class="mb-2 text-xl font-medium title-font">
-
           <%= if @socket.view == EasypodcastsWeb.ChannelLive.Show do %>
             <%= live_redirect(@episode.title,
               to: Routes.episode_show_path(@socket, :show, Utils.slugify(@channel), Utils.slugify(@episode)),
@@ -54,7 +53,8 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
           </span>
           <span class="mr-3 text-xs md:text-sm dark:text-d-text-dark">
             <%= if @episode.status == :done do %>
-              <%= Float.floor((@episode.processed_size || 0) / 1_000_000, 2) %> MB ( <%= Float.floor((@episode.original_size - (@episode.processed_size || 0)) / 1_000_000, 2) %> MB less)
+              <%= Float.floor((@episode.processed_size || 0) / 1_000_000, 2) %> MB (
+              <%= Float.floor((@episode.original_size - (@episode.processed_size || 0)) / 1_000_000, 2) %> MB less)
             <% else %>
               <%= Float.floor(@episode.original_size / 1_000_000, 2) %> MB
             <% end %>
@@ -63,7 +63,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
             Downloads: <%= @episode.downloads %>
           </span>
         </div>
-        <p class={"dark:text-d-text-dark #{if not @full_description, do: "line-clamp-6"}"  }>
+        <p class={"dark:text-d-text-dark #{if not @full_description, do: "line-clamp-6"}"}>
           <%= sanitize(@episode.description) %>
         </p>
         <%= if @episode.status == :done do %>
@@ -73,7 +73,13 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
               href={EpisodeAudio.url({"episode.opus", @episode})}
               download={"#{@episode.title}.opus"}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" class="mr-1 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="mr-1 w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -89,14 +95,25 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
               phx-target="#player"
               phx-value-episode={@episode.id}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="mr-2 w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
                   d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
                 />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
               Play
             </button>
@@ -107,7 +124,13 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
             class="flex self-start py-2 px-2 mt-4 text-sm rounded border-0 cursor-wait focus:outline-none bg-disabled"
             disabled
           >
-            <svg xmlns="http://www.w3.org/2000/svg" class="mr-1 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="mr-1 w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -126,7 +149,8 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
                 class="opacity-75"
                 fill="currentColor"
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
+              >
+              </path>
             </svg>
             Processing
           </button>
@@ -138,7 +162,13 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
             phx-value-episode_id={@episode.id}
             phx-disable-with="Queuing..."
           >
-            <svg xmlns="http://www.w3.org/2000/svg" class="mr-1 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="mr-1 w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -148,6 +178,31 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
             </svg>
             Process Episode
           </button>
+        <% end %>
+        <%= if @episode.retries >= 3 do %>
+          <div class="flex items-center self-start">
+            <span class="mt-4 text-red-500">La conversión de este episodio falló</span>
+            <a
+              class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm rounded border-0 text-text-light bg-primary hover:bg-primary-dark"
+              href={@episode.original_audio_url}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="mr-1 w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                />
+              </svg>
+              Original Audio
+            </a>
+          </div>
         <% end %>
       </div>
     </div>
