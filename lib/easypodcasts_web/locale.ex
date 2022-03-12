@@ -7,9 +7,7 @@ defmodule EasypodcastsWeb.Locale.Plug do
     accepted_languages = extract_accept_language(conn)
     known_locales = Gettext.known_locales(EasypodcastsWeb.Gettext)
 
-    accepted_languages =
-      known_locales --
-        known_locales -- accepted_languages
+    accepted_languages = Enum.filter(accepted_languages, &(&1 in known_locales))
 
     case accepted_languages do
       [locale | _] ->
