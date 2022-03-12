@@ -32,7 +32,8 @@ defmodule EasypodcastsWeb.PaginationComponent do
               fill-rule="evenodd"
               d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
               clip-rule="evenodd"
-            ></path>
+            >
+            </path>
           </svg>
         <% end %>
       <% end %>
@@ -41,14 +42,12 @@ defmodule EasypodcastsWeb.PaginationComponent do
         <%= if page_number == idx do %>
           <%= live_redirect(idx,
             to: get_route(socket, route, action, object_id, search, idx),
-            class:
-              "leading-tight rounded mr-1 py-2 px-3 pointer-events-none bg-primary text-text-light text-xl"
+            class: "leading-tight rounded mr-1 py-2 px-3 pointer-events-none bg-primary text-text-light text-xl"
           ) %>
         <% else %>
           <%= live_redirect(idx,
             to: get_route(socket, route, action, object_id, search, idx),
-            class:
-              "leading-tight rounded mr-1 py-2 px-3 hover:bg-primary text-primary-dark hover:text-light text-xl"
+            class: "leading-tight rounded mr-1 py-2 px-3 hover:bg-primary text-primary-dark hover:text-light text-xl"
           ) %>
         <% end %>
       <% end %>
@@ -64,11 +63,11 @@ defmodule EasypodcastsWeb.PaginationComponent do
               fill-rule="evenodd"
               d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
               clip-rule="evenodd"
-            ></path>
+            >
+            </path>
           </svg>
         <% end %>
       <% end %>
-
     </nav>
     """
   end

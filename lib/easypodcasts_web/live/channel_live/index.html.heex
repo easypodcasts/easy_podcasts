@@ -24,13 +24,15 @@
                 src={ChannelImage.url({"thumb.webp", channel}, :thumb)}
                 alt={channel.title}
                 loading="lazy"
-              >
+              />
             <% end %>
             <p class="flex-1 px-2 mb-2 text-sm text-center line-clamp-5 dark:text-d-text-dark">
               <%= sanitize(channel.description) %>
             </p>
             <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(channel)) do %>
-              <span class="flex justify-center self-end pt-1 pb-2 w-full text-sm rounded-b-lg border-t text-text-light bg-primary border-primary hover:bg-primary-dark">
+              <span
+                class="flex justify-center self-end pt-1 pb-2 w-full text-sm rounded-b-lg border-t text-text-light bg-primary border-primary hover:bg-primary-dark"
+              >
                 <%= channel.episodes %> Episodes
               </span>
             <% end %>

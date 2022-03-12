@@ -15,17 +15,29 @@
                               Utils.slugify(episode)
                             ) do %>
               <%= if episode.status == :processing do %>
-                <svg class="inline w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg
+                  class="inline w-5 h-5 animate-spin"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                   <path
                     class="opacity-75"
                     fill="currentColor"
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
+                  >
+                  </path>
                 </svg>
               <% end %>
               <%= if episode.status == :queued do %>
-                <svg xmlns="http://www.w3.org/2000/svg" class="inline w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="inline w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -36,7 +48,8 @@
               <% end %>
               <%= episode.title %>
             <% end %>
-            ( <%= live_redirect(episode.channel.title,
+            (
+            <%= live_redirect(episode.channel.title,
               to: Routes.channel_show_path(@socket, :show, Utils.slugify(episode.channel))
             ) %> )
           </li>
@@ -63,7 +76,8 @@
                 Utils.slugify(episode.channel),
                 Utils.slugify(episode)
               )
-          ) %> ( <%= live_redirect(episode.channel.title,
+          ) %> (
+          <%= live_redirect(episode.channel.title,
             to: Routes.channel_show_path(@socket, :show, Utils.slugify(episode.channel))
           ) %> )
         </li>
@@ -85,7 +99,8 @@
                 Utils.slugify(episode.channel),
                 Utils.slugify(episode)
               )
-          ) %> ( <%= live_redirect(episode.channel.title,
+          ) %> (
+          <%= live_redirect(episode.channel.title,
             to: Routes.channel_show_path(@socket, :show, Utils.slugify(episode.channel))
           ) %> )
         </li>
@@ -98,13 +113,10 @@
         Podcasts
       </span>
       <ul class="p-2">
-        <li>Total Podcasts: <%= @channels %>
-        </li>
-        <li>Total Episodes: <%= @episodes %>
-        </li>
+        <li>Total Podcasts: <%= @channels %></li>
+        <li>Total Episodes: <%= @episodes %></li>
         <li>Original Size: <%= Float.floor(@size.original / 1_000_000_000, 2) %> GB</li>
-        <li>Processed Episodes: <%= @size.total %>
-        </li>
+        <li>Processed Episodes: <%= @size.total %></li>
         <li>Processed Size: <%= Float.floor(@size.processed / 1_000_000_000, 2) %> GB</li>
       </ul>
     </div>

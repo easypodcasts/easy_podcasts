@@ -68,6 +68,7 @@ defmodule EasypodcastsWeb.Router do
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end
+
   scope "/", EasypodcastsWeb do
     pipe_through :browser
 
@@ -79,5 +80,4 @@ defmodule EasypodcastsWeb.Router do
       live "/", ChannelLive.Index, :index
     end
   end
-
 end
