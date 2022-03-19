@@ -37,7 +37,7 @@
             <dc:creator><%= creator %></dc:creator>
           <% end %>
         <% end %>
-        <itunes:author><%= episode.feed_data["itunesExt"]["author"] %></itunes:author>
+        <itunes:author><%= clear_ampersand(episode.feed_data["itunesExt"]["author"]) %></itunes:author>
 
         <%= if episode.feed_data["extensions"]["podcast"]["person"] do %>
           <%= for person <- episode.feed_data["extensions"]["podcast"]["person"] do %>

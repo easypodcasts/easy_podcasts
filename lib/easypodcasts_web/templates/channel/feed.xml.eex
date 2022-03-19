@@ -19,7 +19,7 @@
   <description>
     <![CDATA[<%= @description %>]]>
   </description>
-  <itunes:author><%= @feed_data["itunesExt"]["author"] %></itunes:author>
+  <itunes:author><%= clear_ampersand(@feed_data["itunesExt"]["author"]) %></itunes:author>
   <itunes:summary>
     <![CDATA[<%= @feed_data["itunesExt"]["summary"] %>]]>
   </itunes:summary>
@@ -79,7 +79,7 @@
             <dc:creator><%= creator %></dc:creator>
           <% end %>
         <% end %>
-        <itunes:author><%= episode.feed_data["itunesExt"]["author"] %></itunes:author>
+        <itunes:author><%= clear_ampersand(episode.feed_data["itunesExt"]["author"]) %></itunes:author>
 
         <%= if episode.feed_data["extensions"]["podcast"]["person"] do %>
           <%= for person <- episode.feed_data["extensions"]["podcast"]["person"] do %>
