@@ -4,31 +4,28 @@ defmodule EasypodcastsWeb.FeedController do
 
   def feed(conn, %{"slug" => slug} = _params) do
     [channel_id | _slug] = String.split(slug, "-")
-    channel = Channels.get_channel_for_feed(channel_id)
 
-    conn
-    |> put_resp_content_type("text/xml")
-    |> put_layout(false)
-    |> render("feed.xml", channel: channel)
+    feed_response(conn, "feed.xml", channel: Channels.get_channel_for_feed(channel_id))
   end
 
   def list_feed(conn, %{"channels" => channels} = _params) do
     titles = Channels.list_channels_titles(channels)
 
-    conn
-    |> put_resp_content_type("text/xml")
-    |> put_layout(false)
-    |> render("list_feed.xml",
+    feed_response(conn, "list_feed.xml",
       titles: titles,
       episodes: Episodes.list_episodes_for_channels(channels)
     )
   end
 
   def tag_feed(conn, %{"tag" => tag} = _params) do
+    feed_response(conn, "tag_feed.xml", tag: tag, episodes: Episodes.list_episodes_for_tag(tag))
+  end
+
+  defp feed_response(conn, template, assigns) do
     conn
     |> put_resp_content_type("text/xml")
     |> put_layout(false)
-    |> render("tag_feed.xml", tag: tag, episodes: Episodes.list_episodes_for_tag(tag))
+    |> render(template, assigns)
   end
 
   def counter(conn, _params) do

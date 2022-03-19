@@ -38,7 +38,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
             src={ChannelImage.url({"original.webp", @channel}, :original)}
           />
         <% end %>
-        <%= link to: Routes.channel_path(@socket, :feed, Utils.slugify(@channel)),
+        <%= link to: Routes.feed_path(@socket, :feed, Utils.slugify(@channel)),
              class: "self-center xl:self-start" do %>
           <button
             class="flex justify-between items-center py-2 px-2 mt-4 text-lg font-semibold rounded xl:self-start text-text-light bg-primary hover:bg-primary-dark"
