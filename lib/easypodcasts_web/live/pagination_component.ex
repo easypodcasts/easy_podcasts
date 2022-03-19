@@ -24,7 +24,7 @@ defmodule EasypodcastsWeb.PaginationComponent do
     <nav class={nav_classes(is_top)}>
       <%= if page_number != 1 do %>
         <%= live_redirect to: get_route(socket, route, action, object_id, search, page_number - 1),
-                      class: "block ml-0 rounded-l-lg mr-1 leading-tight py-2 px-3 hover:bg-primary" do %>
+                      class: "block ml-0 rounded-l-lg mr-1 leading-tight py-2 px-3 hover:bg-primary hover:text-text-light" do %>
           <span class="sr-only">
             <%= gettext("Previous") %>
           </span>
@@ -48,14 +48,14 @@ defmodule EasypodcastsWeb.PaginationComponent do
         <% else %>
           <%= live_redirect(idx,
             to: get_route(socket, route, action, object_id, search, idx),
-            class: "leading-tight rounded mr-1 py-2 px-3 hover:bg-primary text-primary-dark hover:text-light text-xl"
+            class: "leading-tight rounded mr-1 py-2 px-3 hover:bg-primary text-primary-dark hover:text-text-light text-xl"
           ) %>
         <% end %>
       <% end %>
 
       <%= if page_number != total_pages do %>
         <%= live_redirect to: get_route(socket, route, action, object_id, search, page_number + 1),
-                      class: "block rounded-r-lg leading-tight py-2 px-3 hover:bg-primary" do %>
+                      class: "block rounded-r-lg leading-tight py-2 px-3 hover:bg-primary hover:text-text-light" do %>
           <span class="sr-only">
             <%= gettext("Next") %>
           </span>
