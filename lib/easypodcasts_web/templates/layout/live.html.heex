@@ -3,10 +3,10 @@
     <div class="flex md:w-1/3">
       <%= live_redirect to: Routes.channel_index_path(@socket, :index), class: "" do %>
         <img class="h-10 hidden md:flex" src={Routes.static_path(@socket, "/images/easypodcasts.svg")} alt="Easy Podcasts" />
-        <img class="h-8 md:hidden" src={Routes.static_path(@socket, "/images/easypodcasts-lite.svg")} alt="Easy Podcasts" />
+        <img class="h-6 md:hidden" src={Routes.static_path(@socket, "/images/easypodcasts-lite.svg")} alt="Easy Podcasts" />
       <% end %>
     </div>
-    <div class="flex flex-1 justify-center md:w-1/3 mx-2">
+    <div class="flex flex-1 justify-center md:w-1/3 mx-1.5">
       <%= if @socket.view not in [
            EasypodcastsWeb.ServerLive.Index,
            EasypodcastsWeb.AboutLive.Index,
