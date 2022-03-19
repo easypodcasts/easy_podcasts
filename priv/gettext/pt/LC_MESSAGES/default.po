@@ -12,12 +12,12 @@ msgstr ""
 "Plural-Forms: nplurals=2\n"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/templates/layout/live.html.heex:22
+#: lib/easypodcasts_web/templates/layout/live.html.heex:23
 msgid "Search Episodes"
 msgstr ""
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/templates/layout/live.html.heex:22
+#: lib/easypodcasts_web/templates/layout/live.html.heex:23
 msgid "Search Podcasts"
 msgstr ""
 
@@ -36,7 +36,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/templates/layout/live.html.heex:33
+#: lib/easypodcasts_web/templates/layout/live.html.heex:37
 #: lib/easypodcasts_web/templates/layout/live.html.heex:109
 msgid "About"
 msgstr ""
@@ -47,7 +47,7 @@ msgid "Add New Podcast"
 msgstr ""
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/templates/layout/live.html.heex:46
+#: lib/easypodcasts_web/templates/layout/live.html.heex:50
 #: lib/easypodcasts_web/templates/layout/live.html.heex:124
 msgid "Add Podcast"
 msgstr ""
@@ -95,8 +95,7 @@ msgid "Go grab a drink"
 msgstr ""
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/live/channel_live/index.ex:16
-#: lib/easypodcasts_web/templates/layout/live.html.heex:101
+#: lib/easypodcasts_web/live/channel_live/index.ex:17
 msgid "Home"
 msgstr ""
 
@@ -224,7 +223,7 @@ msgid "Sorry. That episode can't be processed right now"
 msgstr ""
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/templates/layout/live.html.heex:29
+#: lib/easypodcasts_web/templates/layout/live.html.heex:33
 #: lib/easypodcasts_web/templates/layout/live.html.heex:105
 msgid "Status"
 msgstr ""
@@ -306,7 +305,14 @@ msgid "Success!"
 msgstr ""
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/templates/layout/live.html.heex:38
+#: lib/easypodcasts_web/templates/layout/live.html.heex:42
 #: lib/easypodcasts_web/templates/layout/live.html.heex:117
 msgid "Contact"
 msgstr ""
+
+#, elixir-autogen, elixir-format
+#: lib/easypodcasts_web/templates/layout/live.html.heex:29
+msgid "%{visitors} visitor"
+msgid_plural "%{visitors} visitors"
+msgstr[0] ""
+msgstr[1] ""

@@ -12,12 +12,12 @@ msgstr ""
 "Plural-Forms: nplurals=2\n"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/templates/layout/live.html.heex:22
+#: lib/easypodcasts_web/templates/layout/live.html.heex:23
 msgid "Search Episodes"
 msgstr "Buscar Episodios"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/templates/layout/live.html.heex:22
+#: lib/easypodcasts_web/templates/layout/live.html.heex:23
 msgid "Search Podcasts"
 msgstr "Buscar Podcasts"
 
@@ -36,7 +36,7 @@ msgstr[0] "%{queue_length} episodio en cola"
 msgstr[1] "%{queue_length} episodios en cola"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/templates/layout/live.html.heex:33
+#: lib/easypodcasts_web/templates/layout/live.html.heex:37
 #: lib/easypodcasts_web/templates/layout/live.html.heex:109
 msgid "About"
 msgstr "Acerca de"
@@ -47,7 +47,7 @@ msgid "Add New Podcast"
 msgstr "Añadir Nuevo Podcast"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/templates/layout/live.html.heex:46
+#: lib/easypodcasts_web/templates/layout/live.html.heex:50
 #: lib/easypodcasts_web/templates/layout/live.html.heex:124
 msgid "Add Podcast"
 msgstr "Añadir Podcast"
@@ -95,8 +95,7 @@ msgid "Go grab a drink"
 msgstr "Ve a tomar agua"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/live/channel_live/index.ex:16
-#: lib/easypodcasts_web/templates/layout/live.html.heex:101
+#: lib/easypodcasts_web/live/channel_live/index.ex:17
 msgid "Home"
 msgstr "Inicio"
 
@@ -224,7 +223,7 @@ msgid "Sorry. That episode can't be processed right now"
 msgstr "Lo sentimos. Ese episodio no puede ser procesado ahora mismo"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/templates/layout/live.html.heex:29
+#: lib/easypodcasts_web/templates/layout/live.html.heex:33
 #: lib/easypodcasts_web/templates/layout/live.html.heex:105
 msgid "Status"
 msgstr "Estado"
@@ -306,7 +305,14 @@ msgid "Success!"
 msgstr "Éxito!"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/templates/layout/live.html.heex:38
+#: lib/easypodcasts_web/templates/layout/live.html.heex:42
 #: lib/easypodcasts_web/templates/layout/live.html.heex:117
 msgid "Contact"
 msgstr "Contacto"
+
+#, elixir-autogen, elixir-format
+#: lib/easypodcasts_web/templates/layout/live.html.heex:29
+msgid "%{visitors} visitor"
+msgid_plural "%{visitors} visitors"
+msgstr[0] "%{visitors} visitante"
+msgstr[1] "%{visitors} visitantes"

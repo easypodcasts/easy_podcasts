@@ -17,6 +17,7 @@ defmodule Easypodcasts.Application do
       {PhoenixProfiler, name: Easypodcasts.Profiler},
       # Start the Endpoint (http/https)
       EasypodcastsWeb.Endpoint,
+      EasypodcastsWeb.Presence,
       # Start a worker by calling: Easypodcasts.Worker.start_link(arg)
       # {Easypodcasts.Worker, arg}
       {Task.Supervisor, name: Easypodcasts.TaskSupervisor},
