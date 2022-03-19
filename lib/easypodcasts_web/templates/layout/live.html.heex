@@ -1,8 +1,9 @@
 <header class="body-font">
   <nav class="container flex justify-between items-center px-4 mx-auto h-16 rounded-md">
-    <div class="hidden w-1/3 md:flex">
+    <div class="flex md:w-1/3">
       <%= live_redirect to: Routes.channel_index_path(@socket, :index), class: "" do %>
-        <img class="h-10" src={Routes.static_path(@socket, "/images/easypodcasts.svg")} alt="Easy Podcasts" />
+        <img class="h-10 hidden md:flex" src={Routes.static_path(@socket, "/images/easypodcasts.svg")} alt="Easy Podcasts" />
+        <img class="h-8 md:hidden" src={Routes.static_path(@socket, "/images/easypodcasts-lite.svg")} alt="Easy Podcasts" />
       <% end %>
     </div>
     <div class="flex flex-1 justify-center md:w-1/3">
@@ -98,10 +99,6 @@
       |> JS.add_class("hidden", to: "#close-mobile-menu")
     }
   >
-    <%= live_redirect(gettext("Home"),
-      to: Routes.channel_index_path(@socket, :index),
-      class: "text-md py-3 mb-2 border-2 border-primary-light  rounded font-semibold text-center text-primary"
-    ) %>
     <%= live_redirect(gettext("Status"),
       to: Routes.server_index_path(@socket, :index),
       class: "text-md py-3 mb-2 border-2  border-primary-light rounded font-semibold text-center text-primary"
