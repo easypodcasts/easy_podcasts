@@ -9,16 +9,17 @@ defmodule EasypodcastsWeb.Locale.Plug do
 
     accepted_languages = Enum.filter(accepted_languages, &(&1 in known_locales))
 
-    case accepted_languages do
-      [locale | _] ->
-        Gettext.put_locale(EasypodcastsWeb.Gettext, locale)
+    locale =
+      case accepted_languages do
+        [locale | _] ->
+          Gettext.put_locale(EasypodcastsWeb.Gettext, locale)
+          locale
 
-        conn
-        |> put_session(:locale, locale)
+        _ ->
+          Gettext.get_locale()
+      end
 
-      _ ->
-        conn
-    end
+    put_session(conn, :locale, locale)
   end
 
   # Copied from
