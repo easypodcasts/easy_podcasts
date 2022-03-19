@@ -6,7 +6,7 @@
         <img class="h-8 md:hidden" src={Routes.static_path(@socket, "/images/easypodcasts-lite.svg")} alt="Easy Podcasts" />
       <% end %>
     </div>
-    <div class="flex flex-1 justify-center md:w-1/3">
+    <div class="flex flex-1 justify-center md:w-1/3 mx-2">
       <%= if @socket.view not in [
            EasypodcastsWeb.ServerLive.Index,
            EasypodcastsWeb.AboutLive.Index,
