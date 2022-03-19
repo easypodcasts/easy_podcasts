@@ -1,4 +1,4 @@
-defmodule EasypodcastsWeb.ChannelController do
+defmodule EasypodcastsWeb.FeedController do
   use EasypodcastsWeb, :controller
   alias Easypodcasts.{Channels, Episodes}
 

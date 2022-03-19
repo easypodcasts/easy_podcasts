@@ -33,10 +33,10 @@ defmodule EasypodcastsWeb.Router do
 
   scope "/feeds", EasypodcastsWeb do
     pipe_through :feed
-    get "/tag/:tag", ChannelController, :tag_feed
-    get "/channels", ChannelController, :list_feed
-    get "/counter", ChannelController, :counter
-    get "/:slug", ChannelController, :feed
+    get "/tag/:tag", FeedController, :tag_feed
+    get "/channels", FeedController, :list_feed
+    get "/counter", FeedController, :counter
+    get "/:slug", FeedController, :feed
   end
 
   # Enables LiveDashboard only for development

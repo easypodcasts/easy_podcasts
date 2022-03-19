@@ -1,4 +1,4 @@
-defmodule EasypodcastsWeb.ChannelView do
+defmodule EasypodcastsWeb.FeedView do
   use EasypodcastsWeb, :view
   alias Easypodcasts.Episodes.EpisodeAudio
   require EEx
