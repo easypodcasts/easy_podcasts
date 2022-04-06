@@ -179,9 +179,9 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
             <%= gettext("Process Episode") %>
           </button>
         <% end %>
-        <%= if @episode.retries >= 3 do %>
+        <%= if @episode.retries >= 3 and @episode.status != :done do %>
           <div class="flex items-center self-start">
-          <span class="mt-4 text-red-500"><%= gettext("This episode has failed processing")%></span>
+            <span class="mt-4 text-red-500"><%= gettext("This episode has failed processing") %></span>
             <a
               class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm rounded border-0 text-text-light bg-primary hover:bg-primary-dark"
               href={@episode.original_audio_url}
@@ -200,7 +200,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
                   d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                 />
               </svg>
-            <%= gettext("Original Audio") %>
+              <%= gettext("Original Audio") %>
             </a>
           </div>
         <% end %>
