@@ -77,7 +77,7 @@ Hooks.PlayerHook = {
   },
 
   destroyed() {
-    this.player.stop();
+    this.player.pause();
     clearInterval(this.progressTimer);
   },
 
