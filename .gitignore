@@ -23,9 +23,8 @@ erl_crash.dump
 easypodcasts-*.tar
 
 # Ignore assets that are produced by build tools.
-priv/static/assets/*
-!priv/static/assets/ogv
-priv/static/images/channels/
+/priv/static/assets/
+/priv/static/images/channels/
 
 /uploads/
 
