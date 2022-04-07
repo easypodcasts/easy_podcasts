@@ -31,16 +31,8 @@ Hooks.AutoFocus = {
 };
 
 Hooks.PlayerHook = {
-  async mounted() {
-    let web_player = this.getElement("audio");
-    if (this.isApple()) {
-      let ogv = await import("../vendor/ogv/ogv");
-      ogv.default.OGVLoader.base = "/assets/ogv";
-      this.player = new ogv.default.OGVPlayer();
-      this.player.src = web_player.src;
-    } else {
-      this.player = web_player;
-    }
+  mounted() {
+    this.player = this.getElement("audio");
     this.progressWrapper = this.getElement("#progress-wrapper");
     this.progress = this.getElement("#progress");
     this.loading = this.getElement("#loading");
@@ -112,18 +104,6 @@ Hooks.PlayerHook = {
 
   getElement(el) {
     return this.el.querySelector(el);
-  },
-
-  isApple() {
-    return [
-      "iPad Simulator",
-      "iPhone Simulator",
-      "iPod Simulator",
-      "iPad",
-      "iPhone",
-      "iPod",
-      "MacIntel",
-    ].includes(navigator.platform);
   },
 };
 
