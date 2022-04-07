@@ -6,12 +6,24 @@ defmodule EasypodcastsWeb.FeedView do
   EEx.function_from_file(:def, :feed, "lib/easypodcasts_web/templates/feed/feed.xml.eex", [
     :assigns
   ])
-  EEx.function_from_file(:def, :list_feed, "lib/easypodcasts_web/templates/feed/list_feed.xml.eex", [
-    :assigns
-  ])
-  EEx.function_from_file(:def, :tag_feed, "lib/easypodcasts_web/templates/feed/tag_feed.xml.eex", [
-    :assigns
-  ])
+
+  EEx.function_from_file(
+    :def,
+    :list_feed,
+    "lib/easypodcasts_web/templates/feed/list_feed.xml.eex",
+    [
+      :assigns
+    ]
+  )
+
+  EEx.function_from_file(
+    :def,
+    :tag_feed,
+    "lib/easypodcasts_web/templates/feed/tag_feed.xml.eex",
+    [
+      :assigns
+    ]
+  )
 
   def render("feed.xml", %{channel: channel}) do
     feed(channel)

@@ -2,8 +2,16 @@
   <nav class="container flex justify-between items-center px-4 mx-auto h-16 rounded-md">
     <div class="flex md:w-1/3">
       <%= live_redirect to: Routes.channel_index_path(@socket, :index), class: "" do %>
-        <img class="h-10 hidden md:flex" src={Routes.static_path(@socket, "/images/easypodcasts.svg")} alt="Easy Podcasts" />
-        <img class="h-6 md:hidden" src={Routes.static_path(@socket, "/images/easypodcasts-lite.svg")} alt="Easy Podcasts" />
+        <img
+          class="h-10 hidden md:flex"
+          src={Routes.static_path(@socket, "/images/easypodcasts.svg")}
+          alt="Easy Podcasts"
+        />
+        <img
+          class="h-6 md:hidden"
+          src={Routes.static_path(@socket, "/images/easypodcasts-lite.svg")}
+          alt="Easy Podcasts"
+        />
       <% end %>
     </div>
     <div class="flex flex-1 justify-center md:w-1/3 mx-1.5">
@@ -20,7 +28,9 @@
             name="search"
             class="py-1 px-3 leading-8 rounded border shadow-inner outline-none md:w-full hover:ring-1 focus:ring-2 bg-surface text-primary border-primary-light hover:ring-primary-light focus:ring-primary"
             placeholder={
-              if @socket.view == EasypodcastsWeb.ChannelLive.Index, do: gettext("Search Podcasts"), else: gettext("Search Episodes")
+              if @socket.view == EasypodcastsWeb.ChannelLive.Index,
+                do: gettext("Search Podcasts"),
+                else: gettext("Search Episodes")
             }
           />
         </form>
@@ -114,7 +124,7 @@
       href="https://t.me/soporte_easypodcasts"
       class="py-3 mb-2 font-semibold text-center rounded border-2 text-md border-primary-light text-primary"
     >
-        <%= gettext("Contact") %>
+      <%= gettext("Contact") %>
     </a>
     <button
       phx-click="show_modal"
