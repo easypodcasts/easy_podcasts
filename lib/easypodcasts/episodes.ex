@@ -11,6 +11,7 @@ defmodule Easypodcasts.Episodes do
   alias Easypodcasts.Helpers.{Utils, Search}
   alias Easypodcasts.Episodes.{Episode, EpisodeAudio}
   alias Easypodcasts.{Queue}
+  alias Easypodcasts.Workers
   alias Easypodcasts.Workers.Worker
 
   def list_episodes_guids(channel_id),
@@ -187,6 +188,10 @@ defmodule Easypodcasts.Episodes do
       episode
       |> Changeset.change(%{status: :done, processed_size: size, worker_id: worker_id})
       |> Repo.update()
+
+      worker_id
+      |> Workers.get_worker!()
+      |> Workers.update_worker(%{last_episode_processed_at: DateTime.now!("UTC")})
 
       DynamicSupervisor.terminate_child(WorkerSupervisor, pid)
       broadcast_episode_state_change(:episode_processed, episode.channel_id, episode.id)

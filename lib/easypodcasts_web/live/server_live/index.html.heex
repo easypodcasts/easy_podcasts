@@ -134,10 +134,31 @@
     <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-text-light bg-primary text-md">
       <%= gettext("Workers") %>
     </span>
-    <%= for worker <- @workers do %>
-      <p class="p-2">
-        <%= worker.name %> : <%= worker.episodes %>
-      </p>
-    <% end %>
+    <table>
+      <thead>
+        <tr>
+          <th>
+            <%= gettext("Name") %>
+          </th>
+
+          <th>
+            <%= gettext("Episodes") %>
+          </th>
+
+          <th>
+            <%= gettext("Last Processed At") %>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= for worker <- @workers do %>
+          <tr>
+            <td class="p-2"><%= worker.name %></td>
+            <td class="p-2"><%= worker.episodes %></td>
+            <td class="p-2"><%= worker.last_episode_processed_at %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
 </section>

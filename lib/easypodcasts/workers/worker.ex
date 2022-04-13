@@ -13,6 +13,7 @@ defmodule Easypodcasts.Workers.Worker do
     field :name, :string
     field :token, :string
     field :active, :boolean
+    field :last_episode_processed_at, :utc_datetime
     has_many :episodes, Easypodcasts.Episodes.Episode
 
     timestamps()

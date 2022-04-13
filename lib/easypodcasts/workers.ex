@@ -74,7 +74,7 @@ defmodule Easypodcasts.Workers do
   """
   def update_worker(%Worker{} = worker, attrs) do
     worker
-    |> Worker.changeset(attrs)
+    |> Changeset.change(attrs)
     |> Repo.update()
   end
 
