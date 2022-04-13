@@ -25,17 +25,14 @@ defmodule EasypodcastsWeb.FeedView do
     ]
   )
 
-  def render("feed.xml", %{channel: channel}) do
-    feed(channel)
-  end
-
-  def render("list_feed.xml", %{channel: channel}) do
-    list_feed(channel)
-  end
-
-  def render("tag_feed.xml", %{channel: channel}) do
-    tag_feed(channel)
-  end
+  EEx.function_from_file(
+    :def,
+    :opml,
+    "lib/easypodcasts_web/templates/feed/opml.xml.eex",
+    [
+      :assigns
+    ]
+  )
 
   defp clear_ampersand(nil), do: ""
   defp clear_ampersand(string), do: String.replace(string, "&", "&amp;")

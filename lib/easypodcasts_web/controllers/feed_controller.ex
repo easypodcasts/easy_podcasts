@@ -21,6 +21,10 @@ defmodule EasypodcastsWeb.FeedController do
     feed_response(conn, "tag_feed.xml", tag: tag, episodes: Episodes.list_episodes_for_tag(tag))
   end
 
+  def opml(conn, _params) do
+    feed_response(conn, "opml.xml", channels: Channels.list_channels())
+  end
+
   defp feed_response(conn, template, assigns) do
     conn
     |> put_resp_content_type("text/xml")
