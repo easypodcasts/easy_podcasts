@@ -2,7 +2,7 @@
     <body>
         <outline text="Subscriptions from Easypodcasts" title="Subscriptions from Easypodcasts">
           <%= for channel <- @channels do %>
-            <outline xmlUrl="<%= clear_ampersand(channel.link) %>" />
+            <outline title="<%= clear_ampersand(channel.title) %>" xmlUrl="<%= clear_ampersand(channel.link) %>" />
           <% end %>
         </outline>
     </body>
