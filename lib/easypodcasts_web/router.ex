@@ -34,6 +34,7 @@ defmodule EasypodcastsWeb.Router do
   scope "/feeds", EasypodcastsWeb do
     pipe_through :feed
     get "/counter", FeedController, :counter
+    get "/opml", FeedController, :opml
     get "/tag/:tag", FeedController, :tag_feed
     get "/channels", FeedController, :list_feed
     get "/:slug", FeedController, :feed
