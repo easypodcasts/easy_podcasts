@@ -189,9 +189,11 @@ defmodule Easypodcasts.Episodes do
       |> Changeset.change(%{status: :done, processed_size: size, worker_id: worker_id})
       |> Repo.update()
 
+      now = "Etc/UTC" |> DateTime.now!() |> DateTime.truncate(:second)
+
       worker_id
       |> Workers.get_worker!()
-      |> Workers.update_worker(%{last_episode_processed_at: DateTime.now!("UTC")})
+      |> Workers.update_worker(%{last_episode_processed_at: now})
 
       DynamicSupervisor.terminate_child(WorkerSupervisor, pid)
       broadcast_episode_state_change(:episode_processed, episode.channel_id, episode.id)
