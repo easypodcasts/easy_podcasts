@@ -17,8 +17,8 @@ defmodule Easypodcasts.Queue do
     GenServer.call(@name, {:in, episode})
   end
 
-  def out() do
-    GenServer.call(@name, :out)
+  def out(can_process_blocked) do
+    GenServer.call(@name, {:out, can_process_blocked})
   end
 
   # Internal Callbacks
@@ -40,7 +40,7 @@ defmodule Easypodcasts.Queue do
     {:reply, :ok, queue}
   end
 
-  def handle_call(:out, _from, queue) do
+  def handle_call({:out, true = _can_process_blocked}, _from, queue) do
     {episode, queue} =
       case :queue.out(queue) do
         {:empty, queue} -> {:empty, queue}
@@ -52,5 +52,28 @@ defmodule Easypodcasts.Queue do
     )
 
     {:reply, episode, queue}
+  end
+
+  def handle_call({:out, false = _can_process_blocked}, _from, queue) do
+    {episode, queue} = next_unblocked(queue, :queue.new())
+
+    Logger.info(
+      "#{@name} extracting episode #{if episode != :empty, do: episode.id, else: episode}"
+    )
+
+    {:reply, episode, queue}
+  end
+
+  defp next_unblocked(queue, blocked_episodes) do
+    case :queue.out(queue) do
+      {:empty, queue} ->
+        {:empty, :queue.join(blocked_episodes, queue)}
+
+      {{:value, %{channel: %{blocked: false}} = episode}, queue} ->
+        {episode, :queue.join(blocked_episodes, queue)}
+
+      {{:value, %{channel: %{blocked: true}} = episode}, queue} ->
+        next_unblocked(queue, :queue.in(episode, blocked_episodes))
+    end
   end
 end

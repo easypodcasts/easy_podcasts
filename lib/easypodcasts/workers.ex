@@ -109,6 +109,6 @@ defmodule Easypodcasts.Workers do
 
   def is_active(worker_id) do
     worker = get_worker!(worker_id)
-    worker.active
+    {worker.active, worker}
   end
 end
