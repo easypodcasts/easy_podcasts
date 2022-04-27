@@ -11,7 +11,7 @@ defmodule EasypodcastsWeb.ApiController do
     {status, msg} =
       case episode_id
            |> String.to_integer()
-           |> Episodes.converted(upload, conn.assigns.current_worker) do
+           |> Episodes.converted(upload, conn.assigns.current_worker.id) do
         :ok -> {:ok, "all good"}
         msg -> {:bad_request, msg}
       end
@@ -28,7 +28,7 @@ defmodule EasypodcastsWeb.ApiController do
         episode_id ->
           episode_id
           |> String.to_integer()
-          |> Episodes.cancel(conn.assigns.current_worker)
+          |> Episodes.cancel(conn.assigns.current_worker.id)
 
           {:ok, "episode cancelled"}
       end

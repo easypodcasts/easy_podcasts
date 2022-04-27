@@ -120,7 +120,14 @@ defmodule Easypodcasts.Episodes do
       ** (Ecto.NoResultsError)
 
   """
-  def get_episode!(id), do: Repo.get!(Episode, id)
+  def get_episode!(id) do
+    Repo.one(
+      from(e in Episode,
+        where: e.id == ^id,
+        preload: [:channel]
+      )
+    )
+  end
 
   def create_episodes(episodes), do: Repo.insert_all(Episode, episodes, returning: true)
 
@@ -158,15 +165,15 @@ defmodule Easypodcasts.Episodes do
     end
   end
 
-  def next_episode(worker_id) do
-    case Queue.out() do
+  def next_episode(worker) do
+    case Queue.out(worker.can_process_blocked) do
       :empty ->
         :noop
 
       episode ->
         DynamicSupervisor.start_child(
           WorkerSupervisor,
-          {Worker, {episode.id, worker_id}}
+          {Worker, {episode.id, worker.id}}
         )
 
         {:ok, episode} = update_episode(episode, %{status: :processing})

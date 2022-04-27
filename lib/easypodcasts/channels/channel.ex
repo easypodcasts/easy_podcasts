@@ -15,6 +15,7 @@ defmodule Easypodcasts.Channels.Channel do
     field :feed_data, :map
     field :lang, :string
     field :categories, {:array, :string}
+    field :blocked, :boolean
     has_many :episodes, Easypodcasts.Episodes.Episode
 
     timestamps()
