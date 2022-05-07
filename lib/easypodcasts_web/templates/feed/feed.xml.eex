@@ -29,7 +29,7 @@
     <%= @channel.feed_data["itunesExt"]["keywords"] %>
   </itunes:keywords>
   <itunes:owner>
-  <itunes:name><%= @channel.feed_data["itunesExt"]["owner"]["name"] %></itunes:name>
+  <itunes:name><%= clear_ampersand(@channel.feed_data["itunesExt"]["owner"]["name"]) %></itunes:name>
   <itunes:email><%= @channel.feed_data["itunesExt"]["owner"]["email"] %></itunes:email>
   </itunes:owner>
   <%= if @channel.feed_data["extensions"]["itunes"]["category"] do %>
