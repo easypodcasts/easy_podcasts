@@ -12,32 +12,32 @@ msgstr ""
 "Plural-Forms: nplurals=2\n"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/templates/layout/live.html.heex:23
+#: lib/easypodcasts_web/templates/layout/live.html.heex:33
 msgid "Search Episodes"
 msgstr "Buscar Episodios"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/templates/layout/live.html.heex:23
+#: lib/easypodcasts_web/templates/layout/live.html.heex:32
 msgid "Search Podcasts"
 msgstr "Buscar Podcasts"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/live/channel_live/index.html.heex:36
+#: lib/easypodcasts_web/live/channel_live/index.html.heex:34
 msgid "%{episodes} Episode"
 msgid_plural "%{episodes} Episodes"
 msgstr[0] "%{episodes} Episodio"
 msgstr[1] "%{episodes} Episodios"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/live/queue_component.ex:43
+#: lib/easypodcasts_web/live/queue_component.ex:44
 msgid "%{queue_length} episode in queue"
 msgid_plural "%{queue_length} episodes in queue"
 msgstr[0] "%{queue_length} episodio en cola"
 msgstr[1] "%{queue_length} episodios en cola"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/templates/layout/live.html.heex:37
-#: lib/easypodcasts_web/templates/layout/live.html.heex:109
+#: lib/easypodcasts_web/templates/layout/live.html.heex:47
+#: lib/easypodcasts_web/templates/layout/live.html.heex:119
 msgid "About"
 msgstr "Acerca de"
 
@@ -47,13 +47,13 @@ msgid "Add New Podcast"
 msgstr "Añadir Nuevo Podcast"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/templates/layout/live.html.heex:50
-#: lib/easypodcasts_web/templates/layout/live.html.heex:124
+#: lib/easypodcasts_web/templates/layout/live.html.heex:60
+#: lib/easypodcasts_web/templates/layout/live.html.heex:134
 msgid "Add Podcast"
 msgstr "Añadir Podcast"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/live/channel_live/show.ex:154
+#: lib/easypodcasts_web/live/channel_live/show.ex:152
 msgid "An episode from this podcast is being processed"
 msgstr "Un episodio de este podcast está siendo procesado"
 
@@ -68,7 +68,7 @@ msgid "Disk Capacity:"
 msgstr "Capacidad del disco:"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/live/channel_live/show.ex:92
+#: lib/easypodcasts_web/live/channel_live/show.ex:90
 #: lib/easypodcasts_web/live/episode_live/show.ex:225
 msgid "Do some stretching"
 msgstr "Ve a estirarte"
@@ -84,18 +84,18 @@ msgid "Downloads:"
 msgstr "Descargas:"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/templates/layout/live.html.heex:166
+#: lib/easypodcasts_web/templates/layout/live.html.heex:176
 msgid "Error!"
 msgstr "Error!"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/live/channel_live/show.ex:91
+#: lib/easypodcasts_web/live/channel_live/show.ex:89
 #: lib/easypodcasts_web/live/episode_live/show.ex:224
 msgid "Go grab a drink"
 msgstr "Ve a tomar agua"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/live/channel_live/index.ex:17
+#: lib/easypodcasts_web/live/channel_live/index.ex:16
 msgid "Home"
 msgstr "Inicio"
 
@@ -120,7 +120,7 @@ msgid "No episodes in queue"
 msgstr "No hay episodios en cola"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/live/channel_live/index.html.heex:45
+#: lib/easypodcasts_web/live/channel_live/index.html.heex:43
 msgid "No podcasts to show"
 msgstr "No hay podcasts que mostrar"
 
@@ -211,20 +211,20 @@ msgid "Saving..."
 msgstr "Guardando..."
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/live/channel_live/show.ex:90
+#: lib/easypodcasts_web/live/channel_live/show.ex:88
 #: lib/easypodcasts_web/live/episode_live/show.ex:223
 msgid "Sit and relax"
 msgstr "Siéntate y relájate"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/live/channel_live/show.ex:102
+#: lib/easypodcasts_web/live/channel_live/show.ex:100
 #: lib/easypodcasts_web/live/episode_live/show.ex:233
 msgid "Sorry. That episode can't be processed right now"
 msgstr "Lo sentimos. Ese episodio no puede ser procesado ahora mismo"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/templates/layout/live.html.heex:33
-#: lib/easypodcasts_web/templates/layout/live.html.heex:105
+#: lib/easypodcasts_web/templates/layout/live.html.heex:43
+#: lib/easypodcasts_web/templates/layout/live.html.heex:115
 msgid "Status"
 msgstr "Estado"
 
@@ -234,17 +234,17 @@ msgid "Storage"
 msgstr "Almacenamiento"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/live/channel_live/show.ex:55
+#: lib/easypodcasts_web/live/channel_live/show.ex:53
 msgid "Subscribe"
 msgstr "Subscribir"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/live/channel_live/show.ex:155
+#: lib/easypodcasts_web/live/channel_live/show.ex:153
 msgid "The episode '%{title}' is being processed"
 msgstr "El episodio '%{title}' está siendo procesado"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/live/channel_live/show.ex:180
+#: lib/easypodcasts_web/live/channel_live/show.ex:178
 msgid "The episode '%{title}' was processed successfully"
 msgstr "El episodio '%{title}' fue procesado con éxito"
 
@@ -254,7 +254,7 @@ msgid "The episode is being processed"
 msgstr "El episodio está siendo procesado"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/live/channel_live/show.ex:99
+#: lib/easypodcasts_web/live/channel_live/show.ex:97
 #: lib/easypodcasts_web/live/episode_live/show.ex:230
 msgid "The episode is in queue. %{msg}"
 msgstr "El episodio está en cola. %{msg}"
@@ -290,7 +290,7 @@ msgid "here"
 msgstr "aquí"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/templates/layout/live.html.heex:152
+#: lib/easypodcasts_web/templates/layout/live.html.heex:162
 msgid "Info"
 msgstr "Información"
 
@@ -300,19 +300,39 @@ msgid "This episode has failed processing"
 msgstr "Este episodio falló el procesamiento"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/templates/layout/live.html.heex:138
+#: lib/easypodcasts_web/templates/layout/live.html.heex:148
 msgid "Success!"
 msgstr "Éxito!"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/templates/layout/live.html.heex:42
-#: lib/easypodcasts_web/templates/layout/live.html.heex:117
+#: lib/easypodcasts_web/templates/layout/live.html.heex:52
+#: lib/easypodcasts_web/templates/layout/live.html.heex:127
 msgid "Contact"
 msgstr "Contacto"
 
 #, elixir-autogen, elixir-format
-#: lib/easypodcasts_web/templates/layout/live.html.heex:29
+#: lib/easypodcasts_web/templates/layout/live.html.heex:39
 msgid "%{visitors} visitor"
 msgid_plural "%{visitors} visitors"
 msgstr[0] "%{visitors} visitante"
 msgstr[1] "%{visitors} visitantes"
+
+#, elixir-autogen, elixir-format, fuzzy
+#: lib/easypodcasts_web/live/server_live/index.html.heex:145
+msgid "Episodes"
+msgstr "Total de Episodios:"
+
+#, elixir-autogen, elixir-format, fuzzy
+#: lib/easypodcasts_web/live/server_live/index.html.heex:149
+msgid "Last Processed At"
+msgstr "Últimos Episodios Procesados"
+
+#, elixir-autogen, elixir-format
+#: lib/easypodcasts_web/live/server_live/index.html.heex:141
+msgid "Name"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+#: lib/easypodcasts/channels.ex:158
+msgid "We can't process that podcast right now. Please create an issue with the feed url or visit our support group."
+msgstr "No podemos procesar ese podcast en estos momentos. Por favor, crea un issue o visita nuestro grupo de soporte."

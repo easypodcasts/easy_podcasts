@@ -4,6 +4,7 @@ defmodule Easypodcasts.Channels do
   """
 
   import Ecto.Query, warn: false
+  import EasypodcastsWeb.Gettext
   alias Ecto.Changeset
 
   alias Easypodcasts.Repo
@@ -154,7 +155,7 @@ defmodule Easypodcasts.Channels do
     else
       _error ->
         {:error, channel,
-         "We can't process that podcast right now. Please create an issue with the feed url."}
+         gettext("We can't process that podcast right now. Please create an issue with the feed url or visit our support group.")}
     end
   end
 end

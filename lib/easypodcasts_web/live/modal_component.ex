@@ -35,7 +35,10 @@ defmodule EasypodcastsWeb.ModalComponent do
         {:noreply, assign(socket, changeset: changeset)}
 
       {:error, msg} ->
-        {:noreply, socket |> assign(:show_modal, false) |> put_flash(:error, msg)}
+        {:noreply,
+         socket
+         |> put_flash(:error, msg)
+         |> push_redirect(to: socket.assigns.return_to)}
     end
   end
 
