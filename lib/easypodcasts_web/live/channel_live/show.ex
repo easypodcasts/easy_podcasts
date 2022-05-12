@@ -55,7 +55,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
           </button>
         <% end %>
         <p class="mt-2 title-font text-md dark:text-d-text-dark">
-          <%= sanitize(@channel.description, :basic_html) %>
+          <%= sanitize(@channel.description) %>
         </p>
         <div class="mt-2">
           <%= for category <- @channel.categories do %>
