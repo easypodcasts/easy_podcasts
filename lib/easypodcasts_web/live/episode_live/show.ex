@@ -63,9 +63,15 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
             <%= "#{gettext("Downloads:")} #{@episode.downloads}" %>
           </span>
         </div>
-        <p class={"dark:text-d-text-dark #{if not @full_description, do: "line-clamp-6"}"}>
-            <%= sanitize(@episode.description, :basic_html) |> raw %>
-        </p>
+        <%= if @full_description  do %>
+          <p class="dark:text-d-text-dark">
+            <%= sanitize(@episode.feed_data["content"] || @episode.description, :basic_html) |> raw %>
+          </p>
+        <% else %>
+          <p class="dark:text-d-text-dark line-clamp-6">
+            <%= sanitize(@episode.description) %>
+          </p>
+        <% end %>
         <%= if @episode.status == :done do %>
           <div class="flex items-center self-start">
             <a
