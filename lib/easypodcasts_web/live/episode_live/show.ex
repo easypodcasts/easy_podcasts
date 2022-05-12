@@ -64,7 +64,10 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
           </span>
         </div>
         <p class={"dark:text-d-text-dark #{if not @full_description, do: "line-clamp-6"}"}>
-          <%= sanitize(@episode.description, :basic_html) %>
+          <%= sanitize(@episode.description, :basic_html)
+          |> elem(1)
+          |> String.split("\n", trim: false)
+          |> Enum.intersperse(Phoenix.HTML.Tag.tag(:br)) %>
         </p>
         <%= if @episode.status == :done do %>
           <div class="flex items-center self-start">
