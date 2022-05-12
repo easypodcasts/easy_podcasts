@@ -1,5 +1,20 @@
 @tailwind base;
 
+@layer base {
+  .custom-styles a {
+    @apply text-primary;
+  }
+  .custom-styles p {
+    @apply mt-3;
+  }
+  .custom-styles ul {
+    @apply pl-3;
+  }
+  .custom-styles h2 {
+    @apply text-xl mt-2;
+  }
+}
+
 @tailwind components;
 
 @tailwind utilities;
