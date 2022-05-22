@@ -16,21 +16,21 @@
   <div class="flex flex-wrap pl-0">
     <%= if @total_entries > 0 do %>
       <%= for channel <- @channels do %>
-        <div class="p-4 w-full md:w-1/5">
-          <div class="flex flex-col w-auto h-full rounded-lg border border-primary">
+        <div class="p-2 md:p-4 w-full md:w-1/5">
+          <div class="flex md:flex-col w-auto h-full rounded-lg border border-primary">
             <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(channel)) do %>
               <img
-                class="mb-2 w-full rounded-t-lg xl:object-cover bg-placeholder-small"
+                class="md:mb-2 w-24 md:w-full rounded-l-lg md:rounded-t-lg xl:object-cover bg-placeholder-small"
                 src={ChannelImage.url({"thumb.webp", channel}, :thumb)}
                 alt={channel.title}
                 loading="lazy"
               />
             <% end %>
-            <p class="flex-1 px-2 mb-2 text-sm text-center line-clamp-5 dark:text-d-text-dark">
+            <p class="flex-1 px-1 md:px-2 md:mb-2 text-sm md:text-center line-clamp-5 dark:text-d-text-dark">
               <%= sanitize(channel.description) %>
             </p>
             <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(channel)) do %>
-              <span class="flex justify-center self-end pt-1 pb-2 w-full text-sm rounded-b-lg border-t text-text-light bg-primary border-primary hover:bg-primary-dark">
+              <span class="flex pr-1 pt-4 text-center justify-center self-end md:pt-1 md:pb-2 h-full text-wrap break-words w-16 md:w-full text-sm rounded-r-lg md:rounded-b-lg border-t text-text-light bg-primary border-primary hover:bg-primary-dark">
                 <%= ngettext("%{episodes} Episode", "%{episodes} Episodes", channel.episodes, episodes: channel.episodes) %>
               </span>
             <% end %>
