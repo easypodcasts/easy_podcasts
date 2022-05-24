@@ -1,6 +1,9 @@
 @tailwind base;
 
 @layer base {
+  .custom-styles {
+    @apply dark:text-d-text-dark;
+  }
   .custom-styles a {
     @apply text-primary;
   }
