@@ -1,17 +1,3 @@
-<%= if @total_pages > 1 and @total_entries > 0 do %>
-  <.pagination
-    socket={@socket}
-    page_number={@page_number}
-    total_pages={@total_pages}
-    page_range={@page_range}
-    is_top={true}
-    route={&Routes.channel_index_path/3}
-    ,
-    action={:index}
-    object_id={nil}
-    search={@search}
-  />
-<% end %>
 <section class="mx-auto body-font">
   <div class="flex flex-wrap pl-0">
     <%= if @total_entries > 0 do %>
@@ -52,7 +38,6 @@
     page_number={@page_number}
     total_pages={@total_pages}
     page_range={@page_range}
-    is_top={false}
     route={&Routes.channel_index_path/3}
     action={:index}
     object_id={nil}
