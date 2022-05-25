@@ -11,7 +11,6 @@ defmodule EasypodcastsWeb.PaginationComponent do
           page_number: page_number,
           total_pages: total_pages,
           page_range: page_range,
-          is_top: is_top,
           route: route,
           action: action,
           object_id: object_id,
@@ -21,7 +20,7 @@ defmodule EasypodcastsWeb.PaginationComponent do
     # TODO figure out how to use live_patch here but scrolling to the top
     # after changing page
     ~H"""
-    <nav class={nav_classes(is_top)}>
+    <nav class="flex justify-center w-full text-lg mt-5 mb-5">
       <%= if page_number != 1 do %>
         <%= live_redirect to: get_route(socket, route, action, object_id, search, page_number - 1),
                       class: "block ml-0 rounded-l-lg mr-1 leading-tight py-2 px-3 hover:bg-primary hover:text-text-light" do %>
@@ -83,14 +82,6 @@ defmodule EasypodcastsWeb.PaginationComponent do
     case object_id do
       nil -> route_func.(socket, action, params)
       _other -> route_func.(socket, action, object_id, params)
-    end
-  end
-
-  defp nav_classes(is_top) do
-    if is_top do
-      "flex justify-center w-full text-lg mt-5 md:hidden"
-    else
-      "flex justify-center w-full text-lg mt-5 mb-5"
     end
   end
 end
