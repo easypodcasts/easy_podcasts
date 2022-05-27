@@ -155,7 +155,9 @@ defmodule Easypodcasts.Channels do
     else
       _error ->
         {:error, channel,
-         gettext("We can't process that podcast right now. Please create an issue with the feed url or visit our support group.")}
+         gettext(
+           "We can't process that podcast right now. Please create an issue with the feed url or visit our support group."
+         )}
     end
   end
 end

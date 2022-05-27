@@ -72,7 +72,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
             <% end %>
           </div>
         <% else %>
-          <p class="dark:text-d-text-dark line-clamp-6">
+          <p class="line-clamp-6 dark:text-d-text-dark">
             <%= sanitize(@episode.description) %>
           </p>
         <% end %>

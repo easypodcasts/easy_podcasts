@@ -12,18 +12,36 @@
     <%= if assigns[:episode] do %>
       <meta property="og:title" content={"#{@channel.title}: #{@episode.title} - Easy Podcasts"} />
       <meta name="twitter:title" content={"#{@channel.title}: #{@episode.title} - Easy Podcasts"} />
-      <meta name="description" content={sanitize(String.slice(@episode.description || gettext("No description provided"), 0..150))} />
-      <meta property="og:description" content={sanitize(String.slice(@episode.description || gettext("No description provided"), 0..150))} />
-      <meta name="twitter:description" content={sanitize(String.slice(@episode.description || gettext("No description provided"), 0..150))} />
+      <meta
+        name="description"
+        content={sanitize(String.slice(@episode.description || gettext("No description provided"), 0..150))}
+      />
+      <meta
+        property="og:description"
+        content={sanitize(String.slice(@episode.description || gettext("No description provided"), 0..150))}
+      />
+      <meta
+        name="twitter:description"
+        content={sanitize(String.slice(@episode.description || gettext("No description provided"), 0..150))}
+      />
       <meta property="og:image" content={Easypodcasts.Channels.ChannelImage.url({"thumb.webp", @channel}, :thumb)} />
       <meta name="twitter:image" content={Easypodcasts.Channels.ChannelImage.url({"thumb.webp", @channel}, :thumb)} />
     <% else %>
       <%= if assigns[:channel] do %>
         <meta property="og:title" content={"#{@channel.title} - Easy Podcasts"} />
         <meta name="twitter:title" content={"#{@channel.title} - Easy Podcasts"} />
-        <meta name="description" content={sanitize(String.slice(@channel.description || gettext("No description provided"), 0..150))} />
-        <meta property="og:description" content={sanitize(String.slice(@channel.description || gettext("No description provided"), 0..150))} />
-        <meta name="twitter:description" content={sanitize(String.slice(@channel.description || gettext("No description provided"), 0..150))} />
+        <meta
+          name="description"
+          content={sanitize(String.slice(@channel.description || gettext("No description provided"), 0..150))}
+        />
+        <meta
+          property="og:description"
+          content={sanitize(String.slice(@channel.description || gettext("No description provided"), 0..150))}
+        />
+        <meta
+          name="twitter:description"
+          content={sanitize(String.slice(@channel.description || gettext("No description provided"), 0..150))}
+        />
         <meta property="og:image" content={Easypodcasts.Channels.ChannelImage.url({"thumb.webp", @channel}, :thumb)} />
         <meta name="twitter:image" content={Easypodcasts.Channels.ChannelImage.url({"thumb.webp", @channel}, :thumb)} />
       <% else %>
@@ -58,7 +76,7 @@
     <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}>
     </script>
   </head>
-  <body class="bg-surface dark:bg-d-surface font-sans">
+  <body class="font-sans bg-surface dark:bg-d-surface">
     <%= @inner_content %>
   </body>
 </html>
