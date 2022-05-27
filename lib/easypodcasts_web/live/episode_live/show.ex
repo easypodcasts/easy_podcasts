@@ -28,6 +28,20 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
     {:ok, socket}
   end
 
+  @impl true
+  def render(assigns) do
+    ~H"""
+    <div class="flex flex-col p-4 xl:flex-row">
+      <EasypodcastsWeb.ChannelLive.Show.channel_card channel={@channel} socket={@socket} />
+      <section class="mt-5 xl:mt-0 xl:w-1/2 body-font">
+        <div class="divide-y-2 divide-primary/20">
+          <.episode_card episode={@episode} socket={@socket} channel={@channel} full_description={true} />
+        </div>
+      </section>
+    </div>
+    """
+  end
+
   def episode_card(assigns) do
     ~H"""
     <div class="flex flex-wrap mb-4 md:flex-nowrap xl:py-8 xl:mb-0">
