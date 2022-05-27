@@ -10,7 +10,7 @@ module.exports = {
         primary: "#0891B2",
         "primary-dark": "#155E75",
         "primary-light": "#06B6D4",
-        surface: "#E5E7EB",
+        surface: "#f1f5f9",
         "text-light": "#E5E7EB",
         "text-dark": "#111827",
         disabled: "#D1D5DB",
