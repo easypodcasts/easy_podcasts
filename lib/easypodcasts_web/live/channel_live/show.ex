@@ -32,11 +32,10 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
     {:noreply, assign(socket, list_episodes_for(socket.assigns.channel.id, params))}
   end
 
-
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="flex flex-col p-4 pt-5 xl:flex-row">
+    <div class="flex flex-col p-4 pt-5 xl:flex-row divide-y-2 divide-primary/20">
       <.channel_card channel={@channel} socket={@socket} />
       <section class="mt-5 xl:mt-0 xl:w-1/2 body-font">
         <div class="divide-y-2 divide-primary/20">
@@ -69,43 +68,48 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   def channel_card(assigns) do
     ~H"""
     <section class="flex relative top-2 flex-col items-center self-center w-full xl:sticky xl:self-start xl:w-1/2 body-font">
-      <div class="flex flex-col self-center pb-2 h-auto md:border-0 xl:w-2/3">
-        <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(@channel)) do %>
+      <div class="flex flex-col self-center pb-2 h-auto xl:w-2/3">
+        <div class="flex md:flex-col">
           <img
             alt={@channel.title}
-            class="object-cover roundedbig bg-placeholder-big h-[400px] rounded-lg"
+            class="bg-placeholder-big h-32 w-auto md:h-[400px] md:w-auto md:mb-2 mr-2 md:mr-0 rounded-lg grow-1"
             src={ChannelImage.url({"original.webp", @channel}, :original)}
           />
-        <% end %>
-        <p class="order-1 mt-2 md:order-none title-font text-md dark:text-d-text-dark">
-          <%= sanitize(@channel.description) %>
-        </p>
-        <div class="flex flex-col">
-          <%= link to: Routes.feed_path(@socket, :feed, Utils.slugify(@channel)),
-             class: "self-center xl:self-start" do %>
-            <button class="flex justify-between items-center py-2 px-2 mt-4 text-lg font-semibold rounded xl:self-start text-text-light bg-primary hover:bg-primary-dark">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 5c7.18 0 13 5.82 13 13M6 11a7 7 0 017 7m-6 0a1 1 0 11-2 0 1 1 0 012 0z"
-                />
-              </svg>
-              <span class="ml-1">
-                <%= gettext("Subscribe") %>
-              </span>
-            </button>
-          <% end %>
-          <div class="mt-2">
-            <%= for category <- @channel.categories do %>
-              <%= live_redirect("##{category}",
-                to: Routes.channel_index_path(@socket, :index, search: "##{category}"),
-                class: "text-primary"
-              ) %>
-            <% end %>
+          <div class="flex flex-col">
+            <%= live_redirect(@channel.title,
+              to: Routes.channel_show_path(@socket, :show, Utils.slugify(@channel)),
+              class: "p-1 md:p-0 text-primary text-xl"
+            ) %>
+            <div class="mt-2">
+              <%= for category <- @channel.categories do %>
+                <%= live_redirect("##{category}",
+                  to: Routes.channel_index_path(@socket, :index, search: "##{category}"),
+                  class: "text-primary"
+                ) %>
+              <% end %>
+            </div>
           </div>
         </div>
+
+        <p class="mt-2 title-font text-md dark:text-d-text-dark">
+          <%= sanitize(@channel.description) %>
+        </p>
+        <%= link to: Routes.feed_path(@socket, :feed, Utils.slugify(@channel)),
+             class: "self-start" do %>
+          <button class="flex justify-between items-center py-1 px-2 mt-4 text-lg font-semibold rounded xl:self-start text-text-light bg-primary hover:bg-primary-dark">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 5c7.18 0 13 5.82 13 13M6 11a7 7 0 017 7m-6 0a1 1 0 11-2 0 1 1 0 012 0z"
+              />
+            </svg>
+            <span class="ml-1">
+              <%= gettext("Subscribe") %>
+            </span>
+          </button>
+        <% end %>
       </div>
     </section>
     """
