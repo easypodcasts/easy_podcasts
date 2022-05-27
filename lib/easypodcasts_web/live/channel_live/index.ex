@@ -10,6 +10,14 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   import EasypodcastsWeb.PaginationComponent
 
   @impl true
+  def handle_params(params, _url, socket) do
+    {:noreply,
+     socket
+     |> assign(:page_title, gettext("Home"))
+     |> assign(list_channels(params))}
+  end
+
+  @impl true
   def render(assigns) do
     ~H"""
     <section class="mx-auto body-font">
@@ -59,14 +67,6 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
       />
     <% end %>
     """
-  end
-
-  @impl true
-  def handle_params(params, _url, socket) do
-    {:noreply,
-     socket
-     |> assign(:page_title, gettext("Home"))
-     |> assign(list_channels(params))}
   end
 
   @impl true
