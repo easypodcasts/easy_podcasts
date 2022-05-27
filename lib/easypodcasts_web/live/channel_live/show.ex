@@ -27,6 +27,39 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
     {:ok, socket}
   end
 
+  @impl true
+  def render(assigns) do
+    ~H"""
+    <div class="flex flex-col p-4 pt-5 xl:flex-row">
+      <.channel_card channel={@channel} socket={@socket} />
+      <section class="mt-5 xl:mt-0 xl:w-1/2 body-font">
+        <div class="divide-y-2 divide-primary/20">
+          <%= for episode_id <- @episodes_index do %>
+            <EasypodcastsWeb.EpisodeLive.Show.episode_card
+              episode={Map.get(@episodes_map, episode_id)}
+              socket={@socket}
+              channel={@channel}
+              full_description={false}
+            />
+          <% end %>
+        </div>
+      </section>
+    </div>
+    <%= if @total_pages > 1 and @total_entries > 0 do %>
+      <.pagination
+        socket={@socket}
+        page_number={@page_number}
+        total_pages={@total_pages}
+        page_range={@page_range}
+        route={&Routes.channel_show_path/4}
+        action={:show}
+        object_id={Utils.slugify(@channel)}
+        search={@search}
+      />
+    <% end %>
+    """
+  end
+
   def channel_card(assigns) do
     ~H"""
     <section class="flex relative top-2 flex-col items-center self-center w-full xl:sticky xl:self-start xl:w-1/2 body-font">
