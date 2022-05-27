@@ -28,6 +28,12 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   end
 
   @impl true
+  def handle_params(params, _url, socket) do
+    {:noreply, assign(socket, list_episodes_for(socket.assigns.channel.id, params))}
+  end
+
+
+  @impl true
   def render(assigns) do
     ~H"""
     <div class="flex flex-col p-4 pt-5 xl:flex-row">
@@ -103,11 +109,6 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
       </div>
     </section>
     """
-  end
-
-  @impl true
-  def handle_params(params, _url, socket) do
-    {:noreply, assign(socket, list_episodes_for(socket.assigns.channel.id, params))}
   end
 
   @impl true
