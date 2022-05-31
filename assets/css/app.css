@@ -8,7 +8,7 @@
     @apply text-primary;
   }
   .custom-styles p {
-    @apply mt-3;
+    @apply text-sm md:text-base mt-3;
   }
   .custom-styles ul {
     @apply pl-3;

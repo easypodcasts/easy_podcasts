@@ -25,7 +25,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
         <%= if @total_entries > 0 do %>
           <%= for channel <- @channels do %>
             <div class="p-2 w-full md:p-4 md:w-1/5">
-              <div class="flex w-auto h-full rounded-lg border md:flex-col border-primary">
+              <div class="flex w-auto h-full rounded-lg md:flex-col shadow">
                 <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(channel)) do %>
                   <img
                     class="w-24 rounded-l-lg md:mb-2 md:w-full md:rounded-t-lg xl:object-cover bg-placeholder-small"
@@ -38,7 +38,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
                   <%= sanitize(channel.description) %>
                 </p>
                 <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(channel)) do %>
-                  <span class="flex justify-center self-end pt-4 pr-1 w-16 h-full text-sm text-center break-words rounded-r-lg border-t md:pt-1 md:pb-2 md:w-full md:rounded-b-lg text-wrap text-text-light bg-primary border-primary hover:bg-primary-dark">
+                  <span class="flex justify-center self-end pt-4 pr-1 w-16 h-full text-sm text-center break-words rounded-r-lg md:rounded-t-none border-t md:pt-1 md:pb-2 md:w-full md:rounded-b-lg text-wrap text-text-light bg-primary border-primary hover:bg-primary-dark">
                     <%= ngettext("%{episodes} Episode", "%{episodes} Episodes", channel.episodes, episodes: channel.episodes) %>
                   </span>
                 <% end %>
