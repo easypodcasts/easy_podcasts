@@ -16,27 +16,36 @@ defmodule EasypodcastsWeb.PlayerLive do
 
   @impl true
   def handle_event("close", _, socket) do
-    {:noreply, socket |> assign(:show, false) |> assign(:episode, nil) |> assign(:channel, nil)}
+    socket =
+      socket
+      |> assign(:show, false)
+      |> assign(:episode, nil)
+      |> assign(:channel, nil)
+      |> push_event("cleanup", %{})
+
+    {:noreply, socket}
   end
 
-  def handle_event("play", %{"episode" => episode_id}, socket) do
+  def handle_event("play", %{"episode" => episode_id} = params, socket) do
     episode = Episodes.get_episode!(episode_id)
     channel = Channels.get_channel!(episode.channel_id)
 
-    {:noreply,
-     socket |> assign(:show, true) |> assign(:episode, episode) |> assign(:channel, channel)}
+    socket =
+      socket
+      |> assign(:show, true)
+      |> assign(:episode, episode)
+      |> assign(:channel, channel)
+      |> push_event("play", %{current_time: params["current_time"], episode: episode_id})
+
+    {:noreply, socket}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
-    <div>
+    <div id="player-element" phx-hook="PlayerHook">
       <%= if @show do %>
-        <section
-          id="player-element"
-          class="flex fixed right-0 bottom-0 flex-col py-2 px-4 w-full border shadow-2xl xl:right-5 xl:bottom-5 xl:py-4 xl:w-1/3 xl:rounded-xl border-primary bg-surface dark:bg-d-surface"
-          phx-hook="PlayerHook"
-        >
+        <section class="flex fixed right-0 bottom-0 flex-col py-2 px-4 w-full shadow-2xl dark:shadow-gray-400 xl:right-5 xl:bottom-5 xl:py-4 xl:w-1/3 xl:rounded-xl bg-surface dark:bg-d-surface">
           <audio src={EpisodeAudio.url({"episode.opus", @episode})}></audio>
           <div class="flex mb-2">
             <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(@channel)) do %>
