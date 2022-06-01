@@ -62,6 +62,7 @@ Hooks.PlayerHook = {
       this.pause();
     } else {
       this.player.onloadeddata = (event) => {
+        this.saveProgress();
         this.play();
       };
     }
