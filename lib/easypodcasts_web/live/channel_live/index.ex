@@ -25,7 +25,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
         <%= if @total_entries > 0 do %>
           <%= for channel <- @channels do %>
             <div class="p-2 w-full md:p-4 md:w-1/5">
-              <div class="flex w-auto h-full rounded-lg md:flex-col shadow">
+              <div class="flex w-auto h-full rounded-lg md:flex-col shadow dark:shadow-gray-400">
                 <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(channel)) do %>
                   <img
                     class="w-24 rounded-l-lg md:mb-2 md:w-full md:rounded-t-lg xl:object-cover bg-placeholder-small"
