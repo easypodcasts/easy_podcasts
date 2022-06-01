@@ -55,8 +55,10 @@ Hooks.PlayerHook = {
     this.currentTime = this.getElement("#current-time");
 
     if (current_time) {
+      this.player.onloadeddata = (event) => {
+        this.updateProgress();
+      };
       this.loading.classList.add("hidden");
-      // TODO set progress
       this.pause();
     } else {
       this.player.onloadeddata = (event) => {
