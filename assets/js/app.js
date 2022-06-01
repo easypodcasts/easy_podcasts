@@ -32,7 +32,21 @@ Hooks.AutoFocus = {
 
 Hooks.PlayerHook = {
   mounted() {
+    this.handleEvent("play", ({ current_time, episode }) =>
+      this.setup(current_time, episode)
+    );
+    this.handleEvent("cleanup", () => this.cleanup());
+
+    let player_state = JSON.parse(localStorage.getItem("player_state"));
+    if (player_state) {
+      this.pushEvent("play", player_state);
+    }
+  },
+
+  setup(current_time, episode) {
+    this.episode = episode;
     this.player = this.getElement("audio");
+    this.player.currentTime = current_time || 0;
     this.progressWrapper = this.getElement("#progress-wrapper");
     this.progress = this.getElement("#progress");
     this.loading = this.getElement("#loading");
@@ -40,9 +54,15 @@ Hooks.PlayerHook = {
     this.pauseButton = this.getElement("#pause");
     this.currentTime = this.getElement("#current-time");
 
-    this.player.onloadeddata = (event) => {
-      this.play();
-    };
+    if (current_time) {
+      this.loading.classList.add("hidden");
+      // TODO set progress
+      this.pause();
+    } else {
+      this.player.onloadeddata = (event) => {
+        this.play();
+      };
+    }
 
     this.player.onended = (event) => {
       this.playButton.classList.remove("hidden");
@@ -55,6 +75,7 @@ Hooks.PlayerHook = {
 
     this.pauseButton.onclick = () => {
       clearInterval(this.progressTimer);
+      clearInterval(this.saveTimer);
       this.pause();
     };
 
@@ -65,12 +86,12 @@ Hooks.PlayerHook = {
         (x * this.player.duration) / this.progressWrapper.offsetWidth;
       this.player.currentTime = clickedValue;
       this.updateProgress();
+      this.saveProgress();
     };
   },
 
   destroyed() {
-    this.player.pause();
-    clearInterval(this.progressTimer);
+    this.cleanup();
   },
 
   play() {
@@ -79,12 +100,14 @@ Hooks.PlayerHook = {
     this.playButton.classList.add("hidden");
 
     this.progressTimer = setInterval(() => this.updateProgress(), 500);
+    this.saveTimer = setInterval(() => this.saveProgress(), 5000);
     this.player.play();
   },
 
   pause() {
     this.pauseButton.classList.add("hidden");
     this.playButton.classList.remove("hidden");
+    this.saveProgress();
     this.player.pause();
   },
 
@@ -96,6 +119,21 @@ Hooks.PlayerHook = {
       (this.player.currentTime / this.player.duration) * 100
     }%`;
     this.currentTime.innerText = this.formatTime(this.player.currentTime);
+  },
+
+  saveProgress() {
+    let player_state = {
+      episode: this.episode,
+      current_time: this.player.currentTime,
+    };
+    localStorage.setItem("player_state", JSON.stringify(player_state));
+  },
+
+  cleanup() {
+    this.player.pause();
+    clearInterval(this.progressTimer);
+    clearInterval(this.saveTimer);
+    localStorage.removeItem("player_state");
   },
 
   formatTime(seconds) {
