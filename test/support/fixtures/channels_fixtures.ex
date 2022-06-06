@@ -17,4 +17,19 @@ defmodule Easypodcasts.ChannelsFixtures do
 
     channel
   end
+
+  @doc """
+  Generate a denylist.
+  """
+  def denylist_fixture(attrs \\ %{}) do
+    {:ok, denylist} =
+      attrs
+      |> Enum.into(%{
+        link: "some link",
+        title: "some title"
+      })
+      |> Easypodcasts.Channels.create_denylist()
+
+    denylist
+  end
 end
