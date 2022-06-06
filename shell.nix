@@ -1,10 +1,18 @@
 { pkgs ? import <nixpkgs> { } }:
 let
+  feed-parser-repo = pkgs.fetchFromGitHub {
+    owner = "easypodcasts";
+    repo = "go-feed-parser";
+    rev = "78877f3e16022a47f57c8fe9f37b9abeb2053418";
+    sha256 = "USHbk5zJycy3oDmUsPjQQlWrz0yzBOdzyOKH9Rkclc8=";
+  };
+  feed-parser-pkg = pkgs.callPackage "${feed-parser-repo}" { };
   basePackages = with pkgs; [
     gnumake
     gcc
     readline
     openssl
+    feed-parser-pkg
     zlib
     libxml2
     curl
