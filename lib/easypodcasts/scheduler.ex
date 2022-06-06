@@ -16,6 +16,7 @@ defmodule Easypodcasts.Scheduler do
   def init(state) do
     schedule_feed_update()
     schedule_disk_maintenance()
+    schedule_reset_attempts()
 
     {:ok, state}
   end
@@ -34,6 +35,19 @@ defmodule Easypodcasts.Scheduler do
     {:noreply, state}
   end
 
+  def handle_info(:reset_attempts, state) do
+    Logger.info("#{@name} Scheduled Task: Reset Attempts")
+
+    "America/Havana"
+    |> DateTime.now!()
+    |> DateTime.add(2 * 3600, :second)
+    |> Episodes.list_episodes_updated_before()
+    |> Easypodcasts.Repo.update_all(set: [retries: 0])
+
+    schedule_reset_attempts()
+    {:noreply, state}
+  end
+
   defp schedule_feed_update() do
     if Mix.env() == :prod do
       Process.send_after(self(), :feed_update, :timer.hours(2))
@@ -43,6 +57,12 @@ defmodule Easypodcasts.Scheduler do
   defp schedule_disk_maintenance() do
     if Mix.env() == :prod do
       Process.send_after(self(), :disk_maintenance, :timer.hours(1))
+    end
+  end
+
+  defp schedule_reset_attempts() do
+    if Mix.env() == :prod do
+      Process.send_after(self(), :reset_attempts, :timer.hours(2))
     end
   end
 
