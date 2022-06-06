@@ -5,6 +5,8 @@ defmodule Easypodcasts.Channels.Channel do
   use Ecto.Schema
   import Ecto.Changeset
   alias Easypodcasts.Helpers.Feed
+  alias Easypodcasts.Channels
+  import EasypodcastsWeb.Gettext
 
   schema "channels" do
     field :author, :string
@@ -28,6 +30,25 @@ defmodule Easypodcasts.Channels.Channel do
     |> validate_required([:link])
     |> unique_constraint(:link, message: "We have that channel already")
     |> append_feed_data(:link)
+    |> validate_denied
+  end
+
+  defp validate_denied(changeset) do
+    title = get_field(changeset, :title)
+    link = get_field(changeset, :link)
+
+    with false <- Channels.denied?(title, link) do
+      changeset
+    else
+      _ ->
+        add_error(
+          changeset,
+          :link,
+          gettext(
+            "We can't process that podcast right now. Please create an issue with the feed url or visit our support group."
+          )
+        )
+    end
   end
 
   defp append_feed_data(changeset, field, _options \\ []) do

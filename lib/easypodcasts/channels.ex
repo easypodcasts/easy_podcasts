@@ -160,4 +160,28 @@ defmodule Easypodcasts.Channels do
          )}
     end
   end
+
+  alias Easypodcasts.Channels.Denylist
+
+  def create_denylist(attrs \\ %{}) do
+    %Denylist{}
+    |> Denylist.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def denied?(nil, nil) do
+    false
+  end
+
+  def denied?(nil, link) do
+    Repo.exists?(from d in Denylist, where: d.link == ^link)
+  end
+
+  def denied?(title, nil) do
+    Repo.exists?(from d in Denylist, where: d.title == ^title)
+  end
+
+  def denied?(title, link) do
+    Repo.exists?(from d in Denylist, where: d.title == ^title or d.link == ^link)
+  end
 end
