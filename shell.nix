@@ -1,7 +1,5 @@
 { pkgs ? import <nixpkgs> { } }:
 let
-  unstable = import (builtins.fetchTarball
-    "https://github.com/nixos/nixpkgs/tarball/nixpkgs-unstable") { };
   basePackages = with pkgs; [
     gnumake
     gcc
@@ -11,10 +9,10 @@ let
     libxml2
     curl
     libiconv
-    unstable.elixir
-    unstable.elixir_ls
+    elixir
+    elixir_ls
     glibcLocales
-    unstable.nodejs
+    nodejs
     yarn
     postgresql
     inotify-tools
