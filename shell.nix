@@ -38,14 +38,15 @@ let
     export PATH=$HEX_HOME/bin:$PATH
     export LANG=en_US.UTF-8
     export ERL_AFLAGS="-kernel shell_history enabled"
+    export FEEDPARSER_BIN=${feed-parser-pkg}/bin/go-feed-parser
     if [ ! -d $MIX_HOME ]; then
         echo "Install hex and rebar..."
-        mix local.hex --force
-        mix local.rebar --force
+        mix local.hex --force || true
+        mix local.rebar --force || true
     fi
     if [ ! -d $HEX_HOME ]; then
         echo "Getting dependencies"
-        mix deps.get
+        mix deps.get || true
     fi
     echo 'Setting database'
     export PGDATA=$PWD/postgres_data
@@ -64,6 +65,8 @@ let
     pg_ctl start -l $LOG_PATH -o "-c listen_addresses= -c unix_socket_directories=$PGSOCKET"
     createuser -d -h $PGSOCKET postgres
     psql -h $PGSOCKET -c "ALTER USER postgres PASSWORD 'postgres';"
+    echo 'Run migrations'
+    mix ecto.setup || true
     function end {
           echo "Shutting down the database..."
           pg_ctl stop
