@@ -17,6 +17,25 @@ defmodule Easypodcasts do
     channels = Repo.one(from(c in Channel, select: count(c)))
     episodes = Repo.one(from(e in Episode, select: count(e)))
 
+    latest_episodes =
+      Repo.all(
+        from(e in Episode,
+          preload: [:channel],
+          order_by: [{:desc, e.publication_date}],
+          limit: 10
+        )
+      )
+
+    latest_processed_episodes =
+      Repo.all(
+        from(e in Episode,
+          where: e.status == :done,
+          preload: [:channel],
+          order_by: [{:desc, e.updated_at}],
+          limit: 10
+        )
+      )
+
     size_stats =
       Repo.one(
         from(e in Episode,
@@ -38,6 +57,6 @@ defmodule Easypodcasts do
         )
       )
 
-    {channels, episodes, size_stats, workers}
+    {channels, episodes, size_stats, latest_episodes, latest_processed_episodes, workers}
   end
 end

@@ -100,6 +100,50 @@ defmodule EasypodcastsWeb.ServerLive.Index do
           </span>
         <% end %>
       </div>
+      <div class="flex-col mb-6 w-full rounded-lg border">
+        <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-text-light bg-primary text-md">
+          <%= gettext("Latest Episodes") %>
+        </span>
+        <ol class="px-7 list-decimal">
+          <%= for episode <- @latest_episodes do %>
+            <li class="text-primary">
+              <%= live_redirect(episode.title,
+                to:
+                  Routes.episode_show_path(
+                    @socket,
+                    :show,
+                    Utils.slugify(episode.channel),
+                    Utils.slugify(episode)
+                  )
+              ) %> ( <%= live_redirect(episode.channel.title,
+                to: Routes.channel_show_path(@socket, :show, Utils.slugify(episode.channel))
+              ) %> )
+            </li>
+          <% end %>
+        </ol>
+      </div>
+      <div class="flex-col mb-6 w-full rounded-lg border">
+        <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-text-light bg-primary text-md">
+          <%= gettext("Latest Processed") %>
+        </span>
+        <ol class="px-7 list-decimal">
+          <%= for episode <- @latest_processed_episodes do %>
+            <li class="text-primary">
+              <%= live_redirect(episode.title,
+                to:
+                  Routes.episode_show_path(
+                    @socket,
+                    :show,
+                    Utils.slugify(episode.channel),
+                    Utils.slugify(episode)
+                  )
+              ) %> ( <%= live_redirect(episode.channel.title,
+                to: Routes.channel_show_path(@socket, :show, Utils.slugify(episode.channel))
+              ) %> )
+            </li>
+          <% end %>
+        </ol>
+      </div>
       <div class="flex">
         <div class="flex-col mb-6 w-1/2 rounded-lg border">
           <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-text-light bg-primary text-md">
@@ -172,7 +216,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
   end
 
   defp get_dynamic_assigns(queue_state) do
-    {channels, episodes, size, workers} =
+    {channels, episodes, size, latest_episodes, latest_processed_episodes, workers} =
       Easypodcasts.get_channels_stats()
 
     [
@@ -180,6 +224,8 @@ defmodule EasypodcastsWeb.ServerLive.Index do
       channels: channels,
       episodes: episodes,
       size: size,
+      latest_episodes: latest_episodes,
+      latest_processed_episodes: latest_processed_episodes,
       workers: workers
     ]
   end
