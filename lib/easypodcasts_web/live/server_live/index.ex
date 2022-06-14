@@ -88,8 +88,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
                   <% end %>
                   <%= episode.title %>
                 <% end %>
-                (
-                <%= live_redirect(episode.channel.title,
+                ( <%= live_redirect(episode.channel.title,
                   to: Routes.channel_show_path(@socket, :show, Utils.slugify(episode.channel))
                 ) %> )
               </li>
@@ -116,8 +115,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
                     Utils.slugify(episode.channel),
                     Utils.slugify(episode)
                   )
-              ) %> (
-              <%= live_redirect(episode.channel.title,
+              ) %> ( <%= live_redirect(episode.channel.title,
                 to: Routes.channel_show_path(@socket, :show, Utils.slugify(episode.channel))
               ) %> )
             </li>
@@ -139,8 +137,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
                     Utils.slugify(episode.channel),
                     Utils.slugify(episode)
                   )
-              ) %> (
-              <%= live_redirect(episode.channel.title,
+              ) %> ( <%= live_redirect(episode.channel.title,
                 to: Routes.channel_show_path(@socket, :show, Utils.slugify(episode.channel))
               ) %> )
             </li>

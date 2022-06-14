@@ -35,7 +35,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="flex flex-col p-4 pt-5 xl:flex-row divide-y-2 divide-primary/20">
+    <div class="flex flex-col p-4 pt-5 divide-y-2 xl:flex-row divide-primary/20">
       <.channel_card channel={@channel} socket={@socket} />
       <section class="mt-5 xl:mt-0 xl:w-1/2 body-font">
         <div class="divide-y-2 divide-primary/20">
@@ -72,13 +72,13 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
         <div class="flex md:flex-col">
           <img
             alt={@channel.title}
-            class="bg-placeholder-big h-32 w-auto md:h-[400px] md:w-auto md:mb-2 mr-2 md:mr-0 rounded-lg grow-1"
+            class="mr-2 w-auto h-32 rounded-lg md:mr-0 md:mb-2 md:w-auto bg-placeholder-big grow-1 md:h-[400px]"
             src={ChannelImage.url({"original.webp", @channel}, :original)}
           />
           <div class="flex flex-col">
             <%= live_redirect(@channel.title,
               to: Routes.channel_show_path(@socket, :show, Utils.slugify(@channel)),
-              class: "p-1 md:p-0 text-primary text-xl"
+              class: "p-1 text-xl md:p-0 text-primary"
             ) %>
             <div class="mt-2">
               <%= for category <- @channel.categories do %>

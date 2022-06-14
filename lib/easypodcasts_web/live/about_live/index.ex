@@ -43,8 +43,8 @@ defmodule EasypodcastsWeb.AboutLive.Index do
           <span class="cursor-pointer" phx-click="show_modal">
             añadir
           </span>
-          el podcast que quieres escuchar utilizando el enlace a su <em>feed</em> o seleccionar uno de los
-          <%= live_redirect("podcasts existentes",
+          el podcast que quieres escuchar utilizando el enlace a su <em>feed</em>
+          o seleccionar uno de los <%= live_redirect("podcasts existentes",
             to: Routes.channel_index_path(@socket, :index),
             class: "text-primary"
           ) %> y usar el botón para subscribirse.
@@ -124,15 +124,16 @@ defmodule EasypodcastsWeb.AboutLive.Index do
           <li>
             Los episodios son convertidos en dependencia de la disponibilidad de <em>workers</em>
             lo que la prontitud con la que puede obtener un episodio convertido depende de la cantidad de episodios en cola y de
-            <em>workers</em> que estén disponibles en el momento
-            <%= live_redirect("El estado de la cola de conversión puede consultarse aquí",
+            <em>workers</em>
+            que estén disponibles en el momento <%= live_redirect(
+              "El estado de la cola de conversión puede consultarse aquí",
               to: Routes.server_index_path(@socket, :index),
               class: "text-primary"
             ) %>
           </li>
           <li>
-            Según el estado del almacenamiento, los episodios convertidos se irán eliminando comenzando por los que se convirtieron hace más tiempo. Si un episodio convertido se elimina siempre puede convertirse nuevamente.
-            <%= live_redirect("El estado del almacenamiento puede consultarse aquí",
+            Según el estado del almacenamiento, los episodios convertidos se irán eliminando comenzando por los que se convirtieron hace más tiempo. Si un episodio convertido se elimina siempre puede convertirse nuevamente. <%= live_redirect(
+              "El estado del almacenamiento puede consultarse aquí",
               to: Routes.server_index_path(@socket, :index),
               class: "text-primary"
             ) %>
@@ -148,8 +149,9 @@ defmodule EasypodcastsWeb.AboutLive.Index do
         <p>
           Los episodios son convertidos en dependencia de la disponibilidad de <em>workers</em>
           lo que la prontitud con la que puede obtener un episodio convertido depende de la cantidad de episodios en cola y de
-          <em>workers</em> que estén disponibles en el momento.
-          <%= live_redirect("El estado de la cola de conversión puede consultarse aquí",
+          <em>workers</em>
+          que estén disponibles en el momento. <%= live_redirect(
+            "El estado de la cola de conversión puede consultarse aquí",
             to: Routes.server_index_path(@socket, :index),
             class: "text-primary"
           ) %>
@@ -165,8 +167,8 @@ defmodule EasypodcastsWeb.AboutLive.Index do
         <h2 class="pt-3 pb-1 text-xl font-bold">
           Mis episodios convertidos desaparecieron, ¿por qué?
         </h2>
-        Según el estado del almacenamiento, los episodios convertidos se irán eliminando comenzando por los que se convirtieron hace más tiempo. Si un episodio convertido se elimina siempre puede convertirse nuevamente.
-        <%= live_redirect("El estado del almacenamiento puede consultarse aquí",
+        Según el estado del almacenamiento, los episodios convertidos se irán eliminando comenzando por los que se convirtieron hace más tiempo. Si un episodio convertido se elimina siempre puede convertirse nuevamente. <%= live_redirect(
+          "El estado del almacenamiento puede consultarse aquí",
           to: Routes.server_index_path(@socket, :index),
           class: "text-primary"
         ) %>

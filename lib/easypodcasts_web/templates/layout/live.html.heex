@@ -26,7 +26,7 @@
             phx-debounce="200"
             value={@search}
             name="search"
-            class="py-1 px-3 leading-8 rounded border shadow-inner outline-none md:w-full hover:ring-1 focus:ring-2 bg-surface dark:bg-d-surface dark:text-d-text-light text-primary border-primary-light hover:ring-primary-light focus:ring-primary"
+            class="py-1 px-3 leading-8 rounded border shadow-inner outline-none md:w-full hover:ring-1 focus:ring-2 bg-surface text-primary border-primary-light dark:bg-d-surface dark:text-d-text-light hover:ring-primary-light focus:ring-primary"
             placeholder={
               if @socket.view == EasypodcastsWeb.ChannelLive.Index,
                 do: gettext("Search Podcasts"),
@@ -42,11 +42,11 @@
     <div class="hidden justify-end w-1/3 md:flex">
       <%= live_redirect(gettext("Status"),
         to: Routes.server_index_path(@socket, :index),
-        class: "mr-5 self-center text-primary"
+        class: "self-center mr-5 text-primary"
       ) %>
       <%= live_redirect(gettext("About"),
         to: Routes.about_index_path(@socket, :index),
-        class: "mr-5 self-center text-primary"
+        class: "self-center mr-5 text-primary"
       ) %>
       <a href="https://t.me/soporte_easypodcasts" class="self-center mr-5 text-primary">
         <%= gettext("Contact") %>
@@ -114,11 +114,11 @@
   >
     <%= live_redirect(gettext("Status"),
       to: Routes.server_index_path(@socket, :index),
-      class: "text-md py-3 mb-2 border-2  border-primary-light rounded font-semibold text-center text-primary"
+      class: "py-3 mb-2 font-semibold text-center rounded border-2 text-md border-primary-light text-primary"
     ) %>
     <%= live_redirect(gettext("About"),
       to: Routes.about_index_path(@socket, :index),
-      class: "text-md py-3 mb-2 border-2  border-primary-light rounded font-semibold text-center text-primary"
+      class: "py-3 mb-2 font-semibold text-center rounded border-2 text-md border-primary-light text-primary"
     ) %>
     <a
       href="https://t.me/soporte_easypodcasts"

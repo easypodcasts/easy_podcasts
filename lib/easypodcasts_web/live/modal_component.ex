@@ -42,7 +42,7 @@ defmodule EasypodcastsWeb.ModalComponent do
                     phx_hook: "AutoFocus",
                     placeholder: "https://example.podcast.com/rss",
                     class:
-                      "rounded border border-primary-light  outline-none py-1 px-3 leading-8 mb-2 focus:ring-2 focus:ring-primary hover:ring-1 hover:ring-primary-light bg-surface shadow-inner"
+                      "py-1 px-3 mb-2 leading-8 rounded border shadow-inner outline-none hover:ring-1 focus:ring-2 border-primary-light bg-surface hover:ring-primary-light focus:ring-primary"
                   ) %>
                   <spam class="px-1 text-xs dark:text-d-text-dark">
                     <%= gettext("Read about our content policies") %>
@@ -63,7 +63,7 @@ defmodule EasypodcastsWeb.ModalComponent do
                   <%= submit(gettext("Save"),
                     phx_disable_with: gettext("Saving..."),
                     class:
-                      "border-0 ml-1 px-5 focus:outline-none rounded text-sm bg-primary text-text-light hover:bg-primary-dark"
+                      "px-5 ml-1 text-sm rounded border-0 focus:outline-none bg-primary text-text-light hover:bg-primary-dark"
                   ) %>
                 </div>
               </div>
