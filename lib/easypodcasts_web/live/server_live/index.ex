@@ -10,36 +10,38 @@ defmodule EasypodcastsWeb.ServerLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    if connected?(socket) do
-      PubSub.subscribe(Easypodcasts.PubSub, "queue_state")
-      PubSub.subscribe(Easypodcasts.PubSub, "queue_length")
-      PubSub.subscribe(Easypodcasts.PubSub, "visitors")
-    end
-
-    {_id, capacity, percent} =
-      :disksup.get_disk_data()
-      |> Enum.filter(fn {disk_id, _size, _percent} ->
-        disk_id == '/home/cloud/podcasts-storage'
-        # disk_id == '/'
-      end)
-      |> hd
-
     socket =
-      socket
-      |> assign(get_dynamic_assigns(Episodes.queue_state()))
-      |> assign(:disk_capacity, capacity)
-      |> assign(:show_modal, false)
-      |> assign(:disk_used, percent)
-      |> assign(:visitors, get_visitors())
+      if connected?(socket) do
+        PubSub.subscribe(Easypodcasts.PubSub, "queue_state")
+        PubSub.subscribe(Easypodcasts.PubSub, "queue_length")
+        PubSub.subscribe(Easypodcasts.PubSub, "visitors")
 
-    {:ok, socket}
+        {_id, capacity, percent} =
+          :disksup.get_disk_data()
+          |> Enum.filter(fn {disk_id, _size, _percent} ->
+            disk_id == '/home/cloud/podcasts-storage'
+            # disk_id == '/'
+          end)
+          |> hd
+
+        socket
+        |> assign(get_dynamic_assigns(Episodes.queue_state()))
+        |> assign(:disk_capacity, capacity)
+        |> assign(:show_modal, false)
+        |> assign(:disk_used, percent)
+      else
+        socket
+      end
+
+    {:ok, assign(socket, :visitors, get_visitors())}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <section class="flex flex-col mt-4 mb-6 dark:text-d-text-dark">
-      <div class="flex-col mb-6 rounded-lg border">
+      <%= if connected?(@socket) do %>
+        <div class="flex-col mb-6 rounded-lg border">
         <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-text-light bg-primary text-md">
           <%= gettext("Queue") %>
         </span>
@@ -198,6 +200,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
           </tbody>
         </table>
       </div>
+      <% end %>
     </section>
     """
   end
