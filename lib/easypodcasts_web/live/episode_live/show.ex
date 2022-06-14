@@ -46,7 +46,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
     ~H"""
     <div class="flex flex-wrap mb-4 md:flex-nowrap xl:py-8 xl:mb-0">
       <div class="flex flex-col w-full">
-        <h2 class="mb-2 text-sm md:text-xl font-medium title-font">
+        <h2 class="mb-2 text-sm font-medium md:text-xl title-font">
           <%= if @socket.view == EasypodcastsWeb.ChannelLive.Show do %>
             <%= live_redirect(@episode.title,
               to: Routes.episode_show_path(@socket, :show, Utils.slugify(@channel), Utils.slugify(@episode)),
@@ -67,8 +67,10 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
           </span>
           <span class="mr-3 text-xs md:text-sm dark:text-d-text-dark">
             <%= if @episode.status == :done do %>
-              <%= Float.floor((@episode.processed_size || 0) / 1_000_000, 2) %> MB (
-              <%= Float.floor((@episode.original_size - (@episode.processed_size || 0)) / 1_000_000, 2) %> MB less)
+              <%= Float.floor((@episode.processed_size || 0) / 1_000_000, 2) %> MB ( <%= Float.floor(
+                (@episode.original_size - (@episode.processed_size || 0)) / 1_000_000,
+                2
+              ) %> MB less)
             <% else %>
               <%= Float.floor(@episode.original_size / 1_000_000, 2) %> MB
             <% end %>
@@ -86,7 +88,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
             <% end %>
           </div>
         <% else %>
-          <p class="line-clamp-2 md:line-clamp-6 dark:text-d-text-dark text-sm md:text-base">
+          <p class="text-sm md:text-base line-clamp-2 md:line-clamp-6 dark:text-d-text-dark">
             <%= sanitize(@episode.description) %>
           </p>
         <% end %>

@@ -46,7 +46,7 @@ defmodule EasypodcastsWeb.QueueComponent do
           ),
           to: Routes.server_index_path(@socket, :index),
           class:
-            "block fixed right-6 bottom-6 py-1 px-3 text-xl rounded-lg shadow-2xl bg-primary hover:bg-primary-dark text-text-light"
+            "block fixed right-6 bottom-6 py-1 px-3 text-xl rounded-lg shadow-2xl bg-primary text-text-light hover:bg-primary-dark"
         ) %>
       <% end %>
     </div>
