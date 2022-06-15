@@ -144,7 +144,10 @@ defmodule Easypodcasts.Channels do
 
       if process_new_episodes do
         Logger.info("Processing audio from new episodes of #{channel.title}")
-        Enum.each(new_episodes, &Episodes.enqueue(&1.id))
+
+        new_episodes
+        |> Enum.take(3)
+        |> Enum.each(&Episodes.enqueue(&1.id))
       end
 
       datetime = DateTime.now!("UTC") |> DateTime.to_naive() |> NaiveDateTime.truncate(:second)
