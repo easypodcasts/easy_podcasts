@@ -305,7 +305,6 @@ defmodule Easypodcasts.Episodes do
       else
         _error -> DateTime.utc_now()
       end
-
     %{
       description: item["description"],
       title: item["title"],
