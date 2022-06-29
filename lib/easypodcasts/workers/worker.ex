@@ -43,7 +43,7 @@ defmodule Easypodcasts.Workers.Worker do
   @impl true
   def init(state) do
     Logger.info("#{@name} starting for #{inspect(state)}")
-    Process.send_after(self(), :worker_timeout, :timer.minutes(15))
+    Process.send_after(self(), :worker_timeout, :timer.minutes(30))
     {:ok, state}
   end
 
