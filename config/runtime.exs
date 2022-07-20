@@ -74,3 +74,4 @@ if config_env() == :prod do
 end
 
 config :easypodcasts, Easypodcasts, proxy_url: System.get_env("BLOCKED_FEEDS_PROXY") || ""
+config :easypodcasts, Easypodcasts, proxy_token: System.get_env("BLOCKED_FEEDS_PROXY_TOKEN") || ""
