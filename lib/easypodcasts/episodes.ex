@@ -160,7 +160,7 @@ defmodule Easypodcasts.Episodes do
       broadcast_queue_changed()
       :ok
     else
-      update_episode(episode, %{status: :new})
+      update_episode(episode, %{status: :new, retries: 0})
       :error
     end
   end
