@@ -43,6 +43,7 @@ if config_env() == :prod do
     ],
     secret_key_base: secret_key_base
 
+
   # ## Using releases
   #
   # If you are doing OTP releases, you need to instruct Phoenix
@@ -71,3 +72,5 @@ if config_env() == :prod do
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
 end
+
+config :easypodcasts, Easypodcasts, proxy_url: System.get_env("BLOCKED_FEEDS_PROXY") || ""
