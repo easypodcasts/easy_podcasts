@@ -138,11 +138,13 @@ defmodule Easypodcasts.Channels do
   def process_channel(channel, process_new_episodes \\ false) do
     Logger.info("Processing channel #{channel.title}")
 
+    proxy_url = Application.get_env(:easypodcasts, Easypodcasts)[:proxy_url]
+    proxy_token = Application.get_env(:easypodcasts, Easypodcasts)[:proxy_token]
+
     link =
       if !channel.blocked,
         do: channel.link,
-        else:
-          "#{Application.get_env(:easypodcasts, Easypodcasts)[:proxy_url]}?bringme=#{channel.link}"
+        else: "#{proxy_url}?bringme=#{channel.link}&token=#{proxy_token}"
 
     with {:ok, feed_data} <- Feed.get_feed_data(link),
          {_, new_episodes = [_ | _]} <- Episodes.save_new_episodes(channel, feed_data) do
