@@ -130,13 +130,13 @@ defmodule Easypodcasts.Channels do
   end
 
   def process_all_channels() do
-    Logger.info("Processing all channels")
-
+    channels = list_channels()
+    Logger.info("Processing #{length(channels)} channels")
     Enum.each(list_channels(), &process_channel(&1, true))
+    Logger.info("Done processing channels")
   end
 
   def process_channel(channel, process_new_episodes \\ false) do
-
     proxy_url = Application.get_env(:easypodcasts, Easypodcasts)[:proxy_url]
     proxy_token = Application.get_env(:easypodcasts, Easypodcasts)[:proxy_token]
 
@@ -148,7 +148,8 @@ defmodule Easypodcasts.Channels do
     Logger.info("Processing channel #{channel.title} #{link}")
 
     with {:ok, feed_data} <- Feed.get_feed_data(link),
-         {_, new_episodes = [_ | _]} <- Episodes.save_new_episodes(channel, feed_data) do
+         {:episodes, {_, new_episodes = [_ | _]}} <-
+           {:episodes, Episodes.save_new_episodes(channel, feed_data)} do
       Logger.info("Channel #{channel.title} has #{length(new_episodes)} new episodes")
 
       if process_new_episodes do
@@ -165,7 +166,21 @@ defmodule Easypodcasts.Channels do
 
       {:ok, new_episodes}
     else
-      _error ->
+      {:episodes, error} ->
+        Logger.info(
+          "Processing episodes for channel #{channel.title} has failed with error #{inspect(error)} "
+        )
+
+        {:error, channel,
+         gettext(
+           "We can't process that podcast right now. Please create an issue with the feed url or visit our support group."
+         )}
+
+      error ->
+        Logger.info(
+          "Processing channel #{channel.title} has failed with error #{inspect(error)} "
+        )
+
         {:error, channel,
          gettext(
            "We can't process that podcast right now. Please create an issue with the feed url or visit our support group."
