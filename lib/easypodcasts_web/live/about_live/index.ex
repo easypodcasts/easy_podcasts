@@ -180,7 +180,7 @@ defmodule EasypodcastsWeb.AboutLive.Index do
           <a href="https://es.wikipedia.org/wiki/Opus_(c%C3%B3dec)#Soporte" class="text-primary">
             Opus
           </a>
-          para comprimir los episodios. Este códec tiene soporte limitado en los dispositivos de Apple y es necesario utilizar una aplicación de terceros para poder reproducirlo.
+          para comprimir los episodios. Este códec tiene soporte limitado en los dispositivos de Apple y es necesario utilizar una aplicación de terceros como <a href="https://radiopublic.com/" class="text-primary">RadioPublic</a> para poder reproducirlo. 
         </p>
       </div>
     </article>
