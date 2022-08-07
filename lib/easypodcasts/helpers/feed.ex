@@ -16,10 +16,17 @@ defmodule Easypodcasts.Helpers.Feed do
       {:ok, feed}
     else
       {"Failed to detect feed type\n", 1} ->
-        if !is_retry, do: get_feed_data(original_url, true), else: proxify(original_url)
+        if !is_retry do
+          get_feed_data(original_url, true)
+        else
+          proxify(original_url)
 
-        Logger.info("Failed to get and parse feed for #{original_url} with error #{inspect({"Failed to detect feed type\n", 1})}")
-        {:error, "Failed to get and parse feed"}
+          Logger.info(
+            "Failed to get and parse feed for #{original_url} with error #{inspect({"Failed to detect feed type\n", 1})}"
+          )
+
+          {:error, "Failed to get and parse feed"}
+        end
 
       error ->
         Logger.info("Failed to get and parse feed for #{url} with error #{inspect(error)}")
