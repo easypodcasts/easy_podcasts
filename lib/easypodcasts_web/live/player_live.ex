@@ -77,8 +77,8 @@ defmodule EasypodcastsWeb.PlayerLive do
           <div class="flex justify-between">
             <div class="flex flex-col flex-1 py-3 px-2">
               <div class="grid content-center mb-1 w-full h-5 rounded-2xl cursor-pointer" id="progress-wrapper">
-                <div class="w-full h-1 rounded-2xl bg-primary-light/30">
-                  <div style="width:0%" id="progress" class="mb-1 h-1 rounded-2xl bg-primary-dark"></div>
+                <div class="w-full h-1 rounded-2xl bg-primary-light/30 dark:bg-d-primary-light/30">
+                  <div style="width:0%" id="progress" class="mb-1 h-1 rounded-2xl bg-primary-dark dark:bg-d-primary-dark"></div>
                 </div>
               </div>
               <div class="flex justify-between">
