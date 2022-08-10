@@ -34,9 +34,9 @@ defmodule Easypodcasts.Helpers.Feed do
     end
   end
 
-  defp proxify(url) do
+  def proxify(url) do
     proxy_url = Application.get_env(:easypodcasts, Easypodcasts)[:proxy_url]
     proxy_token = Application.get_env(:easypodcasts, Easypodcasts)[:proxy_token]
-    "#{proxy_url}?bringme=#{url}&token=#{proxy_token}"
+    "#{proxy_url}/?token=#{proxy_token}&bringme=#{url}"
   end
 end

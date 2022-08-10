@@ -55,6 +55,7 @@ defmodule Easypodcasts.MixProject do
       {:jaxon, "~> 2.0"},
       {:tzdata, "~> 1.1"},
       {:timex, "~> 3.7"},
+      {:httpoison, "~> 1.8"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:phoenix_profiler, "~> 0.1.0", github: "mcrumm/phoenix_profiler"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev}

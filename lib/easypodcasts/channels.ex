@@ -65,7 +65,11 @@ defmodule Easypodcasts.Channels do
 
   def store_channel_image(channel) do
     if channel.image_url do
-      case ChannelImage.store({channel.image_url, channel}) do
+      url = Feed.proxify(channel.image_url)
+      Logger.info("Storing image #{url}")
+      %HTTPoison.Response{body: body} = HTTPoison.get!(url)
+
+      case ChannelImage.store({%{filename: "#{channel.id}.jpg", binary: body}, channel}) do
         {:ok, _} -> nil
         {:error, _} -> ChannelImage.store({"priv/static/images/placeholder-big.webp", channel})
       end
@@ -78,7 +82,7 @@ defmodule Easypodcasts.Channels do
            |> Channel.changeset(attrs)
            |> Repo.insert(),
          {:ok, _episodes} <- process_channel(channel) do
-      store_channel_image(channel)
+      Task.start(fn -> store_channel_image(channel) end)
 
       {:ok, channel}
     else
@@ -92,6 +96,18 @@ defmodule Easypodcasts.Channels do
         delete_channel(channel)
         {:error, msg}
     end
+  end
+
+  def update_all_images do
+    channels = list_channels()
+
+    Enum.each(channels, fn channel ->
+      try do
+        store_channel_image(channel)
+      catch
+        _ -> Logger.error("Error updating image for #{channel.title}")
+      end
+    end)
   end
 
   def update_channel(%Channel{} = channel, attrs \\ %{}) do
