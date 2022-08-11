@@ -70,10 +70,42 @@ defmodule Easypodcasts.Channels do
       %HTTPoison.Response{body: body} = HTTPoison.get!(url)
 
       case ChannelImage.store({%{filename: "#{channel.id}.jpg", binary: body}, channel}) do
-        {:ok, _} -> nil
-        {:error, _} -> ChannelImage.store({"priv/static/images/placeholder-big.webp", channel})
+        {:ok, _} -> :ok
+        {:error, _} -> store_generated_channel_image(channel)
       end
+    else
+      store_generated_channel_image(channel)
     end
+  end
+
+  def store_generated_channel_image(channel) do
+    img = "/tmp/#{channel.id}.png"
+
+    System.cmd(
+      "convert",
+      [
+        "-background",
+        "#f1f5f9",
+        "-fill",
+        "#0891B2",
+        "-font",
+        "Liberation-Sans",
+        "-size",
+        "400x400",
+        "-gravity",
+        "center",
+        "caption:#{channel.title}",
+        img
+      ]
+    )
+
+    case ChannelImage.store({img, channel}) do
+      {:ok, _} -> nil
+      {:error, _} -> ChannelImage.store({"priv/static/images/placeholder-big.webp", channel})
+    end
+
+    File.rm(img)
+    :ok
   end
 
   def create_channel(attrs \\ %{}) do
@@ -96,18 +128,6 @@ defmodule Easypodcasts.Channels do
         delete_channel(channel)
         {:error, msg}
     end
-  end
-
-  def update_all_images do
-    channels = list_channels()
-
-    Enum.each(channels, fn channel ->
-      try do
-        store_channel_image(channel)
-      catch
-        _ -> Logger.error("Error updating image for #{channel.title}")
-      end
-    end)
   end
 
   def update_channel(%Channel{} = channel, attrs \\ %{}) do
