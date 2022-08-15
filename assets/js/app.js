@@ -30,6 +30,16 @@ Hooks.AutoFocus = {
   },
 };
 
+Hooks.CopyHook = {
+  mounted() {
+    const copyButton = document.getElementById("copy-feed-url");
+    const url = document.getElementById("feed-url").value;
+    copyButton.onclick = () => {
+      navigator.clipboard.writeText(url);
+    };
+  },
+};
+
 Hooks.PlayerHook = {
   mounted() {
     this.handleEvent("play", ({ current_time, episode }) =>
@@ -76,9 +86,9 @@ Hooks.PlayerHook = {
       this.play();
     };
 
-    this.pauseButton.onclick = () => {
-      clearInterval(this.progressTimer);
-      clearInterval(this.saveTimer);
+    this.pausebutton.onclick = () => {
+      clearinterval(this.progresstimer);
+      clearinterval(this.savetimer);
       this.pause();
     };
 
