@@ -14,36 +14,52 @@
       <meta name="twitter:title" content={"#{@channel.title}: #{@episode.title} - Easy Podcasts"} />
       <meta
         name="description"
-        content={sanitize(String.slice(@episode.description || gettext("No description provided"), 0..150))}
+        content={sanitize(String.slice(@episode.description || gettext("No description"), 0..160))}
       />
       <meta
         property="og:description"
-        content={sanitize(String.slice(@episode.description || gettext("No description provided"), 0..150))}
+        content={sanitize(String.slice(@episode.description || gettext("No description"), 0..160))}
       />
       <meta
         name="twitter:description"
-        content={sanitize(String.slice(@episode.description || gettext("No description provided"), 0..150))}
+        content={sanitize(String.slice(@episode.description || gettext("No description provided"), 0..160))}
       />
-      <meta property="og:image" content={Easypodcasts.Channels.ChannelImage.url({"thumb.webp", @channel}, :thumb)} />
-      <meta name="twitter:image" content={Easypodcasts.Channels.ChannelImage.url({"thumb.webp", @channel}, :thumb)} />
+      <meta
+        property="og:image"
+        content={"https://easypodcasts.live#{Easypodcasts.Channels.ChannelImage.url({"preview.jpg", @channel}, :thumb)}"}
+      />
+      <meta
+        name="twitter:image"
+        content={"https://easypodcasts.live#{Easypodcasts.Channels.ChannelImage.url({"preview.jpg", @channel}, :thumb)}"}
+      />
     <% else %>
       <%= if assigns[:channel] do %>
         <meta property="og:title" content={"#{@channel.title} - Easy Podcasts"} />
         <meta name="twitter:title" content={"#{@channel.title} - Easy Podcasts"} />
         <meta
           name="description"
-          content={sanitize(String.slice(@channel.description || gettext("No description provided"), 0..150))}
+          content={sanitize(String.slice(@channel.description || gettext("No description"), 0..160))}
         />
         <meta
           property="og:description"
-          content={sanitize(String.slice(@channel.description || gettext("No description provided"), 0..150))}
+          content={sanitize(String.slice(@channel.description || gettext("No description"), 0..160))}
         />
         <meta
           name="twitter:description"
-          content={sanitize(String.slice(@channel.description || gettext("No description provided"), 0..150))}
+          content={sanitize(String.slice(@channel.description || gettext("No description"), 0..160))}
         />
-        <meta property="og:image" content={Easypodcasts.Channels.ChannelImage.url({"thumb.webp", @channel}, :thumb)} />
-        <meta name="twitter:image" content={Easypodcasts.Channels.ChannelImage.url({"thumb.webp", @channel}, :thumb)} />
+        <meta
+          property="og:image"
+          content={
+            "https://easypodcasts.live#{Easypodcasts.Channels.ChannelImage.url({"preview.jpg", @channel}, :thumb)}"
+          }
+        />
+        <meta
+          name="twitter:image"
+          content={
+            "https://easypodcasts.live#{Easypodcasts.Channels.ChannelImage.url({"preview.jpg", @channel}, :thumb)}"
+          }
+        />
       <% else %>
         <meta name="twitter:title" content="Easy Podcasts" />
         <meta property="og:title" content="Easy Podcasts" />
@@ -61,11 +77,11 @@
         />
         <meta
           property="og:image"
-          content="https://easypodcasts.live/images/easypodcasts-c15fb0619af7eeabd16d43b378e2354f.svg"
+          content={"https://easypodcasts.live#{Routes.static_path(@conn, "/images/easypodcasts.png")}"}
         />
         <meta
-          name="twitter:image"
-          content="https://easypodcasts.live/images/easypodcasts-c15fb0619af7eeabd16d43b378e2354f.svg"
+          property="twitter:image"
+          content={"https://easypodcasts.live#{Routes.static_path(@conn, "/images/easypodcasts.png")}"}
         />
       <% end %>
     <% end %>

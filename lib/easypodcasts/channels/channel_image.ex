@@ -29,6 +29,10 @@ defmodule Easypodcasts.Channels.ChannelImage do
     {:ffmpeg, &"-i #{&1} -vf scale=400x400 -f webp #{&2}", :webp}
   end
 
+  def transform(:preview, _file) do
+    {:ffmpeg, &"-i #{&1} -vf scale=400x400 -f jpg #{&2}", :jpg}
+  end
+
   # Override the persisted filenames:
   def filename(version, _file) do
     version
