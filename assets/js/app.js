@@ -87,8 +87,8 @@ Hooks.PlayerHook = {
     };
 
     this.pauseButton.onclick = () => {
-      clearinterval(this.progresstimer);
-      clearinterval(this.savetimer);
+      clearInterval(this.progressTimer);
+      clearInterval(this.saveTimer);
       this.pause();
     };
 
