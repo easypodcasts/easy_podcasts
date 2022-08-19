@@ -8,7 +8,7 @@ defmodule Easypodcasts.Channels.ChannelImage do
   # use Waffle.Ecto.Definition
 
   # To add a thumbnail version:
-  @versions [:original, :thumb]
+  @versions [:original, :thumb, :preview]
 
   # Whitelist file extensions:
   # def validate({file, _}) do
