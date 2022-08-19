@@ -12,7 +12,7 @@ defmodule EasypodcastsWeb.AboutLive.Index do
   @impl true
   def render(assigns) do
     ~H"""
-    <article class="flex flex-col my-4 dark:text-d-text-dark">
+    <article class="flex flex-col my-4 ">
       <div class="flex flex-col justify-start p-6 mx-auto w-full shadow md:w-2/3">
         <h1 class="pb-4 text-xl font-bold text-center">
           Acerca de Easy Podcasts

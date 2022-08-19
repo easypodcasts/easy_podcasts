@@ -19,58 +19,39 @@ defmodule EasypodcastsWeb.ModalComponent do
   @impl true
   def render(assigns) do
     ~H"""
-    <div id={@id}>
-      <%= if @show_modal do %>
-        <div class="flex fixed top-0 left-0 justify-center w-screen h-screen bg-surface/80 dark:bg-d-surface/80">
-          <div class="p-5 mt-10 max-h-52 rounded-md border shadow-2xl xl:mt-24 border-primary bg-surface dark:bg-d-surface">
-            <h3 class="text-lg font-medium leading-6 dark:text-d-text-dark">
-              <%= gettext("Add New Podcast") %>
-            </h3>
-            <.form
-              let={f}
-              for={@changeset}
-              id="channel-form"
-              phx-submit="save"
-              phx-target={@myself}
-              phx-page-loading
-              class="mt-5 h-4/6"
-            >
-              <%= error_tag(f, :link) %>
-              <div class="flex flex-col justify-between h-full">
-                <div class="flex flex-col">
-                  <%= url_input(f, :link,
-                    phx_hook: "AutoFocus",
-                    placeholder: "https://example.podcast.com/rss",
-                    class:
-                      "py-1 px-3 mb-2 leading-8 rounded border shadow-inner outline-none hover:ring-1 focus:ring-2 border-primary-light bg-surface hover:ring-primary-light focus:ring-primary"
-                  ) %>
-                  <spam class="px-1 text-xs dark:text-d-text-dark">
-                    <%= gettext("Read about our content policies") %>
-                    <a href={"#{Routes.about_index_path(@socket, :index)}#disclaimer"} class="text-primary">
-                      <%= gettext("here") %>
-                    </a>
-                  </spam>
-                </div>
-                <div class="flex justify-between justify-self-end">
-                  <button
-                    type="button"
-                    phx-click="hide_modal"
-                    phx-target={@myself}
-                    class="inline-flex items-center py-2 px-4 ml-1 text-sm align-middle rounded border-0 text-text-light bg-cancel hover:bg-cancel-dark"
-                  >
-                    <%= gettext("Cancel") %>
-                  </button>
-                  <%= submit(gettext("Save"),
-                    phx_disable_with: gettext("Saving..."),
-                    class:
-                      "px-5 ml-1 text-sm rounded border-0 focus:outline-none bg-primary text-text-light hover:bg-primary-dark"
-                  ) %>
-                </div>
-              </div>
-            </.form>
+    <div id={@id} class="modal">
+      <div class="modal-box">
+        <h3 class="text-lg font-bold">
+          <%= gettext("Add New Podcast") %>
+        </h3>
+        <.form let={f} for={@changeset} id="channel-form" phx-submit="save" phx-target={@myself} phx-page-loading>
+          <%= error_tag(f, :link) %>
+          <div class="flex flex-col justify-between h-full">
+            <div class="flex flex-col my-4">
+              <%= url_input(f, :link,
+                phx_hook: "AutoFocus",
+                placeholder: "https://example.podcast.com/rss",
+                class: "mb-2 input input-primary"
+              ) %>
+              <spam class="px-1 text-sm">
+                <%= gettext("Read about our content policies") %>
+                <a href={"#{Routes.about_index_path(@socket, :index)}#disclaimer"} class="link-primary">
+                  <%= gettext("here") %>
+                </a>
+              </spam>
+            </div>
+            <div class="modal-action">
+              <button type="button" phx-click={JS.remove_class("modal-open", to: "#new-podcast")} class="btn">
+                <%= gettext("Cancel") %>
+              </button>
+              <%= submit(gettext("Save"),
+                phx_disable_with: gettext("Saving..."),
+                class: "btn btn-primary"
+              ) %>
+            </div>
           </div>
-        </div>
-      <% end %>
+        </.form>
+      </div>
     </div>
     """
   end
@@ -83,7 +64,6 @@ defmodule EasypodcastsWeb.ModalComponent do
 
         {:noreply,
          socket
-         |> assign(:show_modal, false)
          |> put_flash(
            :success,
            gettext("Podcast '%{title}' created successfully", title: channel.title)
@@ -99,25 +79,5 @@ defmodule EasypodcastsWeb.ModalComponent do
          |> put_flash(:error, msg)
          |> push_redirect(to: socket.assigns.return_to)}
     end
-  end
-
-  def handle_event("show_modal", _params, socket) do
-    {:noreply, assign(socket, :show_modal, true)}
-  end
-
-  def handle_event("hide_modal", _params, socket) do
-    {:noreply, assign(socket, :show_modal, false)}
-  end
-
-  def show_modal(js \\ %JS{}) do
-    js
-    |> JS.add_class("fixed", to: "#new-podcast-modal")
-    |> JS.remove_class("hidden", to: "#new-podcast-modal")
-  end
-
-  def hide_modal(js \\ %JS{}) do
-    js
-    |> JS.add_class("hidden", to: "#new-podcast-modal")
-    |> JS.remove_class("fixed", to: "#new-podcast-modal")
   end
 end

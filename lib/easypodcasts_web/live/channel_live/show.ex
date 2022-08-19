@@ -35,19 +35,17 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="flex flex-col p-4 pt-5 divide-y-2 xl:flex-row divide-primary/20">
+    <div class="flex flex-col p-4 pt-5 xl:flex-row">
       <.channel_card channel={@channel} socket={@socket} />
       <section class="mt-5 xl:mt-0 xl:w-1/2 body-font">
-        <div class="divide-y-2 divide-primary/20">
-          <%= for episode_id <- @episodes_index do %>
-            <EasypodcastsWeb.EpisodeLive.Show.episode_card
-              episode={Map.get(@episodes_map, episode_id)}
-              socket={@socket}
-              channel={@channel}
-              full_description={false}
-            />
-          <% end %>
-        </div>
+        <%= for episode_id <- @episodes_index do %>
+          <EasypodcastsWeb.EpisodeLive.Show.episode_card
+            episode={Map.get(@episodes_map, episode_id)}
+            socket={@socket}
+            channel={@channel}
+            full_description={false}
+          />
+        <% end %>
       </section>
     </div>
     <%= if @total_pages > 1 and @total_entries > 0 do %>
@@ -90,14 +88,10 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
             </div>
           </div>
         </div>
-
-        <p class="mt-2 title-font text-md dark:text-d-text-dark">
+        <p class="mt-2 title-font text-md">
           <%= sanitize(@channel.description) %>
         </p>
-        <button
-          phx-click={JS.remove_class("hidden", to: "#subscribe-modal")}
-          class="flex justify-between items-center self-start py-1 px-2 mt-4 text-lg font-semibold rounded xl:self-start text-text-light bg-primary hover:bg-primary-dark"
-        >
+        <button phx-click={JS.add_class("modal-open", to: "#subscribe-modal")} class="self-start btn btn-primary mt-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path
               stroke-linecap="round"
@@ -111,51 +105,46 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
           </span>
         </button>
       </div>
-      <div
-        id="subscribe-modal"
-        class="flex hidden fixed top-0 left-0 justify-center w-screen h-screen bg-surface/80 dark:bg-d-surface/80"
-        phx-hook="CopyHook"
-      >
-        <div class="p-5 mt-10 max-h-56 rounded-md border shadow-2xl md:w-1/3 xl:mt-24 border-primary bg-surface dark:bg-d-surface">
-          <h3 class="mb-2 text-lg font-medium leading-6 dark:text-d-text-dark">
+
+      <div class="modal" id="subscribe-modal" phx-hook="CopyHook">
+        <div class="modal-box">
+          <h3 class="text-lg font-bold mb-4">
             <%= gettext("Subscribe to this podcast") %>
           </h3>
-
-          <a href={"pcast://easypodcasts.live#{Routes.feed_path(@socket, :feed, Utils.slugify(@channel))}"}>
-            <button class="flex justify-between items-center py-1 px-2 font-semibold rounded xl:self-start text-text-light bg-primary hover:bg-primary-dark">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                />
-              </svg>
-              <span class="ml-1">
-                <%= gettext("Open in app") %>
-              </span>
-            </button>
+          <a
+            href={"pcast://easypodcasts.live#{Routes.feed_path(@socket, :feed, Utils.slugify(@channel))}"}
+            class="btn btn-primary"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+              />
+            </svg>
+            <%= gettext("Open in app") %>
           </a>
-          <h3 class="mt-2 mb-2 text-lg font-medium leading-6 dark:text-d-text-dark">
-            <%= gettext("Or") %>
-          </h3>
+          <div class="divider">
+            <%= gettext("Or copy the feed") %>
+          </div>
 
-          <div class="flex flex-row">
+          <div class="input-group">
             <input
               type="text"
               id="feed-url"
-              class="flex-1 px-3 leading-8 rounded border shadow-inner outline-none hover:ring-1 focus:ring-2 border-primary-light bg-surface hover:ring-primary-light focus:ring-primary"
+              class="input input-primary flex-1"
               value={"https://easypodcasts.live#{Routes.feed_path(@socket, :feed, Utils.slugify(@channel))}"}
             />
             <button
               id="copy-feed-url"
-              class="flex justify-between items-center py-1 px-2 ml-2 font-semibold rounded xl:self-start text-text-light bg-primary hover:bg-primary-dark"
+              class="btn btn-primary btn-square"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -171,18 +160,10 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
                   d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
                 />
               </svg>
-              <span class="ml-1">
-                <%= gettext("Copy") %>
-              </span>
             </button>
           </div>
-
-          <div class="flex justify-between justify-self-end mt-5">
-            <button
-              type="button"
-              phx-click={JS.add_class("hidden", to: "#subscribe-modal")}
-              class="inline-flex items-center py-2 px-4 ml-1 text-sm align-middle rounded border-0 text-text-light bg-cancel hover:bg-cancel-dark"
-            >
+          <div class="modal-action">
+            <button phx-click={JS.remove_class("modal-open", to: "#subscribe-modal")} class="btn">
               <%= gettext("Cancel") %>
             </button>
           </div>

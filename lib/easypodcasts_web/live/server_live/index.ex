@@ -39,10 +39,10 @@ defmodule EasypodcastsWeb.ServerLive.Index do
   @impl true
   def render(assigns) do
     ~H"""
-    <section class="flex flex-col mt-4 mb-6 dark:text-d-text-dark">
+    <section class="flex flex-col mt-4 mb-6 ">
       <%= if connected?(@socket) do %>
         <div class="flex-col mb-6 rounded-lg border">
-        <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-text-light bg-primary text-md">
+        <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-primary-content bg-primary text-md">
           <%= gettext("Queue") %>
         </span>
         <%= if length(@queued_episodes) > 0 do %>
@@ -103,7 +103,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
         <% end %>
       </div>
       <div class="flex-col mb-6 w-full rounded-lg border">
-        <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-text-light bg-primary text-md">
+        <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-primary-content bg-primary text-md">
           <%= gettext("Latest Episodes") %>
         </span>
         <ol class="px-7 list-decimal">
@@ -125,7 +125,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
         </ol>
       </div>
       <div class="flex-col mb-6 w-full rounded-lg border">
-        <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-text-light bg-primary text-md">
+        <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-primary-content bg-primary text-md">
           <%= gettext("Latest Processed") %>
         </span>
         <ol class="px-7 list-decimal">
@@ -148,7 +148,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
       </div>
       <div class="flex">
         <div class="flex-col mb-6 w-1/2 rounded-lg border">
-          <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-text-light bg-primary text-md">
+          <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-primary-content bg-primary text-md">
             <%= gettext("Podcasts") %>
           </span>
           <ul class="p-2">
@@ -160,7 +160,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
           </ul>
         </div>
         <div class="flex-col mb-6 w-1/2 rounded-lg border">
-          <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-text-light bg-primary text-md">
+          <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-primary-content bg-primary text-md">
             <%= gettext("Storage") %>
           </span>
           <ul class="p-2">
@@ -170,10 +170,10 @@ defmodule EasypodcastsWeb.ServerLive.Index do
         </div>
       </div>
       <div class="flex-col mb-6 w-full rounded-lg border">
-        <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-text-light bg-primary text-md">
+        <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-primary-content bg-primary text-md">
           <%= gettext("Workers") %>
         </span>
-        <table>
+        <table class="table w-full">
           <thead>
             <tr>
               <th>

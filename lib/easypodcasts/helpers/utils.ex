@@ -7,6 +7,7 @@ defmodule Easypodcasts.Helpers.Utils do
     thing
     |> String.downcase()
     |> String.replace(~r/[^a-z0-9\s-]/, "")
+    |> String.trim()
     |> String.replace(~r/(\s|-)+/, "-")
   end
 

@@ -45,14 +45,14 @@ defmodule EasypodcastsWeb.PlayerLive do
     ~H"""
     <div id="player-element" phx-hook="PlayerHook">
       <%= if @show do %>
-        <section class="flex fixed right-0 bottom-0 flex-col py-2 px-4 w-full shadow-2xl xl:right-5 xl:bottom-5 xl:py-4 xl:w-1/3 xl:rounded-xl bg-surface dark:shadow-gray-400 dark:bg-d-surface">
+        <section class="flex fixed right-0 bottom-0 flex-col py-2 px-4 w-full shadow shadow-base-content/30 xl:right-5 xl:bottom-5 xl:py-4 xl:w-1/3 xl:rounded-xl bg-base-100 z-50 transition ease-out duration-400 transform opacity-0 scale-10 opacity-100 scale-100 translate-y-0">
           <audio src={EpisodeAudio.url({"episode.opus", @episode})}></audio>
           <div class="flex mb-2">
             <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(@channel)) do %>
               <img
                 src={ChannelImage.url({"thumb.webp", @channel}, :thumb)}
                 alt={@channel.title}
-                class="w-16 h-16 rounded-xlsmall"
+                class="w-16 h-16 rounded-xl"
               />
             <% end %>
             <div class="flex flex-col flex-1 px-2">
@@ -77,8 +77,8 @@ defmodule EasypodcastsWeb.PlayerLive do
           <div class="flex justify-between">
             <div class="flex flex-col flex-1 py-3 px-2">
               <div class="grid content-center mb-1 w-full h-5 rounded-2xl cursor-pointer" id="progress-wrapper">
-                <div class="w-full h-1 rounded-2xl bg-primary-light/30 dark:bg-d-primary-light/30">
-                  <div style="width:0%" id="progress" class="mb-1 h-1 rounded-2xl bg-primary-dark dark:bg-d-primary-dark"></div>
+                <div class="w-full h-1 rounded-2xl bg-primary/30">
+                  <div style="width:0%" id="progress" class="mb-1 h-1 rounded-2xl bg-primary"></div>
                 </div>
               </div>
               <div class="flex justify-between">

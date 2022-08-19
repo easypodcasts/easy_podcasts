@@ -1,9 +1,6 @@
 @tailwind base;
 
 @layer base {
-  .custom-styles {
-    @apply dark:text-d-text-dark;
-  }
   .custom-styles a {
     @apply text-primary;
   }
@@ -16,8 +13,36 @@
   .custom-styles h2 {
     @apply text-xl mt-2;
   }
+
+  #player-element {
+    & > * {
+      animation: player 2s ease-out;
+    }
+  }
+
+  @keyframes player {
+    0% {
+      transform: scale(0.5);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
 }
 
 @tailwind components;
 
 @tailwind utilities;
+
+.btn {
+  @apply h-8;
+  min-height:  2.5rem;
+  @apply pr-2 pl-2;
+}
+
+.input {
+  @apply h-8;
+  min-height:  2.5rem;
+}

@@ -34,7 +34,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
     <div class="flex flex-col p-4 xl:flex-row">
       <EasypodcastsWeb.ChannelLive.Show.channel_card channel={@channel} socket={@socket} />
       <section class="mt-5 xl:mt-0 xl:w-1/2 body-font">
-        <div class="divide-y-2 divide-primary/20">
+        <div class="divide-primary/20">
           <.episode_card episode={@episode} socket={@socket} channel={@channel} full_description={true} />
         </div>
       </section>
@@ -53,19 +53,19 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
               class: "text-primary"
             ) %>
           <% else %>
-            <span class="dark:text-d-text-dark">
+            <span class="text-primary">
               <%= @episode.title %>
             </span>
           <% end %>
         </h2>
         <div class="flex mb-3">
-          <span class="mr-3 text-xs md:text-sm dark:text-d-text-dark">
+          <span class="mr-3 text-xs md:text-sm">
             <%= Utils.format_date(@episode.publication_date) %>
           </span>
-          <span class="mr-3 text-xs md:text-sm dark:text-d-text-dark">
+          <span class="mr-3 text-xs md:text-sm ">
             <%= Utils.get_duration(@episode) %>
           </span>
-          <span class="mr-3 text-xs md:text-sm dark:text-d-text-dark">
+          <span class="mr-3 text-xs md:text-sm ">
             <%= if @episode.status == :done do %>
               <%= Float.floor((@episode.processed_size || 0) / 1_000_000, 2) %> MB ( <%= Float.floor(
                 (@episode.original_size - (@episode.processed_size || 0)) / 1_000_000,
@@ -75,12 +75,12 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
               <%= Float.floor(@episode.original_size / 1_000_000, 2) %> MB
             <% end %>
           </span>
-          <span class="mr-3 text-xs md:text-sm dark:text-d-text-dark">
+          <span class="mr-3 text-xs md:text-sm ">
             <%= "#{gettext("Downloads:")} #{@episode.downloads}" %>
           </span>
         </div>
         <%= if @full_description do %>
-          <div class="custom-styles">
+          <div class="custom-styles mb-4">
             <%= if @episode.feed_data["content"] && String.trim(@episode.feed_data["content"]) != ""  do %>
               <%= sanitize(@episode.feed_data["content"] || @episode.description, :basic_html) |> raw %>
             <% else %>
@@ -88,35 +88,14 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
             <% end %>
           </div>
         <% else %>
-          <p class="text-sm md:text-base line-clamp-2 md:line-clamp-6 dark:text-d-text-dark">
+          <p class="text-sm md:text-base line-clamp-2 md:line-clamp-6  mb-4">
             <%= sanitize(@episode.description) %>
           </p>
         <% end %>
         <%= if @episode.status == :done do %>
           <div class="flex items-center self-start">
-            <a
-              class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm rounded border-0 text-text-light bg-primary hover:bg-primary-dark"
-              href={EpisodeAudio.url({"episode.opus", @episode})}
-              download={"#{@episode.title}.opus"}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="mr-1 w-5 h-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                />
-              </svg>
-              <%= gettext("Download") %>
-            </a>
             <button
-              class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm rounded border-0 text-text-light bg-primary hover:bg-primary-dark"
+              class="flex justify-between btn btn-primary mr-2"
               phx-click="play"
               phx-target="#player"
               phx-value-episode={@episode.id}
@@ -143,11 +122,32 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
               </svg>
               <%= gettext("Play") %>
             </button>
+            <a
+              class="flex justify-between btn btn-accent"
+              href={EpisodeAudio.url({"episode.opus", @episode})}
+              download={"#{@episode.title}.opus"}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="mr-1 w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                />
+              </svg>
+              <%= gettext("Download") %>
+            </a>
           </div>
         <% end %>
         <%= if @episode.status == :queued do %>
           <button
-            class="flex self-start py-2 px-2 mt-4 text-sm rounded border-0 cursor-wait focus:outline-none bg-disabled"
+            class="flex self-start btn cursor-wait "
             disabled
           >
             <svg
@@ -168,7 +168,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
           </button>
         <% end %>
         <%= if @episode.status == :processing do %>
-          <button class="flex self-start py-2 px-2 mt-4 text-sm rounded border-0 cursor-wait bg-disabled" disabled>
+          <button class="flex self-start btn cursor-wait" disabled>
             <svg class="mr-1 -ml-1 w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path
@@ -183,7 +183,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
         <% end %>
         <%= if @episode.status == :new and @episode.retries < 3 do %>
           <button
-            class="flex justify-between self-start py-2 px-2 mt-4 text-sm rounded border-0 disabled:text-black disabled:cursor-wait text-text-light bg-primary hover:bg-primary-dark disabled:bg-disabled"
+            class="flex justify-between self-start btn btn-primary disabled:cursor-wait"
             phx-click="process_episode"
             phx-value-episode_id={@episode.id}
             phx-disable-with={gettext("Queuing...")}
@@ -209,7 +209,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
           <div class="flex items-center self-start">
             <span class="mt-4 text-red-500"><%= gettext("This episode has failed processing") %></span>
             <a
-              class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm rounded border-0 text-text-light bg-primary hover:bg-primary-dark"
+              class="flex justify-between py-2 px-2 mt-4 ml-1 text-sm rounded border-0 text-primary-content bg-primary hover:bg-primary-dark"
               href={@episode.original_audio_url}
             >
               <svg
