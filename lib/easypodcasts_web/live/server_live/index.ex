@@ -13,7 +13,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
     socket =
       if connected?(socket) do
         PubSub.subscribe(Easypodcasts.PubSub, "queue_state")
-        PubSub.subscribe(Easypodcasts.PubSub, "queue_length")
+        # PubSub.subscribe(Easypodcasts.PubSub, "queue_length")
         PubSub.subscribe(Easypodcasts.PubSub, "visitors")
 
         {_id, capacity, percent} =

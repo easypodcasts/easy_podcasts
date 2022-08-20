@@ -49,7 +49,7 @@ defmodule EasypodcastsWeb do
 
       on_mount PhoenixProfiler
 
-      use EasypodcastsWeb.QueueComponent
+      # use EasypodcastsWeb.QueueComponent
       unquote(view_helpers())
     end
   end

@@ -258,11 +258,11 @@ defmodule Easypodcasts.Episodes do
   defp broadcast_queue_changed() do
     queue = queue_state()
 
-    PubSub.broadcast(
-      Easypodcasts.PubSub,
-      "queue_length",
-      {:queue_length_changed, length(queue)}
-    )
+    # PubSub.broadcast(
+    #   Easypodcasts.PubSub,
+    #   "queue_length",
+    #   {:queue_length_changed, length(queue)}
+    # )
 
     PubSub.broadcast(
       Easypodcasts.PubSub,
