@@ -104,6 +104,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
     {:noreply, socket}
   end
 
+  @impl true
   def handle_info(:clear_flash, socket) do
     {:noreply, clear_flash(socket)}
   end

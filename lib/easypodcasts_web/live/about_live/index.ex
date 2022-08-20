@@ -187,6 +187,7 @@ defmodule EasypodcastsWeb.AboutLive.Index do
     """
   end
 
+  @impl true
   def handle_info(:clear_flash, socket) do
     {:noreply, clear_flash(socket)}
   end
