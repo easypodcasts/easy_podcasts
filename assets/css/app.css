@@ -13,23 +13,6 @@
   .custom-styles h2 {
     @apply text-xl mt-2;
   }
-
-  #player-element {
-    & > * {
-      animation: player 2s ease-out;
-    }
-  }
-
-  @keyframes player {
-    0% {
-      transform: scale(0.5);
-      opacity: 0;
-    }
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
 }
 
 @tailwind components;

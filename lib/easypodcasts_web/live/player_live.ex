@@ -43,9 +43,9 @@ defmodule EasypodcastsWeb.PlayerLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <div id="player-element" phx-hook="PlayerHook">
+    <div id="player-container" phx-hook="PlayerHook">
       <%= if @show do %>
-        <section class="flex fixed right-0 bottom-0 flex-col py-2 px-4 w-full shadow shadow-base-content/30 xl:right-5 xl:bottom-5 xl:py-4 xl:w-1/3 xl:rounded-xl bg-base-100 z-50 transition ease-out duration-400 transform opacity-0 scale-10 opacity-100 scale-100 translate-y-0">
+        <section class="flex fixed right-0 bottom-0 flex-col py-2 px-4 w-full shadow shadow-base-content/30 xl:right-5 xl:bottom-5 xl:py-4 xl:w-1/3 xl:rounded-xl bg-base-100 z-50 transition ease-in-out duration-300 opacity-0 scale-80" id="player-element">
           <audio src={EpisodeAudio.url({"episode.opus", @episode})}></audio>
           <div class="flex mb-2">
             <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(@channel)) do %>
