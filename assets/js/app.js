@@ -35,7 +35,14 @@ Hooks.CopyHook = {
     const copyButton = document.getElementById("copy-feed-url");
     const url = document.getElementById("feed-url").value;
     copyButton.onclick = () => {
-      navigator.clipboard.writeText(url);
+      navigator.clipboard.writeText(url).then(
+        () => {
+          document.getElementById("copy-success").classList.remove("hidden");
+        },
+        () => {
+          document.getElementById("copy-error").classList.remove("hidden");
+        }
+      );
     };
   },
 };
@@ -113,7 +120,20 @@ Hooks.PlayerHook = {
     };
 
     this.copyTimestampButton.onclick = () => {
-      navigator.clipboard.writeText(`${this.getElement("#episode-url").value}?t=${this.player.currentTime}`);
+      navigator.clipboard
+        .writeText(
+          `${this.getElement("#episode-url").value}?t=${
+            this.player.currentTime
+          }`
+        )
+        .then(
+          () => {
+            document.getElementById("copy-success").classList.remove("hidden");
+          },
+          () => {
+            document.getElementById("copy-error").classList.remove("hidden");
+          }
+        );
     };
 
     this.progressWrapper.onclick = (event) => {
