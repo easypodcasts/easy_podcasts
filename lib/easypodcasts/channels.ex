@@ -42,7 +42,7 @@ defmodule Easypodcasts.Channels do
         left_join: e in assoc(c, :episodes),
         group_by: c.id,
         select_merge: %{episodes: count(e.id)},
-        order_by: [desc: c.updated_at, desc: c.id]
+        order_by: [desc: c.updated_at]
       )
     )
     |> Repo.paginate(page: page)
