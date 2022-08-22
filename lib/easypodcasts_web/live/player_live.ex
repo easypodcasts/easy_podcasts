@@ -50,7 +50,7 @@ defmodule EasypodcastsWeb.PlayerLive do
           id="player-element"
         >
           <input
-            type="hidde"
+            type="hidden"
             id="episode-url"
             value={
               "https://easypodcasts.live#{Routes.episode_show_path(@socket, :show, Utils.slugify(@channel), Utils.slugify(@episode))}"
