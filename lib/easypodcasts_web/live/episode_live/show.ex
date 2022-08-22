@@ -32,6 +32,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
   def render(assigns) do
     ~H"""
     <div class="flex flex-col p-4 xl:flex-row">
+      <input type="hidden" value={@episode.id} id="episode-info" />
       <EasypodcastsWeb.ChannelLive.Show.channel_card channel={@channel} socket={@socket} />
       <section class="mt-5 xl:mt-0 xl:w-1/2 body-font">
         <div class="divide-primary/20">
@@ -62,10 +63,10 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
           <span class="mr-3 text-xs md:text-sm">
             <%= Utils.format_date(@episode.publication_date) %>
           </span>
-          <span class="mr-3 text-xs md:text-sm ">
+          <span class="mr-3 text-xs md:text-sm">
             <%= Utils.get_duration(@episode) %>
           </span>
-          <span class="mr-3 text-xs md:text-sm ">
+          <span class="mr-3 text-xs md:text-sm">
             <%= if @episode.status == :done do %>
               <%= Float.floor((@episode.processed_size || 0) / 1_000_000, 2) %> MB ( <%= Float.floor(
                 (@episode.original_size - (@episode.processed_size || 0)) / 1_000_000,
@@ -75,12 +76,12 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
               <%= Float.floor(@episode.original_size / 1_000_000, 2) %> MB
             <% end %>
           </span>
-          <span class="mr-3 text-xs md:text-sm ">
+          <span class="mr-3 text-xs md:text-sm">
             <%= "#{gettext("Downloads:")} #{@episode.downloads}" %>
           </span>
         </div>
         <%= if @full_description do %>
-          <div class="custom-styles mb-4">
+          <div class="mb-4 custom-styles">
             <%= if @episode.feed_data["content"] && String.trim(@episode.feed_data["content"]) != ""  do %>
               <%= sanitize(@episode.feed_data["content"] || @episode.description, :basic_html) |> raw %>
             <% else %>
@@ -88,14 +89,14 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
             <% end %>
           </div>
         <% else %>
-          <p class="text-sm md:text-base line-clamp-2 md:line-clamp-6  mb-4">
+          <p class="mb-4 text-sm md:text-base line-clamp-2 md:line-clamp-6">
             <%= sanitize(@episode.description) %>
           </p>
         <% end %>
         <%= if @episode.status == :done do %>
           <div class="flex items-center self-start">
             <button
-              class="flex justify-between btn btn-primary mr-2"
+              class="flex justify-between mr-2 btn btn-primary"
               phx-click="play"
               phx-target="#player"
               phx-value-episode={@episode.id}
@@ -146,10 +147,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
           </div>
         <% end %>
         <%= if @episode.status == :queued do %>
-          <button
-            class="flex self-start btn cursor-wait "
-            disabled
-          >
+          <button class="flex self-start cursor-wait btn" disabled>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="mr-1 w-5 h-5"
@@ -168,7 +166,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
           </button>
         <% end %>
         <%= if @episode.status == :processing do %>
-          <button class="flex self-start btn cursor-wait" disabled>
+          <button class="flex self-start cursor-wait btn" disabled>
             <svg class="mr-1 -ml-1 w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path
@@ -183,7 +181,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
         <% end %>
         <%= if @episode.status == :new and @episode.retries < 3 do %>
           <button
-            class="flex justify-between self-start btn btn-primary disabled:cursor-wait"
+            class="flex justify-between self-start disabled:cursor-wait btn btn-primary"
             phx-click="process_episode"
             phx-value-episode_id={@episode.id}
             phx-disable-with={gettext("Queuing...")}

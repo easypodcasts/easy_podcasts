@@ -45,20 +45,33 @@ Hooks.PlayerHook = {
     this.handleEvent("play", ({ current_time, episode }) =>
       this.setup(current_time, episode)
     );
+
     this.handleEvent("cleanup", () => this.cleanup());
 
-    let player_state = JSON.parse(localStorage.getItem("player_state"));
-    if (player_state) {
-      this.pushEvent("play", player_state);
+    const urlParams = new URLSearchParams(window.location.search);
+    const episodeInfo = document.getElementById("episode-info");
+    const time = parseInt(urlParams.get("t"));
+    if (episodeInfo && time) {
+      this.pushEvent("play", {
+        episode: episodeInfo.value,
+        current_time: time,
+      });
+    } else {
+      const playerState = JSON.parse(localStorage.getItem("player_state"));
+      if (playerState) {
+        this.pushEvent("play", playerState);
+      }
     }
   },
 
   setup(current_time, episode) {
-    setTimeout(() =>
-      this.getElement("#player-element").classList.add(
-        "opacity-100",
-        "scale-100"
-      ), 100
+    setTimeout(
+      () =>
+        this.getElement("#player-element").classList.add(
+          "opacity-100",
+          "scale-100"
+        ),
+      100
     );
     this.episode = episode;
     this.player = this.getElement("audio");
@@ -68,6 +81,7 @@ Hooks.PlayerHook = {
     this.loading = this.getElement("#loading");
     this.playButton = this.getElement("#play");
     this.pauseButton = this.getElement("#pause");
+    this.copyTimestampButton = this.getElement("#copy-timestamp");
     this.currentTime = this.getElement("#current-time");
 
     if (current_time) {
@@ -96,6 +110,10 @@ Hooks.PlayerHook = {
       clearInterval(this.progressTimer);
       clearInterval(this.saveTimer);
       this.pause();
+    };
+
+    this.copyTimestampButton.onclick = () => {
+      navigator.clipboard.writeText(`${this.getElement("#episode-url").value}?t=${this.player.currentTime}`);
     };
 
     this.progressWrapper.onclick = (event) => {
