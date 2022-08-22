@@ -287,7 +287,7 @@ defmodule Easypodcasts.Episodes do
 
   def save_new_episodes(channel, feed_data) do
     # episode_audio_urls = get_episodes_url_from_channel(channel.id)
-    episodes_guids = list_episodes_guids()
+    episodes_guids = list_episodes_guids(channel.id)
 
     (feed_data["items"] || [])
     |> Stream.filter(&(&1["enclosures"] && hd(&1["enclosures"])["url"]))
