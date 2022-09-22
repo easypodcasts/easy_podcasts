@@ -43,7 +43,6 @@ if config_env() == :prod do
     ],
     secret_key_base: secret_key_base
 
-
   # ## Using releases
   #
   # If you are doing OTP releases, you need to instruct Phoenix
@@ -75,3 +74,4 @@ end
 
 config :easypodcasts, Easypodcasts, proxy_url: System.get_env("BLOCKED_FEEDS_PROXY") || ""
 config :easypodcasts, Easypodcasts, proxy_token: System.get_env("BLOCKED_FEEDS_PROXY_TOKEN") || ""
+config :easypodcasts, Easypodcasts, telegram_token: System.get_env("TELEGRAM_TOKEN") || ""

@@ -40,14 +40,14 @@ defmodule EasypodcastsWeb.QueueComponent do
     ~H"""
     <div>
       <%= if @queue_length > 0 do %>
-        <%= live_redirect(
-          ngettext("%{queue_length} episode in queue", "%{queue_length} episodes in queue", @queue_length,
+        <.link
+          navigate={Routes.server_index_path(@socket, :index)}
+          class="block fixed right-6 bottom-16 py-1 px-3 text-xl rounded-lg shadow-2xl bg-primary text-primary-content hover:bg-primary-focus z-50"
+        >
+          <%= ngettext("%{queue_length} episode in queue", "%{queue_length} episodes in queue", @queue_length,
             queue_length: @queue_length
-          ),
-          to: Routes.server_index_path(@socket, :index),
-          class:
-            "block fixed right-6 bottom-16 py-1 px-3 text-xl rounded-lg shadow-2xl bg-primary text-primary-content hover:bg-primary-focus z-50"
-        ) %>
+          ) %>
+        </.link>
       <% end %>
     </div>
     """

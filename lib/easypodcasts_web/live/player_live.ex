@@ -58,19 +58,21 @@ defmodule EasypodcastsWeb.PlayerLive do
           />
           <audio src={EpisodeAudio.url({"episode.opus", @episode})}></audio>
           <div class="flex mb-2">
-            <%= live_redirect to: Routes.channel_show_path(@socket, :show, Utils.slugify(@channel)) do %>
+            <.link navigate={Routes.channel_show_path(@socket, :show, Utils.slugify(@channel))}>
               <img
                 src={ChannelImage.url({"thumb.webp", @channel}, :thumb)}
                 alt={@channel.title}
                 class="w-16 h-16 rounded-xl"
               />
-            <% end %>
+            </.link>
             <div class="flex flex-col flex-1 px-2">
               <span class="font-semibold">
-                <%= live_redirect(@episode.title,
-                  to: Routes.episode_show_path(@socket, :show, Utils.slugify(@channel), Utils.slugify(@episode)),
-                  class: "text-primary"
-                ) %>
+                <.link
+                  navigate={Routes.episode_show_path(@socket, :show, Utils.slugify(@channel), Utils.slugify(@episode))}
+                  class="text-primary"
+                >
+                  <%= @episode.title %>
+                </.link>
               </span>
             </div>
             <svg

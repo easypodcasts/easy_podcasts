@@ -14,7 +14,6 @@ defmodule Easypodcasts.Application do
       EasypodcastsWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Easypodcasts.PubSub},
-      {PhoenixProfiler, name: Easypodcasts.Profiler},
       # Start the Endpoint (http/https)
       EasypodcastsWeb.Endpoint,
       EasypodcastsWeb.Presence,
@@ -24,7 +23,13 @@ defmodule Easypodcasts.Application do
       Easypodcasts.Scheduler,
       {Registry, keys: :unique, name: WorkerRegistry},
       {DynamicSupervisor, strategy: :one_for_one, name: WorkerSupervisor},
-      Easypodcasts.Queue
+      Easypodcasts.Queue,
+      {Telegram.Poller,
+       bots: [
+         {Easypodcasts.Bot.Counter,
+          token: Application.get_env(:easypodcasts, Easypodcasts)[:telegram_token],
+          max_bot_concurrency: 1000}
+       ]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

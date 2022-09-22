@@ -47,8 +47,6 @@ defmodule EasypodcastsWeb do
       use Phoenix.LiveView,
         layout: {EasypodcastsWeb.LayoutView, "live.html"}
 
-      on_mount PhoenixProfiler
-
       # use EasypodcastsWeb.QueueComponent
       unquote(view_helpers())
     end
@@ -86,7 +84,7 @@ defmodule EasypodcastsWeb do
       use PhoenixHtmlSanitizer, :strip_tags
 
       # Import LiveView and .heex helpers (live_render, live_patch, <.form>, etc)
-      import Phoenix.LiveView.Helpers
+      import Phoenix.Component
 
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View

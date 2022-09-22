@@ -74,16 +74,17 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
             src={ChannelImage.url({"original.webp", @channel}, :original)}
           />
           <div class="flex flex-col">
-            <%= live_redirect(@channel.title,
-              to: Routes.channel_show_path(@socket, :show, Utils.slugify(@channel)),
-              class: "p-1 text-xl md:p-0 text-primary"
-            ) %>
+            <.link
+              navigate={Routes.channel_show_path(@socket, :show, Utils.slugify(@channel))}
+              class="p-1 text-xl md:p-0 text-primary"
+            >
+              <%= @channel.title %>
+            </.link>
             <div class="mt-2">
               <%= for category <- @channel.categories do %>
-                <%= live_redirect("##{category}",
-                  to: Routes.channel_index_path(@socket, :index, search: "##{category}"),
-                  class: "text-primary"
-                ) %>
+                <.link navigate={Routes.channel_index_path(@socket, :index, search: "##{category}")} class="text-primary">
+                  <%= "##{category}" %>
+                </.link>
               <% end %>
             </div>
           </div>
@@ -142,10 +143,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
               class="input input-primary flex-1"
               value={"https://easypodcasts.live#{Routes.feed_path(@socket, :feed, Utils.slugify(@channel))}"}
             />
-            <button
-              id="copy-feed-url"
-              class="btn btn-primary btn-square"
-            >
+            <button id="copy-feed-url" class="btn btn-primary btn-square">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="w-6 h-6"

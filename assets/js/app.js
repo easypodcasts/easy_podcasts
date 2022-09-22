@@ -24,12 +24,6 @@ import topbar from "../vendor/topbar";
 
 let Hooks = {};
 
-Hooks.AutoFocus = {
-  mounted() {
-    this.el.focus();
-  },
-};
-
 Hooks.CopyHook = {
   mounted() {
     const copyButton = document.getElementById("copy-feed-url");

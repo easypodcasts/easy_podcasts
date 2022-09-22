@@ -49,10 +49,12 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
       <div class="flex flex-col w-full">
         <h2 class="mb-2 text-sm font-medium md:text-xl title-font">
           <%= if @socket.view == EasypodcastsWeb.ChannelLive.Show do %>
-            <%= live_redirect(@episode.title,
-              to: Routes.episode_show_path(@socket, :show, Utils.slugify(@channel), Utils.slugify(@episode)),
-              class: "text-primary"
-            ) %>
+            <.link
+              navigate={Routes.episode_show_path(@socket, :show, Utils.slugify(@channel), Utils.slugify(@episode))}
+              class="text-primary"
+            >
+              <%= @episode.title %>
+            </.link>
           <% else %>
             <span class="text-primary">
               <%= @episode.title %>

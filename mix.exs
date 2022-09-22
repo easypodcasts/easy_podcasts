@@ -39,9 +39,9 @@ defmodule Easypodcasts.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 3.0"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 0.17.0", override: true},
+      {:phoenix_live_view, "~> 0.18.0", override: true},
       {:floki, ">= 0.30.0", only: :test},
-      {:phoenix_live_dashboard, "~> 0.6"},
+      {:phoenix_live_dashboard, "~> 0.7"},
       {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
       {:swoosh, "~> 1.3"},
       {:telemetry_metrics, "~> 0.6"},
@@ -57,8 +57,8 @@ defmodule Easypodcasts.MixProject do
       {:timex, "~> 3.7"},
       {:httpoison, "~> 1.8"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
-      {:phoenix_profiler, "~> 0.1.0", github: "mcrumm/phoenix_profiler"},
-      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev}
+      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
+      {:telegram, git: "https://github.com/visciang/telegram.git", tag: "0.20.4"}
     ]
   end
 

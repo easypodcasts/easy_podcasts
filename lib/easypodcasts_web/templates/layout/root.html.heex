@@ -87,7 +87,9 @@
     <% end %>
 
     <%= csrf_meta_tag() %>
-    <%= live_title_tag(assigns[:page_title] || "Easypodcasts", suffix: " · Easy Podcasts") %>
+    <.live_title suffix=" · Easy Podcasts">
+      <%= assigns[:page_title] || "Easypodcasts" %>
+    </.live_title>
     <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")} />
     <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}>
     </script>

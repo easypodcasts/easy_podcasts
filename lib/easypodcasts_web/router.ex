@@ -54,8 +54,7 @@ defmodule EasypodcastsWeb.Router do
       pipe_through :browser
 
       live_dashboard "/dashboard",
-        metrics: EasypodcastsWeb.Telemetry,
-        additional_pages: [_profiler: {PhoenixProfiler.Dashboard, []}]
+        metrics: EasypodcastsWeb.Telemetry
     end
   end
 

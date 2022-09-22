@@ -20,16 +20,15 @@ defmodule EasypodcastsWeb.ModalComponent do
   def render(assigns) do
     ~H"""
     <div id={@id} class="modal">
-      <div class="modal-box">
+      <.focus_wrap id="modal-focus" class="modal-box">
         <h3 class="text-lg font-bold">
           <%= gettext("Add New Podcast") %>
         </h3>
-        <.form let={f} for={@changeset} id="channel-form" phx-submit="save" phx-target={@myself} phx-page-loading>
+        <.form :let={f} for={@changeset} id="channel-form" phx-submit="save" phx-target={@myself} phx-page-loading>
           <%= error_tag(f, :link) %>
           <div class="flex flex-col justify-between h-full">
             <div class="flex flex-col my-4">
               <%= url_input(f, :link,
-                phx_hook: "AutoFocus",
                 placeholder: "https://example.podcast.com/rss",
                 class: "mb-2 input input-primary"
               ) %>
@@ -51,7 +50,7 @@ defmodule EasypodcastsWeb.ModalComponent do
             </div>
           </div>
         </.form>
-      </div>
+      </.focus_wrap>
     </div>
     """
   end

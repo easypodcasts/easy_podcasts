@@ -32,11 +32,13 @@ defmodule EasypodcastsWeb.AboutLive.Index do
           ¿Cómo lo uso?
         </h2>
         <p>
-          Recomendamos usar <em>Easy Podcasts</em> mediante una aplicación de podcasts como
+          Recomendamos usar <em>Easy Podcasts</em>
+          mediante una aplicación de podcasts como
           <a class="text-primary" href="https://antennapod.org">
             Antennapod
           </a>
-          simplemente adicionando a la aplicación el <em>feed RSS</em> del podcast que quieres escuchar.
+          simplemente adicionando a la aplicación el <em>feed RSS</em>
+          del podcast que quieres escuchar.
         </p>
         <p>
           Para comenzar a usar el sistema debes
@@ -44,13 +46,13 @@ defmodule EasypodcastsWeb.AboutLive.Index do
             añadir
           </span>
           el podcast que quieres escuchar utilizando el enlace a su <em>feed</em>
-          o seleccionar uno de los <%= live_redirect("podcasts existentes",
-            to: Routes.channel_index_path(@socket, :index),
-            class: "text-primary"
-          ) %> y usar el botón para subscribirse.
+          o seleccionar uno de los
+          <.link navigate={Routes.channel_index_path(@socket, :index)} class="text-primary">podcasts existentes</.link>
+          y usar el botón para subscribirse.
         </p>
         <p>
-          <em>Easy Podcasts</em> también cuenta con un reproductor básico integrado aunque recomendamos usar una
+          <em>Easy Podcasts</em>
+          también cuenta con un reproductor básico integrado aunque recomendamos usar una
           <a class="text-primary" href="https://antennapod.org">
             aplicación nativa
           </a>
@@ -125,22 +127,21 @@ defmodule EasypodcastsWeb.AboutLive.Index do
             Los episodios son convertidos en dependencia de la disponibilidad de <em>workers</em>
             lo que la prontitud con la que puede obtener un episodio convertido depende de la cantidad de episodios en cola y de
             <em>workers</em>
-            que estén disponibles en el momento <%= live_redirect(
-              "El estado de la cola de conversión puede consultarse aquí",
-              to: Routes.server_index_path(@socket, :index),
-              class: "text-primary"
-            ) %>
+            que estén disponibles en el momento
+            <.link navigate={Routes.server_index_path(@socket, :index)} class="text-primary">
+              El estado de la cola de conversión puede consultarse aquí
+            </.link>
           </li>
           <li>
-            Según el estado del almacenamiento, los episodios convertidos se irán eliminando comenzando por los que se convirtieron hace más tiempo. Si un episodio convertido se elimina siempre puede convertirse nuevamente. <%= live_redirect(
-              "El estado del almacenamiento puede consultarse aquí",
-              to: Routes.server_index_path(@socket, :index),
-              class: "text-primary"
-            ) %>
+            Según el estado del almacenamiento, los episodios convertidos se irán eliminando comenzando por los que se convirtieron hace más tiempo. Si un episodio convertido se elimina siempre puede convertirse nuevamente.
+            <.link navigate={Routes.server_index_path(@socket, :index)} , class="text-primary">
+              El estado del almacenamiento puede consultarse aquí
+            </.link>
           </li>
           <li>
             Debido a los términos del proveedor de servicios el servidor cuenta con 250GB de tráfico mensual, de superarse este límite
-            <em>Easy Podcasts</em> dejará de prestar servicios hasta el próximo mes.
+            <em>Easy Podcasts</em>
+            dejará de prestar servicios hasta el próximo mes.
           </li>
         </ul>
         <h2 class="pt-3 pb-1 text-xl font-bold">
@@ -150,11 +151,10 @@ defmodule EasypodcastsWeb.AboutLive.Index do
           Los episodios son convertidos en dependencia de la disponibilidad de <em>workers</em>
           lo que la prontitud con la que puede obtener un episodio convertido depende de la cantidad de episodios en cola y de
           <em>workers</em>
-          que estén disponibles en el momento. <%= live_redirect(
-            "El estado de la cola de conversión puede consultarse aquí",
-            to: Routes.server_index_path(@socket, :index),
-            class: "text-primary"
-          ) %>
+          que estén disponibles en el momento.
+          <.link navigate={Routes.server_index_path(@socket, :index)} class="text-primary">
+            El estado de la cola de conversión puede consultarse aquí
+          </.link>
         </p>
         <h2 class="pt-3 pb-1 text-xl font-bold">
           Estoy usando una aplicación de podcasts, ¿por qué no aparecen todos los episodios en el feed?
@@ -167,20 +167,22 @@ defmodule EasypodcastsWeb.AboutLive.Index do
         <h2 class="pt-3 pb-1 text-xl font-bold">
           Mis episodios convertidos desaparecieron, ¿por qué?
         </h2>
-        Según el estado del almacenamiento, los episodios convertidos se irán eliminando comenzando por los que se convirtieron hace más tiempo. Si un episodio convertido se elimina siempre puede convertirse nuevamente. <%= live_redirect(
-          "El estado del almacenamiento puede consultarse aquí",
-          to: Routes.server_index_path(@socket, :index),
-          class: "text-primary"
-        ) %>
+        Según el estado del almacenamiento, los episodios convertidos se irán eliminando comenzando por los que se convirtieron hace más tiempo. Si un episodio convertido se elimina siempre puede convertirse nuevamente.
+        <.link navigate={Routes.server_index_path(@socket, :index)} class="text-primary">
+          El estado del almacenamiento puede consultarse aquí
+        </.link>
         <h2 class="pt-3 pb-1 text-xl font-bold">
           Tengo un iPhone :(
         </h2>
         <p>
-          <em>Easy Podcasts</em> usa el códec de audio
+          <em>Easy Podcasts</em>
+          usa el códec de audio
           <a href="https://es.wikipedia.org/wiki/Opus_(c%C3%B3dec)#Soporte" class="text-primary">
             Opus
           </a>
-          para comprimir los episodios. Este códec tiene soporte limitado en los dispositivos de Apple y es necesario utilizar una aplicación de terceros como <a href="https://radiopublic.com/" class="text-primary">RadioPublic</a> para poder reproducirlo. 
+          para comprimir los episodios. Este códec tiene soporte limitado en los dispositivos de Apple y es necesario utilizar una aplicación de terceros como
+          <a href="https://radiopublic.com/" class="text-primary">RadioPublic</a>
+          para poder reproducirlo.
         </p>
       </div>
     </article>

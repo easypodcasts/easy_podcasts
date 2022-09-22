@@ -4,7 +4,6 @@
   return_to={Routes.channel_index_path(@socket, :index)}
 />
 
-
 <%= live_render(@socket, EasypodcastsWeb.PlayerLive, id: "player", sticky: true) %>
 <aside
   class="fixed top-0 -right-full z-50 w-full h-full shadow duration-200 ease-in-out bg-primary-content"
@@ -29,36 +28,37 @@
     </button>
     <!-- Sidebar content here -->
     <li>
-      <%= live_redirect(gettext("Status"),
-        to: Routes.server_index_path(@socket, :index),
-        class: "self-center mr-5 text-lg text-primary"
-      ) %>
+      <.link navigate={Routes.server_index_path(@socket, :index)} class="self-center mr-5 text-lg text-primary">
+        <%= gettext("Status") %>
+      </.link>
     </li>
     <li>
-      <%= live_redirect(gettext("About"),
-        to: Routes.about_index_path(@socket, :index),
-        class: "self-center mr-5 text-lg text-primary"
-      ) %>
+      <.link navigate={Routes.about_index_path(@socket, :index)} class="self-center mr-5 text-lg text-primary">
+        <%= gettext("About") %>
+      </.link>
     </li>
     <li>
       <a href="https://t.me/soporte_easypodcasts" class="self-center mr-5 text-lg text-primary">
         <%= gettext("Contact") %>
       </a>
     </li>
-    <button phx-click={JS.add_class("modal-open", to: "#new-podcast")} class="ml-1 btn btn-primary">
+    <button
+      phx-click={JS.add_class("modal-open", to: "#new-podcast") |> JS.focus_first(to: "#new-podcast")}
+      class="ml-1 btn btn-primary"
+    >
       <%= gettext("Add Podcast") %>
     </button>
   </ul>
 </aside>
 <nav class="container flex justify-between px-4 mx-auto navbar bg-base-100">
-  <%= live_redirect to: Routes.channel_index_path(@socket, :index), class: "md:w-1/3" do %>
+  <.link navigate={Routes.channel_index_path(@socket, :index)} class="md:w-1/3">
     <img class="hidden h-10 md:flex" src={Routes.static_path(@socket, "/images/easypodcasts.svg")} alt="Easy Podcasts" />
     <img
       class="md:hidden btn btn-square btn-ghost"
       src={Routes.static_path(@socket, "/images/easypodcasts-lite.svg")}
       alt="Easy Podcasts"
     />
-  <% end %>
+  </.link>
   <%= if @socket.view not in [
            EasypodcastsWeb.ServerLive.Index,
            EasypodcastsWeb.AboutLive.Index,
@@ -83,23 +83,24 @@
     <ul class="flex items-center">
       <!-- Navbar menu content here -->
       <li>
-        <%= live_redirect(gettext("Status"),
-          to: Routes.server_index_path(@socket, :index),
-          class: "p-2 link-primary"
-        ) %>
+        <.link navigate={Routes.server_index_path(@socket, :index)} class="p-2 link-primary" %>
+          <%= gettext("Status") %>
+        </.link>
       </li>
       <li>
-        <%= live_redirect(gettext("About"),
-          to: Routes.about_index_path(@socket, :index),
-          class: "p-2 link-primary"
-        ) %>
+        <.link navigate={Routes.about_index_path(@socket, :index)} class="p-2 link-primary">
+          <%= gettext("About") %>
+        </.link>
       </li>
       <li>
         <a href="https://t.me/soporte_easypodcasts" class="p-2 link-primary">
           <%= gettext("Contact") %>
         </a>
       </li>
-      <button phx-click={JS.add_class("modal-open", to: "#new-podcast")} class="ml-1 btn btn-primary">
+      <button
+        phx-click={JS.add_class("modal-open", to: "#new-podcast") |> JS.focus_first(to: "#new-podcast")}
+        class="ml-1 btn btn-primary"
+      >
         <%= gettext("Add Podcast") %>
       </button>
     </ul>
