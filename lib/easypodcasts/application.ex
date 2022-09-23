@@ -26,7 +26,7 @@ defmodule Easypodcasts.Application do
       Easypodcasts.Queue,
       {Telegram.Poller,
        bots: [
-         {Easypodcasts.Bot.Counter,
+         {Easypodcasts.Telegram.Bot,
           token: Application.get_env(:easypodcasts, Easypodcasts)[:telegram_token],
           max_bot_concurrency: 1000}
        ]}

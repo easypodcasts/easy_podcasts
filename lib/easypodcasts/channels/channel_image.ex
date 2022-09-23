@@ -22,17 +22,14 @@ defmodule Easypodcasts.Channels.ChannelImage do
 
   # Define a thumbnail transformation:
   def transform(:thumb, _file) do
-    IO.inspect("thumb")
     {:ffmpeg, &"-i #{&1} -vf scale=215x215 -f webp #{&2}", :webp}
   end
 
   def transform(:original, _file) do
-    IO.inspect("original")
     {:ffmpeg, &"-i #{&1} -vf scale=400x400 -f webp #{&2}", :webp}
   end
 
   def transform(:preview, _file) do
-    IO.inspect("preview")
     {:ffmpeg, &"-i #{&1} -vf scale=400x400 #{&2}", :jpg}
   end
 

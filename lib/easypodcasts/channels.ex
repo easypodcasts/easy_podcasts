@@ -115,7 +115,7 @@ defmodule Easypodcasts.Channels do
            |> Repo.insert(),
          {:ok, _episodes} <- process_channel(channel) do
       Task.start(fn -> store_channel_image(channel) end)
-
+      Task.start(fn -> Easypodcasts.Telegram.Bot.notify_new_podcast(channel) end)
       {:ok, channel}
     else
       {:error, %Changeset{} = changeset} ->
