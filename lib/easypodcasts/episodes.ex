@@ -314,7 +314,10 @@ defmodule Easypodcasts.Episodes do
       original_audio_url: item["enclosures"] && hd(item["enclosures"])["url"],
       original_size:
         item["enclosures"] &&
-          (hd(item["enclosures"])["length"] || "0") |> String.trim() |> Integer.parse |> then(& elem &1, 0),
+          (hd(item["enclosures"])["length"] || "0")
+          |> String.trim()
+          |> Integer.parse()
+          |> then(&elem(&1, 0)),
       channel_id: channel_id,
       publication_date: publication_date,
       categories:
