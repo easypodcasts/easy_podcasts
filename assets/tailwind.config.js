@@ -3,8 +3,9 @@ module.exports = {
   safelist: ["right-0", "opacity-100", "scale-100"],
   plugins: [require("@tailwindcss/line-clamp"), require("daisyui")],
   daisyui: {
-    darkTheme: "dark",
+    darkTheme: "halloween",
     themes: [
+      "halloween",
       {
         light: {
           primary: "#0891B2",
@@ -46,7 +47,6 @@ module.exports = {
       "retro",
       "cyberpunk",
       "valentine",
-      "halloween",
       "garden",
       "forest",
       "aqua",
