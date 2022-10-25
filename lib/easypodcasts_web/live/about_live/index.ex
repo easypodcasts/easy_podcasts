@@ -134,7 +134,7 @@ defmodule EasypodcastsWeb.AboutLive.Index do
           </li>
           <li>
             Según el estado del almacenamiento, los episodios convertidos se irán eliminando comenzando por los que se convirtieron hace más tiempo. Si un episodio convertido se elimina siempre puede convertirse nuevamente.
-            <.link navigate={Routes.server_index_path(@socket, :index)} , class="text-primary">
+            <.link navigate={Routes.server_index_path(@socket, :index)} class="text-primary">
               El estado del almacenamiento puede consultarse aquí
             </.link>
           </li>

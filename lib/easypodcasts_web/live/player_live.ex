@@ -46,7 +46,7 @@ defmodule EasypodcastsWeb.PlayerLive do
     <div id="player-container" phx-hook="PlayerHook">
       <%= if @show do %>
         <section
-          class="flex fixed right-0 bottom-0 z-50 flex-col py-2 px-4 w-full shadow opacity-0 transition duration-300 ease-in-out xl:right-5 xl:bottom-5 xl:py-4 xl:w-1/3 xl:rounded-xl shadow-base-content/30 bg-base-100 scale-80"
+          class="flex fixed right-0 bottom-0 z-50 flex-col py-2 px-4 w-full shadow transition duration-300 ease-in-out xl:right-5 xl:bottom-5 xl:py-4 xl:w-1/3 xl:rounded-xl shadow-base-content/30 bg-base-100 scale-80"
           id="player-element"
         >
           <input

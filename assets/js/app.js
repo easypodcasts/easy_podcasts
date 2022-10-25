@@ -66,14 +66,6 @@ Hooks.PlayerHook = {
   },
 
   setup(current_time, episode) {
-    setTimeout(
-      () =>
-        this.getElement("#player-element").classList.add(
-          "opacity-100",
-          "scale-100"
-        ),
-      100
-    );
     this.episode = episode;
     this.player = this.getElement("audio");
     this.player.currentTime = current_time || 0;

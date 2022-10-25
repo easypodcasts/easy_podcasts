@@ -5,25 +5,14 @@ defmodule EasypodcastsWeb.PaginationComponent do
   use Phoenix.Component
   import EasypodcastsWeb.Gettext
 
-  def pagination(
-        %{
-          socket: socket,
-          page_number: page_number,
-          total_pages: total_pages,
-          page_range: page_range,
-          route: route,
-          action: action,
-          object_id: object_id,
-          search: search
-        } = assigns
-      ) do
+  def pagination(assigns) do
     # TODO figure out how to use live_patch here but scrolling to the top
     # after changing page
     ~H"""
     <nav class="flex justify-center mt-5 mb-5 w-full text-lg">
-      <%= if page_number != 1 do %>
+      <%= if @page_number != 1 do %>
         <.link
-          navigate={get_route(socket, route, action, object_id, search, page_number - 1)}
+          navigate={get_route(@socket, @route, @action, @object_id, @search, @page_number - 1)}
           class="block py-2 px-3 mr-1 ml-0 leading-tight rounded-l-lg hover:bg-primary hover:text-primary-content"
         >
           <span class="sr-only">
@@ -40,17 +29,17 @@ defmodule EasypodcastsWeb.PaginationComponent do
         </.link>
       <% end %>
 
-      <%= for idx <- Enum.to_list(page_range) do %>
-        <%= if page_number == idx do %>
+      <%= for idx <- Enum.to_list(@page_range) do %>
+        <%= if @page_number == idx do %>
           <.link
-            navigate={get_route(socket, route, action, object_id, search, idx)}
+            navigate={get_route(@socket, @route, @action, @object_id, @search, idx)}
             class="py-2 px-3 mr-1 text-xl leading-tight rounded pointer-events-none bg-primary text-primary-content"
           >
             <%= idx %>
           </.link>
         <% else %>
           <.link
-            navigate={get_route(socket, route, action, object_id, search, idx)}
+            navigate={get_route(@socket, @route, @action, @object_id, @search, idx)}
             class="py-2 px-3 mr-1 text-xl leading-tight rounded text-primary-dark hover:bg-primary hover:text-primary-content"
           >
             <%= idx %>
@@ -58,9 +47,9 @@ defmodule EasypodcastsWeb.PaginationComponent do
         <% end %>
       <% end %>
 
-      <%= if page_number != total_pages do %>
+      <%= if @page_number != @total_pages do %>
         <.link
-          navigate={get_route(socket, route, action, object_id, search, page_number + 1)}
+          navigate={get_route(@socket, @route, @action, @object_id, @search, @page_number + 1)}
           class="block py-2 px-3 leading-tight rounded-r-lg hover:bg-primary hover:text-primary-content"
         >
           <span class="sr-only">
