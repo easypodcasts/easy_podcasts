@@ -21,7 +21,6 @@ defmodule Easypodcasts.Episodes do
     do: Repo.all(from(e in Episode, select: e.guid))
 
   def list_episodes_for_tag(tag) do
-    
     tags = [tag]
 
     from(e in Episode,
