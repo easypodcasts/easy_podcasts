@@ -113,14 +113,14 @@ defmodule Easypodcasts.Episodes do
 
   ## Examples
 
-      iex> get_episode!(123)
+      iex> get_episode(123)
       %Episode{}
 
-      iex> get_episode!(456)
+      iex> get_episode(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_episode!(id) do
+  def get_episode(id) do
     Repo.one(
       from(e in Episode,
         where: e.id == ^id,
@@ -152,7 +152,7 @@ defmodule Easypodcasts.Episodes do
   end
 
   def enqueue(episode_id) do
-    episode = get_episode!(episode_id)
+    episode = get_episode(episode_id)
 
     if episode.status in [:new, :processing] and episode.retries < 3 do
       {:ok, episode} = update_episode(episode, %{status: :queued})
@@ -185,7 +185,7 @@ defmodule Easypodcasts.Episodes do
   end
 
   def converted(episode_id, upload, worker_id) do
-    episode = get_episode!(episode_id)
+    episode = get_episode(episode_id)
 
     with pid when is_pid(pid) <- lookup_worker(episode_id),
          {:worker_validation, true} <- {:worker_validation, Worker.worker_id(pid) == worker_id},
@@ -220,7 +220,7 @@ defmodule Easypodcasts.Episodes do
   end
 
   def cancel(episode_id, worker_id) do
-    episode = get_episode!(episode_id)
+    episode = get_episode(episode_id)
 
     pid = lookup_worker(episode_id)
 

@@ -15,15 +15,25 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
 
     if connected?(socket), do: PubSub.subscribe(Easypodcasts.PubSub, "episode#{episode_id}")
 
-    channel = Channels.get_channel!(channel_id)
-    episode = Episodes.get_episode!(episode_id)
+    channel = Channels.get_channel(channel_id)
+    episode = Episodes.get_episode(episode_id)
 
     socket =
-      socket
-      |> assign(:channel, channel)
-      |> assign(:episode, episode)
-      |> assign(:show_modal, false)
-      |> assign(:page_title, "#{episode.title}")
+      case episode do
+        nil ->
+          socket
+          |> put_flash(:error, gettext("The episode does not exist"))
+          |> push_redirect(
+            to: Routes.channel_index_path(socket, :index)
+          )
+
+        %Episodes.Episode{} = episode ->
+          socket
+          |> assign(:channel, channel)
+          |> assign(:episode, episode)
+          |> assign(:show_modal, false)
+          |> assign(:page_title, "#{episode.title}")
+      end
 
     {:ok, socket}
   end
@@ -277,7 +287,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
   @impl true
   def handle_info(:episode_processed, socket) do
     Process.send_after(self(), :clear_flash, 5000)
-    episode = Episodes.get_episode!(socket.assigns.episode)
+    episode = Episodes.get_episode(socket.assigns.episode)
 
     socket =
       socket

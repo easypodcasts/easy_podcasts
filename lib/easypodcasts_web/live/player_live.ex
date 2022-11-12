@@ -27,8 +27,8 @@ defmodule EasypodcastsWeb.PlayerLive do
   end
 
   def handle_event("play", %{"episode" => episode_id} = params, socket) do
-    episode = Episodes.get_episode!(episode_id)
-    channel = Channels.get_channel!(episode.channel_id)
+    episode = Episodes.get_episode(episode_id)
+    channel = Channels.get_channel(episode.channel_id)
 
     socket =
       socket
