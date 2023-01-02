@@ -23,9 +23,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
         nil ->
           socket
           |> put_flash(:error, gettext("The episode does not exist"))
-          |> push_redirect(
-            to: Routes.channel_index_path(socket, :index)
-          )
+          |> push_redirect(to: Routes.channel_index_path(socket, :index))
 
         %Episodes.Episode{} = episode ->
           socket

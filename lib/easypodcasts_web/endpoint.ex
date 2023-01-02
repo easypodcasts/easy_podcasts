@@ -36,7 +36,6 @@ defmodule EasypodcastsWeb.Endpoint do
       at: "/uploads",
       from: Path.expand("./uploads"),
       gzip: false
-
   end
 
   plug Phoenix.LiveDashboard.RequestLogger,

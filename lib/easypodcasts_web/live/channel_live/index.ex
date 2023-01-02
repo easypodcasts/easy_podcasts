@@ -37,7 +37,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
                 <p class="flex-1 px-1 h-5/6 text-sm md:px-2 md:mb-2 md:text-center line-clamp-4 md:line-clamp-6">
                   <%= sanitize(channel.description) %>
                 </p>
-                <.link navigate={Routes.channel_show_path(@socket, :show, Utils.slugify(channel))} >
+                <.link navigate={Routes.channel_show_path(@socket, :show, Utils.slugify(channel))}>
                   <span class="flex justify-center self-end pt-4 pr-1 w-16 h-full text-sm text-center break-words rounded-r-lg border-t md:pt-1 md:pb-2 md:w-full md:rounded-t-none md:rounded-b-lg text-wrap text-primary-content bg-primary border-primary hover:bg-primary-focus">
                     <%= ngettext("%{episodes} Episode", "%{episodes} Episodes", channel.episodes, episodes: channel.episodes) %>
                   </span>

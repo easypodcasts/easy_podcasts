@@ -34,12 +34,16 @@ defmodule Easypodcasts.TelegramTest do
       subscription = subscription_fixture()
       update_attrs = %{}
 
-      assert {:ok, %Subscription{} = subscription} = Telegram.update_subscription(subscription, update_attrs)
+      assert {:ok, %Subscription{} = subscription} =
+               Telegram.update_subscription(subscription, update_attrs)
     end
 
     test "update_subscription/2 with invalid data returns error changeset" do
       subscription = subscription_fixture()
-      assert {:error, %Ecto.Changeset{}} = Telegram.update_subscription(subscription, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Telegram.update_subscription(subscription, @invalid_attrs)
+
       assert subscription == Telegram.get_subscription!(subscription.id)
     end
 

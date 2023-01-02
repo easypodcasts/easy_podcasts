@@ -10,9 +10,7 @@ defmodule Easypodcasts.TelegramFixtures do
   def subscription_fixture(attrs \\ %{}) do
     {:ok, subscription} =
       attrs
-      |> Enum.into(%{
-
-      })
+      |> Enum.into(%{})
       |> Easypodcasts.Telegram.create_subscription()
 
     subscription
