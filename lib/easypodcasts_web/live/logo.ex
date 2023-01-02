@@ -3,13 +3,12 @@ defmodule EasypodcastsWeb.LogoComponent do
   Component to generate the theme changer
   """
   use Phoenix.Component
-  import EasypodcastsWeb.Gettext
 
   def big(assigns) do
     ~H"""
     <svg
       class="hidden h-10 md:flex fill-primary"
-      width="628.105"
+      width="200.105"
       height="139.501"
       viewBox="0 0 628.105 139.501"
       xmlns="http://www.w3.org/2000/svg"
