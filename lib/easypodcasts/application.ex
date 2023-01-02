@@ -19,7 +19,6 @@ defmodule Easypodcasts.Application do
       EasypodcastsWeb.Presence,
       # Start a worker by calling: Easypodcasts.Worker.start_link(arg)
       # {Easypodcasts.Worker, arg}
-      {Task.Supervisor, name: Easypodcasts.TaskSupervisor},
       Easypodcasts.Scheduler,
       {Registry, keys: :unique, name: WorkerRegistry},
       {DynamicSupervisor, strategy: :one_for_one, name: WorkerSupervisor},

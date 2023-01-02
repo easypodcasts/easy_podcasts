@@ -112,23 +112,16 @@ defmodule Easypodcasts.Telegram.Bot do
     )
   end
 
-  def handle_update(
-        %{
-          "message" => %{
-            "chat" => %{"id" => chat_id}
-          }
-        },
-        token
-      ) do
-    Telegram.Api.request(token, "sendMessage",
-      chat_id: chat_id,
-      parse_mode: "Markdown",
-      text: """
-      Comando desconocido.
-
-      Consulte la ayuda con el comando `/help`.
-      """
-    )
+  def handle_update(_, _) do
+    # Telegram.Api.request(token, "sendMessage",
+    #   chat_id: chat_id,
+    #   parse_mode: "Markdown",
+    #   text: """
+    #   Comando desconocido.
+    #
+    #   Consulte la ayuda con el comando `/help`.
+    #   """
+    # )
   end
 
   defp is_admin(chat_id, user_id, token) do
