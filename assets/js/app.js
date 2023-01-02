@@ -24,6 +24,20 @@ import topbar from "../vendor/topbar";
 
 let Hooks = {};
 
+Hooks.ThemeChanger = {
+  mounted() {
+    document.querySelectorAll(".theme-select").forEach((theme, _) =>
+      theme.addEventListener("click", () => {
+        let theme_name = theme.dataset.setTheme;
+        document
+          .getElementsByTagName("html")[0]
+          .setAttribute("data-theme", theme_name);
+        document.cookie = `theme=${theme_name}`;
+      })
+    );
+  },
+};
+
 Hooks.CopyHook = {
   mounted() {
     const copyButton = document.getElementById("copy-feed-url");

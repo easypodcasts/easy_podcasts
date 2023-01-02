@@ -5,10 +5,7 @@
 />
 
 <%= live_render(@socket, EasypodcastsWeb.PlayerLive, id: "player", sticky: true) %>
-<aside
-  class="fixed top-0 -right-full z-50 w-full h-full shadow duration-200 ease-in-out bg-primary-content"
-  id="mobile-menu"
->
+<aside class="fixed top-0 -right-full z-50 w-full h-full shadow duration-200 ease-in-out bg-base-100" id="mobile-menu">
   <div class="drawer-overlay"></div>
   <ul class="flex flex-col items-center p-2 space-y-3">
     <button
@@ -42,6 +39,8 @@
         <%= gettext("Contact") %>
       </a>
     </li>
+
+    <EasypodcastsWeb.ThemeComponent.themes />
     <button
       phx-click={JS.add_class("modal-open", to: "#new-podcast") |> JS.focus_first(to: "#new-podcast")}
       class="ml-1 btn btn-primary"
@@ -97,6 +96,7 @@
           <%= gettext("Contact") %>
         </a>
       </li>
+      <EasypodcastsWeb.ThemeComponent.themes />
       <button
         phx-click={JS.add_class("modal-open", to: "#new-podcast") |> JS.focus_first(to: "#new-podcast")}
         class="ml-1 btn btn-primary"

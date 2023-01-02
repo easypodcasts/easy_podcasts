@@ -9,6 +9,7 @@ defmodule EasypodcastsWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug EasypodcastsWeb.Locale.Plug
+    plug EasypodcastsWeb.ThemeComponent.Plug
   end
 
   pipeline :feed do
