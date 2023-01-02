@@ -51,12 +51,8 @@
 </aside>
 <nav class="container flex justify-between px-4 mx-auto navbar bg-base-100">
   <.link navigate={Routes.channel_index_path(@socket, :index)} class="md:w-1/3">
-    <img class="hidden h-10 md:flex" src={Routes.static_path(@socket, "/images/easypodcasts.svg")} alt="Easy Podcasts" />
-    <img
-      class="md:hidden btn btn-square btn-ghost"
-      src={Routes.static_path(@socket, "/images/easypodcasts-lite.svg")}
-      alt="Easy Podcasts"
-    />
+    <EasypodcastsWeb.LogoComponent.big/>
+    <EasypodcastsWeb.LogoComponent.small/>
   </.link>
   <%= if @socket.view not in [
            EasypodcastsWeb.ServerLive.Index,
