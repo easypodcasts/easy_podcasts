@@ -1,5 +1,6 @@
 defmodule Easypodcasts.Telegram.Bot do
   use Telegram.Bot
+  alias Easypodcasts.Channels
 
   @impl Telegram.Bot
   def handle_update(
@@ -110,6 +111,42 @@ defmodule Easypodcasts.Telegram.Bot do
       parse_mode: "Markdown",
       text: message
     )
+  end
+
+  def handle_update(
+        %{
+          "message" => %{
+            "text" => "/buscar " <> search_string,
+            "chat" => %{"id" => chat_id, "type" => chat_type},
+            "from" => %{"id" => from_id}
+          }
+        },
+        token
+      ) do
+    if chat_type == "private" or is_admin(chat_id, from_id, token) do
+      case Channels.list_channels(%{"search" => search_string}, false) do
+        [] ->
+          Telegram.Api.request(token, "sendMessage",
+            chat_id: chat_id,
+            parse_mode: "Markdown",
+            text: "No se encontró ningún podcast"
+          )
+
+        channels ->
+          Enum.each(channels, fn channel ->
+            Telegram.Api.request(token, "sendMessage",
+              chat_id: chat_id,
+              text: "https://easypodcasts.live/#{Easypodcasts.Helpers.Utils.slugify(channel)}"
+            )
+          end)
+      end
+    else
+      Telegram.Api.request(token, "sendMessage",
+        chat_id: chat_id,
+        parse_mode: "Markdown",
+        text: "No tiene permiso para realizar esta acción"
+      )
+    end
   end
 
   def handle_update(_, _) do

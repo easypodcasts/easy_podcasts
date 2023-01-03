@@ -7,16 +7,15 @@ defmodule Easypodcasts.Channels do
   import EasypodcastsWeb.Gettext
   alias Ecto.Changeset
 
-  alias Easypodcasts.Repo
   alias Easypodcasts.Channels.{Channel, ChannelImage}
-  alias Easypodcasts.Episodes
+  alias Easypodcasts.{Repo, Episodes}
   alias Easypodcasts.Helpers.{Search, Feed}
 
   require Logger
 
   def list_channels, do: Repo.all(Channel)
 
-  def list_channels(params) do
+  def list_channels(params, paginate \\ true) do
     {search, filters, tags} = Search.parse_search_string(params["search"], ~w(lang))
 
     page =
@@ -45,7 +44,13 @@ defmodule Easypodcasts.Channels do
         order_by: [desc: c.updated_at]
       )
     )
-    |> Repo.paginate(page: page)
+    |> then(fn q ->
+      if paginate do
+        Repo.paginate(q, page: page)
+      else
+        Repo.all(q)
+      end
+    end)
   end
 
   def list_channels_titles(channels) do
