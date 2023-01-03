@@ -191,6 +191,9 @@ defmodule Easypodcasts.Channels do
         new_episodes
         |> Enum.take(3)
         |> Enum.each(&Episodes.enqueue(&1.id))
+
+        new_episodes
+        |> Enum.each(&Task.start(fn -> Easypodcasts.Telegram.Bot.notify_new_episode(&1) end))
       end
 
       datetime = DateTime.now!("UTC") |> DateTime.to_naive() |> NaiveDateTime.truncate(:second)

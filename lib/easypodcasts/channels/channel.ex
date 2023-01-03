@@ -20,6 +20,9 @@ defmodule Easypodcasts.Channels.Channel do
     field :blocked, :boolean
     has_many :episodes, Easypodcasts.Episodes.Episode
 
+    many_to_many :subscriptions, Easypodcasts.Telegram.Subscription,
+      join_through: Easypodcasts.Telegram.ChannelSubscription
+
     timestamps()
   end
 

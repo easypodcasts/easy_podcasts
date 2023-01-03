@@ -129,7 +129,9 @@ defmodule Easypodcasts.Episodes do
     )
   end
 
-  def create_episodes(episodes), do: Repo.insert_all(Episode, episodes, returning: true)
+  def create_episodes(episodes) do
+    Repo.insert_all(Episode, episodes, returning: true)
+  end
 
   def update_episode(%Episode{} = episode, attrs \\ %{}) do
     episode

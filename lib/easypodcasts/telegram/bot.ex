@@ -136,7 +136,14 @@ defmodule Easypodcasts.Telegram.Bot do
           Enum.each(channels, fn channel ->
             Telegram.Api.request(token, "sendMessage",
               chat_id: chat_id,
-              text: "https://easypodcasts.live/#{Easypodcasts.Helpers.Utils.slugify(channel)}"
+              text: "https://easypodcasts.live/#{Easypodcasts.Helpers.Utils.slugify(channel)}",
+              reply_markup:
+                {:json,
+                 %{
+                   inline_keyboard: [
+                     [%{text: "Suscribir", callback_data: "subscribe #{channel.id}"}]
+                   ]
+                 }}
             )
           end)
       end
@@ -146,6 +153,117 @@ defmodule Easypodcasts.Telegram.Bot do
         parse_mode: "Markdown",
         text: "No tiene permiso para realizar esta acción"
       )
+    end
+  end
+
+  def handle_update(
+        %{
+          "callback_query" => %{
+            "data" => "subscribe " <> podcast_id,
+            "message" => %{
+              "message_id" => message_id,
+              "chat" => %{"id" => chat_id, "type" => chat_type},
+              "text" => text,
+              "from" => %{"id" => from_id}
+            }
+          }
+        },
+        token
+      ) do
+    case chat_type do
+      "private" ->
+        subscribe_to_podcast(chat_id, podcast_id, text, message_id, token)
+
+      _ ->
+        if is_admin(chat_id, from_id, token) do
+          subscribe_to_podcast(chat_id, podcast_id, text, message_id, token)
+        else
+          Telegram.Api.request(token, "sendMessage",
+            chat_id: chat_id,
+            parse_mode: "Markdown",
+            text: "No tiene permiso para realizar esta acción"
+          )
+        end
+    end
+  end
+
+  def handle_update(
+        %{
+          "callback_query" => %{
+            "data" => "unsubscribe " <> podcast_id,
+            "message" => %{
+              "message_id" => message_id,
+              "chat" => %{"id" => chat_id, "type" => chat_type},
+              "text" => text,
+              "from" => %{"id" => from_id}
+            }
+          }
+        },
+        token
+      ) do
+    case chat_type do
+      "private" ->
+        unsubscribe_from_podcast(chat_id, podcast_id, text, message_id, token)
+
+      _ ->
+        if is_admin(chat_id, from_id, token) do
+          unsubscribe_from_podcast(chat_id, podcast_id, text, message_id, token)
+        else
+          Telegram.Api.request(token, "sendMessage",
+            chat_id: chat_id,
+            parse_mode: "Markdown",
+            text: "No tiene permiso para realizar esta acción"
+          )
+        end
+    end
+  end
+
+  def handle_update(
+        %{
+          "message" => %{
+            "text" => "/suscripciones",
+            "chat" => %{"id" => chat_id}
+          }
+        },
+        token
+      ) do
+    case Easypodcasts.Telegram.get_subscription_by_chat_id(chat_id) do
+      nil ->
+        Telegram.Api.request(token, "sendMessage",
+          chat_id: chat_id,
+          parse_mode: "Markdown",
+          text: "No está suscrito a ningún podcast"
+        )
+
+      %Easypodcasts.Telegram.Subscription{} = subscription ->
+        case subscription.channels do
+          [] ->
+            Telegram.Api.request(token, "sendMessage",
+              chat_id: chat_id,
+              parse_mode: "Markdown",
+              text: "No está suscrito a ningún podcast"
+            )
+
+          [_ | _] ->
+            Enum.each(subscription.channels, fn channel ->
+              Telegram.Api.request(token, "sendMessage",
+                chat_id: chat_id,
+                text: "https://easypodcasts.live/#{Easypodcasts.Helpers.Utils.slugify(channel)}",
+                reply_markup:
+                  {:json,
+                   %{
+                     inline_keyboard: [
+                       [
+                         %{
+                           text: "Cancelar suscripción",
+                           callback_data: "unsubscribe #{channel.id}"
+                         }
+                       ]
+                     ]
+                   }}
+              )
+            end)
+        end
     end
   end
 
@@ -203,6 +321,70 @@ defmodule Easypodcasts.Telegram.Bot do
     """
   end
 
+  defp subscribe_to_podcast(chat_id, channel_id, text, message_id, token) do
+    channel = Easypodcasts.Channels.get_channel(channel_id)
+
+    case Easypodcasts.Telegram.get_subscription_by_chat_id(chat_id) do
+      nil ->
+        subscription =
+          Easypodcasts.Telegram.create_subscription(%{
+            chat_id: Integer.to_string(chat_id),
+            new_podcasts: false
+          })
+
+        Easypodcasts.Telegram.update_podcast_subscription(subscription, %{channel: channel})
+
+      %Easypodcasts.Telegram.Subscription{} = subscription ->
+        Easypodcasts.Telegram.update_podcast_subscription(subscription, %{channel: channel})
+    end
+
+    Telegram.Api.request(token, "editMessageText",
+      chat_id: chat_id,
+      message_id: message_id,
+      text: text,
+      reply_markup:
+        {:json,
+         %{
+           inline_keyboard: [
+             [
+               %{
+                 text: "Cancelar suscripción",
+                 callback_data: "unsubscribe #{channel_id}"
+               }
+             ]
+           ]
+         }}
+    )
+  end
+
+  defp unsubscribe_from_podcast(chat_id, channel_id, text, message_id, token) do
+    case Easypodcasts.Telegram.get_subscription_by_chat_id(chat_id) do
+      %Easypodcasts.Telegram.Subscription{} = subscription ->
+        Easypodcasts.Telegram.delete_channel_subscription(subscription.id, channel_id)
+
+        Telegram.Api.request(token, "editMessageText",
+          chat_id: chat_id,
+          message_id: message_id,
+          text: text,
+          reply_markup:
+            {:json,
+             %{
+               inline_keyboard: [
+                 [
+                   %{
+                     text: "Suscribir",
+                     callback_data: "subscribe #{channel_id}"
+                   }
+                 ]
+               ]
+             }}
+        )
+
+      _ ->
+        nil
+    end
+  end
+
   defp unsubcribe_new_podcasts(chat_id) do
     case Easypodcasts.Telegram.get_subscription_by_chat_id(chat_id) do
       nil ->
@@ -237,6 +419,31 @@ defmodule Easypodcasts.Telegram.Bot do
           #{podcast.description}
 
           https://easypodcasts.live/#{Easypodcasts.Helpers.Utils.slugify(podcast)}
+          """
+        )
+      )
+
+      # try to avoid telegram api limits
+      Process.sleep(5000)
+    end)
+  end
+
+  def notify_new_episode(episode) do
+    token = Application.get_env(:easypodcasts, Easypodcasts)[:telegram_token]
+
+    episode = Easypodcasts.Repo.preload(episode, channel: :subscriptions)
+
+    episode.channel.subscriptions
+    |> Enum.chunk_every(20)
+    |> Enum.each(fn subscribed_chats ->
+      Enum.each(
+        subscribed_chats,
+        &Telegram.Api.request(token, "sendMessage",
+          chat_id: &1.chat_id,
+          text: """
+          Nuevo episodio de {episode.channel.title}
+
+          https://easypodcasts.live/#{Easypodcasts.Helpers.Utils.slugify(episode.channel)}/#{Easypodcasts.Helpers.Utils.slugify(episode)}
           """
         )
       )

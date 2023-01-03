@@ -6,7 +6,7 @@ defmodule Easypodcasts.Telegram do
   import Ecto.Query, warn: false
   alias Easypodcasts.Repo
 
-  alias Easypodcasts.Telegram.Subscription
+  alias Easypodcasts.Telegram.{Subscription, ChannelSubscription}
 
   @doc """
   Returns the list of subscription.
@@ -44,7 +44,7 @@ defmodule Easypodcasts.Telegram do
   def get_subscription(id), do: Repo.get(Subscription, id)
 
   def get_subscription_by_chat_id(chat_id) when is_integer(chat_id) do
-    Repo.get_by(Subscription, chat_id: Integer.to_string(chat_id))
+    Repo.get_by(Subscription, chat_id: Integer.to_string(chat_id)) |> Repo.preload(:channels)
   end
 
   def get_subscription_by_chat_id(chat_id) when is_binary(chat_id) do
@@ -94,6 +94,12 @@ defmodule Easypodcasts.Telegram do
     |> Repo.update()
   end
 
+  def update_podcast_subscription(%Subscription{} = subscription, attrs) do
+    subscription
+    |> Subscription.update_subscription_changeset(attrs)
+    |> Repo.update()
+  end
+
   @doc """
   Deletes a subscription.
 
@@ -108,6 +114,13 @@ defmodule Easypodcasts.Telegram do
   """
   def delete_subscription(%Subscription{} = subscription) do
     Repo.delete(subscription)
+  end
+
+  def delete_channel_subscription(subscription_id, channel_id) do
+    Repo.delete_all(
+      from c in ChannelSubscription,
+        where: c.subscription_id == ^subscription_id and c.channel_id == ^channel_id
+    )
   end
 
   @doc """
