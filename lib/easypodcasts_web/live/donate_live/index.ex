@@ -25,11 +25,6 @@ defmodule EasypodcastsWeb.DonateLive.Index do
         </p>
         <div class="flex flex-col md:flex-row md:justify-around">
           <img class="h-72" src={Routes.static_path(@socket, "/images/ez.jpg")} alt="Código QR para donar con Enzona" />
-          <img
-            class="h-72"
-            src={Routes.static_path(@socket, "/images/tm.jpg")}
-            alt="Código QR para donar con Transfermóvil"
-          />
         </div>
       </div>
     </article>
