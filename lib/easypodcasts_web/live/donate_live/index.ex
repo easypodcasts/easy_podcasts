@@ -24,7 +24,7 @@ defmodule EasypodcastsWeb.DonateLive.Index do
           </a>. Una de las posibles formas de contribuir es mediante donaciones que se utilizan para pagar los servidores que alojan <em> Easy Podcast</em>.
         </p>
         <div class="flex flex-col md:flex-row md:justify-around">
-          <img class="h-72" src={Routes.static_path(@socket, "/images/ez.jpg")} alt="Código QR para donar con Enzona" />
+          <img class="h-72 w-72" src={Routes.static_path(@socket, "/images/ez.jpg")} alt="Código QR para donar con Enzona" />
         </div>
       </div>
     </article>
