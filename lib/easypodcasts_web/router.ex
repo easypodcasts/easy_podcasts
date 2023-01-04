@@ -77,6 +77,7 @@ defmodule EasypodcastsWeb.Router do
 
     live_session :default, on_mount: [EasypodcastsWeb.Locale.Plug, EasypodcastsWeb.Presence] do
       live "/about", AboutLive.Index, :index
+      live "/donate", DonateLive.Index, :index
       live "/status", ServerLive.Index, :index
       live "/:channel_slug/:episode_slug", EpisodeLive.Show, :show
       live "/:slug", ChannelLive.Show, :show

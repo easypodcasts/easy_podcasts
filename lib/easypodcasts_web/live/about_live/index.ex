@@ -76,7 +76,7 @@ defmodule EasypodcastsWeb.AboutLive.Index do
           para analizar los logs del servidor web
           .
         </p>
-        <h2 class="pt-3 pb-1 text-xl font-bold">
+        <h2 class="pt-3 pb-1 text-xl font-bold" id="contribute">
           ¿Cómo puedo contribuir?
         </h2>
         <p>
@@ -103,6 +103,12 @@ defmodule EasypodcastsWeb.AboutLive.Index do
           La conversión de los episodios se realiza por un
           <a href="https://github.com/easypodcasts/go-worker" class="text-primary">programa externo o <em>worker</em></a>
           que puede ser ejecutado por cualquiera con conocimientos técnicos medios y algún servidor con conexión permanente. Mientras más workers se ejecuten al mismo tiempo más rápido se procesará la cola de episodios a convertir.
+        </p>
+        <p>
+          Por último también es posible contribuir con
+          <.link navigate={Routes.donate_index_path(@socket, :index)} class="link-primary">
+            donaciones
+          </.link>
         </p>
         <h2 class="pt-3 pb-1 text-xl font-bold" id="disclaimer">
           ¿Qué contenido puedo añadir?

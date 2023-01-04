@@ -35,6 +35,11 @@
       </.link>
     </li>
     <li>
+      <.link navigate={Routes.donate_index_path(@socket, :index)} class="self-center mr-5 text-lg text-primary">
+        <%= gettext("Donate") %>
+      </.link>
+    </li>
+    <li>
       <a href="https://t.me/soporte_easypodcasts" class="self-center mr-5 text-lg text-primary">
         <%= gettext("Contact") %>
       </a>
@@ -57,6 +62,7 @@
   <%= if @socket.view not in [
            EasypodcastsWeb.ServerLive.Index,
            EasypodcastsWeb.AboutLive.Index,
+           EasypodcastsWeb.DonateLive.Index,
            EasypodcastsWeb.EpisodeLive.Show
          ] do %>
     <form phx-change="search" class="ml-2 md:w-1/3">
@@ -85,6 +91,11 @@
       <li>
         <.link navigate={Routes.about_index_path(@socket, :index)} class="p-2 link-primary">
           <%= gettext("About") %>
+        </.link>
+      </li>
+      <li>
+        <.link navigate={Routes.donate_index_path(@socket, :index)} class="p-2 link-primary">
+          <%= gettext("Donate") %>
         </.link>
       </li>
       <li>
