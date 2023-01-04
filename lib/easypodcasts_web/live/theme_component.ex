@@ -9,11 +9,11 @@ defmodule EasypodcastsWeb.ThemeComponent do
     ~H"""
     <div title="Change Theme" class="dropdown dropdown-end" id="theme-changer" phx-hook="ThemeChanger">
       <div tabindex="0" class="btn gap-1 normal-case btn-ghost">
-        <span class="hidden md:inline text-primary"><%= gettext("Theme") %></span>
+        <span class="text-primary text-lg md:text-base"><%= gettext("Theme") %></span>
         <svg
           width="12px"
           height="12px"
-          class="ml-1 hidden h-3 w-3 text-primary fill-current sm:inline-block"
+          class="ml-1 h-3 w-3 text-primary fill-current"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 2048 2048"
         >
@@ -21,7 +21,7 @@ defmodule EasypodcastsWeb.ThemeComponent do
         </svg>
       </div>
 
-      <div class="dropdown-content bg-base-200 text-base-content rounded-t-box rounded-b-box top-px max-h-96 h-[70vh] w-52 overflow-y-auto shadow-2xl mt-16">
+      <div class="dropdown-content bg-base-200 text-base-content rounded-t-box rounded-b-box top-px max-h-96 h-[70vh] w-52 overflow-y-auto shadow-2xl mt-16 translate-x-[-50%] left-[50%]">
         <div class="grid grid-cols-1 gap-3 p-3" tabindex="0">
           <div
             class="outline-base-content overflow-hidden rounded-lg outline-2 outline-offset-2 theme-select"
