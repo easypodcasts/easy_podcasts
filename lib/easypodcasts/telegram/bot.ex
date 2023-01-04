@@ -133,7 +133,20 @@ defmodule Easypodcasts.Telegram.Bot do
           )
 
         channels ->
+          subscription = Easypodcasts.Telegram.get_subscription_by_chat_id(chat_id)
+          channel_ids = Enum.map(subscription.channels, & &1.id)
+
           Enum.each(channels, fn channel ->
+            button =
+              if subscription && channel.id in channel_ids do
+                %{
+                  text: "Cancelar suscripción",
+                  callback_data: "unsubscribe #{channel.id}"
+                }
+              else
+                %{text: "Suscribir", callback_data: "subscribe #{channel.id}"}
+              end
+
             Telegram.Api.request(token, "sendMessage",
               chat_id: chat_id,
               text: "https://easypodcasts.live/#{Easypodcasts.Helpers.Utils.slugify(channel)}",
@@ -141,7 +154,7 @@ defmodule Easypodcasts.Telegram.Bot do
                 {:json,
                  %{
                    inline_keyboard: [
-                     [%{text: "Suscribir", callback_data: "subscribe #{channel.id}"}]
+                     [button]
                    ]
                  }}
             )
