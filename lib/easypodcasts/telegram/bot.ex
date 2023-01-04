@@ -134,11 +134,11 @@ defmodule Easypodcasts.Telegram.Bot do
 
         channels ->
           subscription = Easypodcasts.Telegram.get_subscription_by_chat_id(chat_id)
-          channel_ids = Enum.map(subscription.channels, & &1.id)
+          channel_ids = if subscription, do: Enum.map(subscription.channels, & &1.id), else: []
 
           Enum.each(channels, fn channel ->
             button =
-              if subscription && channel.id in channel_ids do
+              if channel.id in channel_ids do
                 %{
                   text: "Cancelar suscripción",
                   callback_data: "unsubscribe #{channel.id}"
@@ -173,11 +173,11 @@ defmodule Easypodcasts.Telegram.Bot do
         %{
           "callback_query" => %{
             "data" => "subscribe " <> podcast_id,
+            "from" => %{"id" => from_id},
             "message" => %{
               "message_id" => message_id,
               "chat" => %{"id" => chat_id, "type" => chat_type},
-              "text" => text,
-              "from" => %{"id" => from_id}
+              "text" => text
             }
           }
         },
@@ -204,11 +204,11 @@ defmodule Easypodcasts.Telegram.Bot do
         %{
           "callback_query" => %{
             "data" => "unsubscribe " <> podcast_id,
+            "from" => %{"id" => from_id},
             "message" => %{
               "message_id" => message_id,
               "chat" => %{"id" => chat_id, "type" => chat_type},
-              "text" => text,
-              "from" => %{"id" => from_id}
+              "text" => text
             }
           }
         },
@@ -339,12 +339,13 @@ defmodule Easypodcasts.Telegram.Bot do
 
     case Easypodcasts.Telegram.get_subscription_by_chat_id(chat_id) do
       nil ->
-        subscription =
+        {:ok, subscription} =
           Easypodcasts.Telegram.create_subscription(%{
             chat_id: Integer.to_string(chat_id),
             new_podcasts: false
           })
 
+        subscription = Easypodcasts.Repo.preload(subscription, :channels)
         Easypodcasts.Telegram.update_podcast_subscription(subscription, %{channel: channel})
 
       %Easypodcasts.Telegram.Subscription{} = subscription ->
@@ -464,5 +465,43 @@ defmodule Easypodcasts.Telegram.Bot do
       # try to avoid telegram api limits
       Process.sleep(5000)
     end)
+
+    %{
+      "callback_query" => %{
+        "chat_instance" => "5681489303743736298",
+        "data" => "subscribe 30",
+        "from" => %{
+          "first_name" => "Guillermo",
+          "id" => 533_425_919,
+          "is_bot" => false,
+          "language_code" => "en",
+          "last_name" => "Roig",
+          "username" => "groig"
+        },
+        "id" => "2291046877294340723",
+        "message" => %{
+          "chat" => %{
+            "id" => -1_001_443_803_615,
+            "title" => "elixircuba",
+            "type" => "supergroup",
+            "username" => "elixircuba"
+          },
+          "date" => 1_672_796_088,
+          "entities" => [%{"length" => 52, "offset" => 0, "type" => "url"}],
+          "from" => %{
+            "first_name" => "EasyPodcastsDev",
+            "id" => 5_887_455_401,
+            "is_bot" => true,
+            "username" => "EasyPodcastsDevBot"
+          },
+          "message_id" => 19,
+          "reply_markup" => %{
+            "inline_keyboard" => [[%{"callback_data" => "subscribe 30", "text" => "Suscribir"}]]
+          },
+          "text" => "https://easypodcasts.live/30-the-real-python-podcast"
+        }
+      },
+      "update_id" => 74_725_756
+    }
   end
 end
