@@ -455,7 +455,7 @@ defmodule Easypodcasts.Telegram.Bot do
         &Telegram.Api.request(token, "sendMessage",
           chat_id: &1.chat_id,
           text: """
-          Nuevo episodio de {episode.channel.title}
+          Nuevo episodio de #{episode.channel.title}
 
           https://easypodcasts.live/#{Easypodcasts.Helpers.Utils.slugify(episode.channel)}/#{Easypodcasts.Helpers.Utils.slugify(episode)}
           """
