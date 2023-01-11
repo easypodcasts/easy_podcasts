@@ -6,7 +6,12 @@ defmodule EasypodcastsWeb.DonateLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :show_modal, false)}
+    socket =
+      socket
+      |> assign(:show_modal, false)
+      |> assign(:donations, Easypodcasts.Donations.list_donations())
+
+    {:ok, socket}
   end
 
   @impl true
@@ -23,9 +28,41 @@ defmodule EasypodcastsWeb.DonateLive.Index do
             los esfuerzos de su comunidad
           </a>. Una de las posibles formas de contribuir es mediante donaciones que se utilizan para pagar los servidores que alojan <em> Easy Podcast</em>.
         </p>
+        <p> Para incluir un nombre junto con la donación puede contactar al equipo de <em>Easy Podcasts</em> en el <a href="https://t.me/soporte_easypodcasts" class="link-primary">grupo de soporte</a>
+        </p>
+        <p class="mt-4"> Costo mensual del servidor: <span class="font-bold">450 CUP</span></p>
         <div class="flex flex-col md:flex-row md:justify-around mt-4">
           <img class="h-72 w-72" src={Routes.static_path(@socket, "/images/ez.jpg")} alt="Código QR para donar con Enzona" />
-          <img class="h-72 w-72 mt-4 md:mt-0" src={Routes.static_path(@socket, "/images/tm.jpg")} alt="Código QR para donar con Transfermóvil" />
+          <img
+            class="h-72 w-72 mt-4 md:mt-0"
+            src={Routes.static_path(@socket, "/images/tm.jpg")}
+            alt="Código QR para donar con Transfermóvil"
+          />
+        </div>
+        <div class="flex-col mb-6 w-full rounded-lg border mt-4">
+          <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-primary-content bg-primary text-md">
+            Donaciones (todas las cantidades en CUP)
+          </span>
+          <table class="table w-full">
+            <thead>
+              <tr>
+                <th>
+                  De
+                </th>
+                <th>
+                  Cantidad
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <%= for donation <- @donations do %>
+                <tr>
+                  <td class="p-2"><%= donation.from %></td>
+                  <td class="p-2"><%= donation.amount %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
         </div>
       </div>
     </article>
