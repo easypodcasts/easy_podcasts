@@ -100,7 +100,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
         <p class="mt-2 title-font text-md">
           <%= sanitize(@channel.description) %>
         </p>
-        <button phx-click={JS.add_class("modal-open", to: "#subscribe-modal")} class="self-start btn btn-primary mt-2">
+        <button phx-click={JS.add_class("modal-open", to: "#subscribe-modal")} class="self-start mt-2 btn btn-primary">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path
               stroke-linecap="round"
@@ -117,7 +117,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
 
       <div class="modal" id="subscribe-modal" phx-hook="CopyHook">
         <div class="modal-box">
-          <h3 class="text-lg font-bold mb-4">
+          <h3 class="mb-4 text-lg font-bold">
             <%= gettext("Subscribe to this podcast") %>
           </h3>
           <a
@@ -148,7 +148,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
             <input
               type="text"
               id="feed-url"
-              class="input input-primary flex-1"
+              class="flex-1 input input-primary"
               value={"https://easypodcasts.live#{Routes.feed_path(@socket, :feed, Utils.slugify(@channel))}"}
             />
             <button id="copy-feed-url" class="btn btn-primary btn-square">

@@ -39,7 +39,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
   @impl true
   def render(assigns) do
     ~H"""
-    <section class="flex flex-col mt-4 mb-6 ">
+    <section class="flex flex-col mt-4 mb-6">
       <%= if connected?(@socket) do %>
         <div class="flex-col mb-6 rounded-lg border">
           <span class="flex justify-center self-end p-2 w-full rounded-t-lg text-primary-content bg-primary text-md">

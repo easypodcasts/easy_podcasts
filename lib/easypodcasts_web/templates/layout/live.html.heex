@@ -136,7 +136,7 @@
 </main>
 
 <div class="toast toast-top">
-  <div class="alert alert-success hidden" phx-click={JS.add_class("hidden")} id="copy-success" role="alert">
+  <div class="hidden alert alert-success" phx-click={JS.add_class("hidden")} id="copy-success" role="alert">
     <div>
       <span>
         <%= gettext("Success!") %>
@@ -144,7 +144,7 @@
       </span>
     </div>
   </div>
-  <div class="alert alert-error hidden" phx-click={JS.add_class("hidden")} id="copy-error" role="alert">
+  <div class="hidden alert alert-error" phx-click={JS.add_class("hidden")} id="copy-error" role="alert">
     <div>
       <span>
         <%= gettext("Error!") %>
