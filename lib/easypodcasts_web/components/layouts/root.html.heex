@@ -75,14 +75,8 @@
           name="twitter:description"
           content="Easy Podcasts es una solución comunitaria para la descarga de podcasts que tiene como objetivo ayudar a disminuir el consumo de datos: el servicio está alojado en .cu y los archivos de audio son comprimidos. Hecho con ♥ y Software Libre."
         />
-        <meta
-          property="og:image"
-          content={"https://easypodcasts.live#{Routes.static_path(@conn, "/images/easypodcasts.png")}"}
-        />
-        <meta
-          property="twitter:image"
-          content={"https://easypodcasts.live#{Routes.static_path(@conn, "/images/easypodcasts.png")}"}
-        />
+        <meta property="og:image" content={url(~p"/images/easypodcasts.png")} />
+        <meta property="twitter:image" content={url(~p"/images/easypodcasts.png")} />
       <% end %>
     <% end %>
 
@@ -90,8 +84,8 @@
     <.live_title suffix=" · Easy Podcasts">
       <%= assigns[:page_title] || "Easypodcasts" %>
     </.live_title>
-    <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")} />
-    <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}>
+    <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
     </script>
   </head>
   <body>

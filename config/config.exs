@@ -15,7 +15,8 @@ config :easypodcasts, EasypodcastsWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: EasypodcastsWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Easypodcasts.PubSub,
-  live_view: [signing_salt: "lLqSpypW"]
+  live_view: [signing_salt: "lLqSpypW"],
+  adapter: Bandit.PhoenixAdapter
 
 # Configures the mailer
 #

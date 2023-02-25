@@ -1,5 +1,5 @@
 defmodule EasypodcastsWeb.ErrorView do
-  use EasypodcastsWeb, :view
+  use EasypodcastsWeb, :html
 
   # If you want to customize a particular status code
   # for a certain format, you may uncomment below.

@@ -6,7 +6,7 @@ defmodule EasypodcastsWeb do
   This can be used in your application as:
 
       use EasypodcastsWeb, :controller
-      use EasypodcastsWeb, :view
+      use EasypodcastsWeb, :html
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -16,39 +16,40 @@ defmodule EasypodcastsWeb do
   below. Instead, define any helper function in modules
   and import those modules here.
   """
+  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
 
   def controller do
     quote do
-      use Phoenix.Controller, namespace: EasypodcastsWeb
+      use Phoenix.Controller,
+        formats: [:html, :json],
+        layouts: [html: EasypodcastsWeb.Layouts]
 
       import Plug.Conn
       import EasypodcastsWeb.Gettext
-      alias EasypodcastsWeb.Router.Helpers, as: Routes
+
+      unquote(verified_routes())
     end
   end
 
-  def view do
+  def html do
     quote do
-      use Phoenix.View,
-        root: "lib/easypodcasts_web/templates",
-        namespace: EasypodcastsWeb
-
+      use Phoenix.Component
       # Import convenience functions from controllers
       import Phoenix.Controller,
-        only: [get_flash: 1, get_flash: 2, view_module: 1, view_template: 1, current_path: 1]
+        only: [get_csrf_token: 0, view_module: 1, view_template: 1]
 
       # Include shared imports and aliases for views
-      unquote(view_helpers())
+      unquote(html_helpers())
     end
   end
 
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {EasypodcastsWeb.LayoutView, "live.html"}
+        layout: {EasypodcastsWeb.Layouts, :app}
 
       # use EasypodcastsWeb.QueueComponent
-      unquote(view_helpers())
+      unquote(html_helpers())
     end
   end
 
@@ -56,7 +57,7 @@ defmodule EasypodcastsWeb do
     quote do
       use Phoenix.LiveComponent
 
-      unquote(view_helpers())
+      unquote(html_helpers())
     end
   end
 
@@ -77,22 +78,27 @@ defmodule EasypodcastsWeb do
     end
   end
 
-  defp view_helpers do
+  defp html_helpers do
     quote do
-      # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
       use PhoenixHtmlSanitizer, :strip_tags
 
       # Import LiveView and .heex helpers (live_render, live_patch, <.form>, etc)
       import Phoenix.Component
 
-      # Import basic rendering functionality (render, render_layout, etc)
-      import Phoenix.View
-
       import EasypodcastsWeb.ErrorHelpers
       import EasypodcastsWeb.Gettext
       alias Phoenix.LiveView.JS
-      alias EasypodcastsWeb.Router.Helpers, as: Routes
+      unquote(verified_routes())
+    end
+  end
+
+  def verified_routes do
+    quote do
+      use Phoenix.VerifiedRoutes,
+        endpoint: EasypodcastsWeb.Endpoint,
+        router: EasypodcastsWeb.Router,
+        statics: EasypodcastsWeb.static_paths()
     end
   end
 

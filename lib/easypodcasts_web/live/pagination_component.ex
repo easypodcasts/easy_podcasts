@@ -3,6 +3,7 @@ defmodule EasypodcastsWeb.PaginationComponent do
   Component to generate the pagination element
   """
   use Phoenix.Component
+  use EasypodcastsWeb, :verified_routes
   import EasypodcastsWeb.Gettext
 
   def pagination(assigns) do
@@ -12,7 +13,7 @@ defmodule EasypodcastsWeb.PaginationComponent do
     <nav class="flex justify-center mt-5 mb-5 w-full text-lg">
       <%= if @page_number != 1 do %>
         <.link
-          navigate={get_route(@socket, @route, @action, @object_id, @search, @page_number - 1)}
+          navigate={get_route(@channel, @search, @page_number - 1)}
           class="block py-2 px-3 mr-1 ml-0 leading-tight rounded-l-lg hover:bg-primary hover:text-primary-content"
         >
           <span class="sr-only">
@@ -32,14 +33,14 @@ defmodule EasypodcastsWeb.PaginationComponent do
       <%= for idx <- Enum.to_list(@page_range) do %>
         <%= if @page_number == idx do %>
           <.link
-            navigate={get_route(@socket, @route, @action, @object_id, @search, idx)}
+            navigate={get_route(@channel, @search, idx)}
             class="py-2 px-3 mr-1 text-xl leading-tight rounded pointer-events-none bg-primary text-primary-content"
           >
             <%= idx %>
           </.link>
         <% else %>
           <.link
-            navigate={get_route(@socket, @route, @action, @object_id, @search, idx)}
+            navigate={get_route(@channel, @search, idx)}
             class="py-2 px-3 mr-1 text-xl leading-tight rounded text-primary-dark hover:bg-primary hover:text-primary-content"
           >
             <%= idx %>
@@ -49,7 +50,7 @@ defmodule EasypodcastsWeb.PaginationComponent do
 
       <%= if @page_number != @total_pages do %>
         <.link
-          navigate={get_route(@socket, @route, @action, @object_id, @search, @page_number + 1)}
+          navigate={get_route(@channel, @search, @page_number + 1)}
           class="block py-2 px-3 leading-tight rounded-r-lg hover:bg-primary hover:text-primary-content"
         >
           <span class="sr-only">
@@ -69,16 +70,16 @@ defmodule EasypodcastsWeb.PaginationComponent do
     """
   end
 
-  defp get_route(socket, route_func, action, object_id, search, page_number) do
+  defp get_route(channel, search, page_number) do
     params =
       case search do
         nil -> [page: page_number]
         _other -> [page: page_number, search: search]
       end
 
-    case object_id do
-      nil -> route_func.(socket, action, params)
-      _other -> route_func.(socket, action, object_id, params)
+    case channel do
+      nil -> ~p"/?#{params}"
+      _other -> ~p"/#{channel}?#{params}"
     end
   end
 end

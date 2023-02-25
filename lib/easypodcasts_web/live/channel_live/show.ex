@@ -23,7 +23,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
         nil ->
           socket
           |> put_flash(:error, gettext("The podcast does not exist"))
-          |> push_redirect(to: Routes.channel_index_path(socket, :index))
+          |> push_redirect(to: ~p"/")
 
         %Channels.Channel{} = channel ->
           socket
@@ -62,9 +62,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
         page_number={@page_number}
         total_pages={@total_pages}
         page_range={@page_range}
-        route={&Routes.channel_show_path/4}
-        action={:show}
-        object_id={Utils.slugify(@channel)}
+        channel={"/#{Utils.slugify(@channel)}"}
         search={@search}
       />
     <% end %>
@@ -82,15 +80,12 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
             src={ChannelImage.url({"original.webp", @channel}, :original)}
           />
           <div class="flex flex-col">
-            <.link
-              navigate={Routes.channel_show_path(@socket, :show, Utils.slugify(@channel))}
-              class="p-1 text-xl md:p-0 text-primary"
-            >
+            <.link navigate={~p"/#{Utils.slugify(@channel)}"} class="p-1 text-xl md:p-0 text-primary">
               <%= @channel.title %>
             </.link>
             <div class="mt-2">
               <%= for category <- @channel.categories do %>
-                <.link navigate={Routes.channel_index_path(@socket, :index, search: "##{category}")} class="text-primary">
+                <.link navigate={~p"/?#{[search: "#" <> category]}"} class="text-primary">
                   <%= "##{category}" %>
                 </.link>
               <% end %>
@@ -120,10 +115,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
           <h3 class="mb-4 text-lg font-bold">
             <%= gettext("Subscribe to this podcast") %>
           </h3>
-          <a
-            href={"pcast://easypodcasts.live#{Routes.feed_path(@socket, :feed, Utils.slugify(@channel))}"}
-            class="btn btn-primary"
-          >
+          <a href={"pcast://easypodcasts.live/feeds/#{Utils.slugify(@channel)}"} class="btn btn-primary">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="w-6 h-6"
@@ -149,7 +141,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
               type="text"
               id="feed-url"
               class="flex-1 input input-primary"
-              value={"https://easypodcasts.live#{Routes.feed_path(@socket, :feed, Utils.slugify(@channel))}"}
+              value={url(~p"/feeds/#{Utils.slugify(@channel)}")}
             />
             <button id="copy-feed-url" class="btn btn-primary btn-square">
               <svg
@@ -211,12 +203,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   def handle_event("search", %{"search" => ""}, socket) do
     {:noreply,
      push_patch(socket,
-       to:
-         Routes.channel_show_path(
-           socket,
-           :show,
-           Utils.slugify(socket.assigns.channel)
-         )
+       to: ~p"/#{Utils.slugify(socket.assigns.channel)}"
      )}
   end
 
@@ -228,13 +215,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
       case Search.validate_search(search) do
         %{valid?: true, changes: %{search_phrase: _search_phrase}} ->
           push_patch(socket,
-            to:
-              Routes.channel_show_path(
-                socket,
-                :show,
-                Utils.slugify(socket.assigns.channel),
-                search: search
-              )
+            to: ~p"/#{Utils.slugify(socket.assigns.channel)}?#{[search: search]}"
           )
 
         _invalid ->

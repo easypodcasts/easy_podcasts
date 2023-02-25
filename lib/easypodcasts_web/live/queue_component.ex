@@ -41,7 +41,7 @@ defmodule EasypodcastsWeb.QueueComponent do
     <div>
       <%= if @queue_length > 0 do %>
         <.link
-          navigate={Routes.server_index_path(@socket, :index)}
+          navigate={~p"/status"}
           class="block fixed right-6 bottom-16 z-50 py-1 px-3 text-xl rounded-lg shadow-2xl bg-primary text-primary-content hover:bg-primary-focus"
         >
           <%= ngettext("%{queue_length} episode in queue", "%{queue_length} episodes in queue", @queue_length,

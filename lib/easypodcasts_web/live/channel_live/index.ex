@@ -26,7 +26,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
           <%= for channel <- @channels do %>
             <div class="p-2 w-full md:p-4 md:w-1/5">
               <div class="flex w-auto h-full rounded-lg md:flex-col">
-                <.link navigate={Routes.channel_show_path(@socket, :show, Utils.slugify(channel))}>
+                <.link navigate={~p"/#{Utils.slugify(channel)}"}>
                   <img
                     class="w-24 rounded-l-lg md:mb-2 md:w-full md:rounded-t-lg xl:object-cover"
                     src={ChannelImage.url({"thumb.webp", channel}, :thumb)}
@@ -37,7 +37,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
                 <p class="flex-1 px-1 h-5/6 text-sm md:px-2 md:mb-2 md:text-center line-clamp-4 md:line-clamp-6">
                   <%= sanitize(channel.description) %>
                 </p>
-                <.link navigate={Routes.channel_show_path(@socket, :show, Utils.slugify(channel))}>
+                <.link navigate={~p"/#{Utils.slugify(channel)}"}>
                   <span class="flex justify-center self-end pt-4 pr-1 w-16 h-full text-sm text-center break-words rounded-r-lg border-t md:pt-1 md:pb-2 md:w-full md:rounded-t-none md:rounded-b-lg text-wrap text-primary-content bg-primary border-primary hover:bg-primary-focus">
                     <%= ngettext("%{episodes} Episode", "%{episodes} Episodes", channel.episodes, episodes: channel.episodes) %>
                   </span>
@@ -60,9 +60,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
         page_number={@page_number}
         total_pages={@total_pages}
         page_range={@page_range}
-        route={&Routes.channel_index_path/3}
-        action={:index}
-        object_id={nil}
+        channel={nil}
         search={@search}
       />
     <% end %>
@@ -73,11 +71,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
   def handle_event("search", %{"search" => ""}, socket) do
     {:noreply,
      push_patch(socket,
-       to:
-         Routes.channel_index_path(
-           socket,
-           :index
-         )
+       to: ~p"/"
      )}
   end
 
@@ -89,12 +83,7 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
       case Search.validate_search(search) do
         %{valid?: true, changes: %{search_phrase: _search_phrase}} ->
           push_patch(socket,
-            to:
-              Routes.channel_index_path(
-                socket,
-                :index,
-                search: search
-              )
+            to: ~p"/?#{[search: search]}"
           )
 
         _invalid ->

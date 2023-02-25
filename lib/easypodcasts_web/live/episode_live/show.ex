@@ -23,7 +23,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
         nil ->
           socket
           |> put_flash(:error, gettext("The episode does not exist"))
-          |> push_redirect(to: Routes.channel_index_path(socket, :index))
+          |> push_redirect(to: ~p"/")
 
         %Episodes.Episode{} = episode ->
           socket
@@ -57,10 +57,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
       <div class="flex flex-col w-full">
         <h2 class="mb-2 text-sm font-medium md:text-xl title-font">
           <%= if @socket.view == EasypodcastsWeb.ChannelLive.Show do %>
-            <.link
-              navigate={Routes.episode_show_path(@socket, :show, Utils.slugify(@channel), Utils.slugify(@episode))}
-              class="text-primary"
-            >
+            <.link navigate={~p"/#{Utils.slugify(@channel)}/#{Utils.slugify(@episode)}"} class="text-primary">
               <%= @episode.title %>
             </.link>
           <% else %>

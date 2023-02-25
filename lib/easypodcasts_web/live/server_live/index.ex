@@ -49,14 +49,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
             <ol class="px-2">
               <%= for episode <- @queued_episodes do %>
                 <li class="text-primary">
-                  <.link navigate={
-                    Routes.episode_show_path(
-                      @socket,
-                      :show,
-                      Utils.slugify(episode.channel),
-                      Utils.slugify(episode)
-                    )
-                  }>
+                  <.link navigate={~p"/#{Utils.slugify(episode.channel)}/#{Utils.slugify(episode)}"}>
                     <%= if episode.status == :processing do %>
                       <svg
                         class="inline w-5 h-5 animate-spin"
@@ -92,7 +85,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
                     <%= episode.title %>
                   </.link>
                   (
-                  <.link navigate={Routes.channel_show_path(@socket, :show, Utils.slugify(episode.channel))}>
+                  <.link navigate={~p"/#{Utils.slugify(episode.channel)}"}>
                     <%= episode.channel.title %>
                   </.link>
                   )
@@ -112,18 +105,11 @@ defmodule EasypodcastsWeb.ServerLive.Index do
           <ol class="px-7 list-decimal">
             <%= for episode <- @latest_episodes do %>
               <li class="text-primary">
-                <.link navigate={
-                  Routes.episode_show_path(
-                    @socket,
-                    :show,
-                    Utils.slugify(episode.channel),
-                    Utils.slugify(episode)
-                  )
-                }>
+                <.link navigate={~p"/#{Utils.slugify(episode.channel)}/{Utils.slugify(episode}"}>
                   <%= episode.title %>
                 </.link>
                 (
-                <.link navigate={Routes.channel_show_path(@socket, :show, Utils.slugify(episode.channel))}>
+                <.link navigate={~p"/#{Utils.slugify(episode.channel)}/{Utils.slugify(episode}"}>
                   <%= episode.channel.title %>
                 </.link>
                 )
@@ -138,18 +124,11 @@ defmodule EasypodcastsWeb.ServerLive.Index do
           <ol class="px-7 list-decimal">
             <%= for episode <- @latest_processed_episodes do %>
               <li class="text-primary">
-                <.link navigate={
-                  Routes.episode_show_path(
-                    @socket,
-                    :show,
-                    Utils.slugify(episode.channel),
-                    Utils.slugify(episode)
-                  )
-                }>
+                <.link navigate={~p"/#{Utils.slugify(episode.channel)}/#{Utils.slugify(episode)}"}>
                   <%= episode.title %>
                 </.link>
                 (
-                <.link navigate={Routes.channel_show_path(@socket, :show, Utils.slugify(episode.channel))}>
+                <.link navigate={~p"/#{Utils.slugify(episode.channel)}"}>
                   <%= episode.channel.title %>
                 </.link>
                 )

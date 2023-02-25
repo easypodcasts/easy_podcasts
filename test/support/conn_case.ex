@@ -28,6 +28,7 @@ defmodule EasypodcastsWeb.ConnCase do
 
       # The default endpoint for testing
       @endpoint EasypodcastsWeb.Endpoint
+      use EasypodcastsWeb, :verified_routes
     end
   end
 

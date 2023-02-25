@@ -34,7 +34,7 @@ defmodule EasypodcastsWeb.ModalComponent do
               ) %>
               <spam class="px-1 text-sm">
                 <%= gettext("Read about our content policies") %>
-                <a href={"#{Routes.about_index_path(@socket, :index)}#disclaimer"} class="link-primary">
+                <a href={~p"/about/#disclaimer"} class="link-primary">
                   <%= gettext("here") %>
                 </a>
               </spam>
