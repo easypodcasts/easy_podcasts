@@ -7,10 +7,19 @@
   xmlns:podcast="https://podcastindex.org/namespace/1.0"
 >
 <channel>
-  <title><%= "Feed de EasyPodcasts para la categoría #{@tag}" %></title>
+  <title><%= "Feed de podcasts combinados en EasyPodcasts" %></title>
   <link>https://easypodcasts.live</link>
   <description>
-     Feed generado por EasyPodcasts con todos los episodios de los podcasts pertenecientes a la categoría <%= @tag %>
+    <![CDATA[
+    <p>Feed generado por EasyPodcasts con todos los episodios de los siguientes canales:
+      </p>
+    <ul>
+      <%= for title <- @titles do %>
+      <li><%= title %></li>
+      <% end %>
+    </ul>
+    <%=  %>
+    ]]>
   </description>
   <%= for episode <- @episodes do %>
    <item>
@@ -19,7 +28,7 @@
       <guid isPermaLink="false"><%= clear_ampersand(episode.feed_data["guid"]) %></guid>
       <pubDate><%= episode.feed_data["published"] %></pubDate>
       <%= for enclosure <- episode.feed_data["enclosures"] do %>
-        <enclosure url="<%= EpisodeAudio.url({"episode.opus", episode}) %>" length="<%= episode.processed_size %>" type="<%= enclosure["type"] %>" />
+        <enclosure url="<%= Easypodcasts.Episodes.EpisodeAudio.url({"episode.opus", episode}) %>" length="<%= episode.processed_size %>" type="<%= enclosure["type"] %>" />
       <% end %>
         <description><![CDATA[<%= episode.feed_data["description"] %>]]></description>
         <content:encoded><![CDATA[<%= episode.feed_data["content"]  %> ]]></content:encoded>
