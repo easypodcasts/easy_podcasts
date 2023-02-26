@@ -141,7 +141,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
               type="text"
               id="feed-url"
               class="flex-1 input input-primary"
-              value={url(~p"/feeds/#{Utils.slugify(@channel)}")}
+              value={"https://easypodcasts.live/feeds/#{Utils.slugify(@channel)}"}
             />
             <button id="copy-feed-url" class="btn btn-primary btn-square">
               <svg

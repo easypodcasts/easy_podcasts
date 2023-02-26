@@ -49,7 +49,7 @@ defmodule EasypodcastsWeb.PlayerLive do
           class="flex fixed right-0 bottom-0 z-50 flex-col py-2 px-4 w-full shadow transition duration-300 ease-in-out xl:right-5 xl:bottom-5 xl:py-4 xl:w-1/3 xl:rounded-xl shadow-base-content/30 bg-base-100 scale-80"
           id="player-element"
         >
-          <input type="hidden" id="episode-url" value={url(~p"/#{Utils.slugify(@channel)}/#{Utils.slugify(@episode)}")} />
+          <input type="hidden" id="episode-url" value={~p"/#{Utils.slugify(@channel)}/#{Utils.slugify(@episode)}"} />
           <audio src={EpisodeAudio.url({"episode.opus", @episode})}></audio>
           <div class="flex mb-2">
             <.link navigate={~p"/#{Utils.slugify(@channel)}"}>
@@ -61,7 +61,7 @@ defmodule EasypodcastsWeb.PlayerLive do
             </.link>
             <div class="flex flex-col flex-1 px-2">
               <span class="font-semibold">
-                <.link navigate={url(~p"/#{Utils.slugify(@channel)}/#{Utils.slugify(@episode)}")} class="text-primary">
+                <.link navigate={~p"/#{Utils.slugify(@channel)}/#{Utils.slugify(@episode)}"} class="text-primary">
                   <%= @episode.title %>
                 </.link>
               </span>
