@@ -50,6 +50,9 @@ defmodule EasypodcastsWeb.DonateLive.Index do
                 <th>
                   Cantidad
                 </th>
+                <th>
+                  Fecha
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -57,6 +60,7 @@ defmodule EasypodcastsWeb.DonateLive.Index do
                 <tr>
                   <td class="p-2"><%= donation.from %></td>
                   <td class="p-2"><%= donation.amount %></td>
+                  <td class="p-2"><%= donation.inserted_at |> Calendar.strftime("%Y-%m-%d") %></td>
                 </tr>
               <% end %>
             </tbody>
