@@ -62,7 +62,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
         page_number={@page_number}
         total_pages={@total_pages}
         page_range={@page_range}
-        channel={"/#{Utils.slugify(@channel)}"}
+        channel={"#{Utils.slugify(@channel)}"}
         search={@search}
       />
     <% end %>
