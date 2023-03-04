@@ -13,7 +13,7 @@ defmodule EasypodcastsWeb.PaginationComponent do
     <nav class="flex justify-center mt-5 mb-5 w-full text-lg">
       <%= if @page_number != 1 do %>
         <.link
-          navigate={get_route(@channel, @search, @page_number - 1)}
+          patch={get_route(@channel, @search, @page_number - 1)}
           class="block py-2 px-3 mr-1 ml-0 leading-tight rounded-l-lg hover:bg-primary hover:text-primary-content"
         >
           <span class="sr-only">
@@ -33,14 +33,14 @@ defmodule EasypodcastsWeb.PaginationComponent do
       <%= for idx <- Enum.to_list(@page_range) do %>
         <%= if @page_number == idx do %>
           <.link
-            navigate={get_route(@channel, @search, idx)}
+            patch={get_route(@channel, @search, idx)}
             class="py-2 px-3 mr-1 text-xl leading-tight rounded pointer-events-none bg-primary text-primary-content"
           >
             <%= idx %>
           </.link>
         <% else %>
           <.link
-            navigate={get_route(@channel, @search, idx)}
+            patch={get_route(@channel, @search, idx)}
             class="py-2 px-3 mr-1 text-xl leading-tight rounded text-primary-dark hover:bg-primary hover:text-primary-content"
           >
             <%= idx %>
@@ -50,7 +50,7 @@ defmodule EasypodcastsWeb.PaginationComponent do
 
       <%= if @page_number != @total_pages do %>
         <.link
-          navigate={get_route(@channel, @search, @page_number + 1)}
+          patch={get_route(@channel, @search, @page_number + 1)}
           class="block py-2 px-3 leading-tight rounded-r-lg hover:bg-primary hover:text-primary-content"
         >
           <span class="sr-only">

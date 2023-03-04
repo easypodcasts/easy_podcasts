@@ -47,7 +47,7 @@ defmodule EasypodcastsWeb.AboutLive.Index do
           </span>
           el podcast que quieres escuchar utilizando el enlace a su <em>feed</em>
           o seleccionar uno de los
-          <.link navigate={~p"/"} class="text-primary">podcasts existentes</.link>
+          <.link patch={~p"/"} class="text-primary">podcasts existentes</.link>
           y usar el botón para subscribirse.
         </p>
         <p>
@@ -106,7 +106,7 @@ defmodule EasypodcastsWeb.AboutLive.Index do
         </p>
         <p>
           Por último también es posible contribuir con
-          <.link navigate={~p"/donate"} class="link-primary">
+          <.link patch={~p"/donate"} class="link-primary">
             donaciones
           </.link>
         </p>
@@ -134,13 +134,13 @@ defmodule EasypodcastsWeb.AboutLive.Index do
             lo que la prontitud con la que puede obtener un episodio convertido depende de la cantidad de episodios en cola y de
             <em>workers</em>
             que estén disponibles en el momento
-            <.link navigate={~p"/status"} class="text-primary">
+            <.link patch={~p"/status"} class="text-primary">
               El estado de la cola de conversión puede consultarse aquí
             </.link>
           </li>
           <li>
             Según el estado del almacenamiento, los episodios convertidos se irán eliminando comenzando por los que se convirtieron hace más tiempo. Si un episodio convertido se elimina siempre puede convertirse nuevamente.
-            <.link navigate={~p"/status"} class="text-primary">
+            <.link patch={~p"/status"} class="text-primary">
               El estado del almacenamiento puede consultarse aquí
             </.link>
           </li>
@@ -158,7 +158,7 @@ defmodule EasypodcastsWeb.AboutLive.Index do
           lo que la prontitud con la que puede obtener un episodio convertido depende de la cantidad de episodios en cola y de
           <em>workers</em>
           que estén disponibles en el momento.
-          <.link navigate={~p"/status"} class="text-primary">
+          <.link patch={~p"/status"} class="text-primary">
             El estado de la cola de conversión puede consultarse aquí
           </.link>
         </p>
@@ -174,7 +174,7 @@ defmodule EasypodcastsWeb.AboutLive.Index do
           Mis episodios convertidos desaparecieron, ¿por qué?
         </h2>
         Según el estado del almacenamiento, los episodios convertidos se irán eliminando comenzando por los que se convirtieron hace más tiempo. Si un episodio convertido se elimina siempre puede convertirse nuevamente.
-        <.link navigate={~p"/status"} class="text-primary">
+        <.link patch={~p"/status"} class="text-primary">
           El estado del almacenamiento puede consultarse aquí
         </.link>
         <h2 class="pt-3 pb-1 text-xl font-bold">

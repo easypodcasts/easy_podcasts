@@ -80,12 +80,12 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
             src={ChannelImage.url({"original.webp", @channel}, :original)}
           />
           <div class="flex flex-col">
-            <.link navigate={~p"/#{Utils.slugify(@channel)}"} class="p-1 text-xl md:p-0 text-primary">
+            <.link patch={~p"/#{Utils.slugify(@channel)}"} class="p-1 text-xl md:p-0 text-primary">
               <%= @channel.title %>
             </.link>
             <div class="mt-2">
               <%= for category <- @channel.categories do %>
-                <.link navigate={~p"/?#{[search: "#" <> category]}"} class="text-primary">
+                <.link patch={~p"/?#{[search: "#" <> category]}"} class="text-primary">
                   <%= "##{category}" %>
                 </.link>
               <% end %>
