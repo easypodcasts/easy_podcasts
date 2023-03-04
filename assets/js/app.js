@@ -212,18 +212,10 @@ let liveSocket = new LiveSocket("/live", Socket, {
 
 // Show progress bar on live navigation and form submits
 topbar.config({ barColors: { 0: "#29d" }, shadowColor: "rgba(0, 0, 0, .3)" });
-let topBarScheduled = undefined;
-
-window.addEventListener("phx:page-loading-start", (info) => {
-  if (!topBarScheduled) {
-    topBarScheduled = setTimeout(() => topbar.show(), 500);
-  }
-});
-window.addEventListener("phx:page-loading-stop", (info) => {
-  clearTimeout(topBarScheduled);
-  topBarScheduled = undefined;
-  topbar.hide();
-});
+// Show progress bar on live navigation and form submits
+topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"})
+window.addEventListener("phx:page-loading-start", info => topbar.delayedShow(500))
+window.addEventListener("phx:page-loading-stop", info => topbar.hide())
 
 // connect if there are any LiveViews on the page
 liveSocket.connect();
