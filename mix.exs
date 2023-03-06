@@ -57,6 +57,7 @@ defmodule Easypodcasts.MixProject do
       {:httpoison, "~> 1.8"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
+      {:heroicons, "~> 0.5"},
       {:telegram, git: "https://github.com/visciang/telegram.git", tag: "0.20.4"}
     ]
   end
