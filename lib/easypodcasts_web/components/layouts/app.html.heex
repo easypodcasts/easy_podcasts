@@ -180,15 +180,18 @@
       </div>
     </div>
   <% end %>
-    <div class="alert alert-error hidden" role="alert" id="disconnected"
-      phx-disconnected={JS.remove_class("hidden", to: "#disconnected")}
-      phx-connected={JS.add_class("hidden", to: "#disconnected")}
-    >
-      <div>
-        <span>
-          <%= gettext("We can't find the internet") %>
-          Attempting to reconnect <Heroicons.arrow_path class="inline ml-1 w-3 h-3 animate-spin" />
-        </span>
-      </div>
+  <div
+    class="hidden alert alert-error"
+    role="alert"
+    id="disconnected"
+    phx-disconnected={JS.remove_class("hidden", to: "#disconnected")}
+    phx-connected={JS.add_class("hidden", to: "#disconnected")}
+  >
+    <div>
+      <span>
+        <%= gettext("We can't find the internet") %> Attempting to reconnect
+        <Heroicons.arrow_path class="inline ml-1 w-3 h-3 animate-spin" />
+      </span>
     </div>
+  </div>
 </div>
