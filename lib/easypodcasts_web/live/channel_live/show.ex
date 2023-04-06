@@ -76,7 +76,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
         <div class="flex md:flex-col">
           <img
             alt={@channel.title}
-            class="mr-2 w-auto h-32 rounded-lg md:mr-0 md:mb-2 md:w-auto bg-placeholder-big grow-1 md:h-[400px] md:max-w-[400px]"
+            class="mr-2 w-auto h-32 rounded-lg md:mr-0 md:mb-2 md:w-auto bg-placeholder-big grow-1 md:h-[300px] md:max-w-[300px]"
             src={ChannelImage.url({"original.webp", @channel}, :original)}
           />
           <div class="flex flex-col">
