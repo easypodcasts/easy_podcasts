@@ -52,7 +52,7 @@ defmodule EasypodcastsWeb.PlayerLive do
           <input type="hidden" id="episode-url" value={~p"/#{Utils.slugify(@channel)}/#{Utils.slugify(@episode)}"} />
           <audio src={EpisodeAudio.url({"episode.opus", @episode})}></audio>
           <div class="flex mb-2">
-            <.link patch={~p"/#{Utils.slugify(@channel)}"}>
+            <.link navigate={~p"/#{Utils.slugify(@channel)}"}>
               <img
                 src={ChannelImage.url({"thumb.webp", @channel}, :thumb)}
                 alt={@channel.title}
@@ -61,7 +61,7 @@ defmodule EasypodcastsWeb.PlayerLive do
             </.link>
             <div class="flex flex-col flex-1 px-2">
               <span class="font-semibold">
-                <.link patch={~p"/#{Utils.slugify(@channel)}/#{Utils.slugify(@episode)}"} class="text-primary">
+                <.link navigate={~p"/#{Utils.slugify(@channel)}/#{Utils.slugify(@episode)}"} class="text-primary">
                   <%= @episode.title %>
                 </.link>
               </span>

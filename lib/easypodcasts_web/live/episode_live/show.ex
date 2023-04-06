@@ -57,7 +57,7 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
       <div class="flex flex-col w-full">
         <h2 class="mb-2 text-sm font-medium md:text-xl title-font">
           <%= if @socket.view == EasypodcastsWeb.ChannelLive.Show do %>
-            <.link patch={~p"/#{Utils.slugify(@channel)}/#{Utils.slugify(@episode)}"} class="text-primary">
+            <.link navigate={~p"/#{Utils.slugify(@channel)}/#{Utils.slugify(@episode)}"} class="text-primary">
               <%= @episode.title %>
             </.link>
           <% else %>

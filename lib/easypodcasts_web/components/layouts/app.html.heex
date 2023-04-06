@@ -20,17 +20,17 @@
       </svg>
     </button>
     <li>
-      <.link patch={~p"/status"} class="self-center mr-5 text-lg text-primary">
+      <.link navigate={~p"/status"} class="self-center mr-5 text-lg text-primary">
         <%= gettext("Status") %>
       </.link>
     </li>
     <li>
-      <.link patch={~p"/about"} class="self-center mr-5 text-lg text-primary">
+      <.link navigate={~p"/about"} class="self-center mr-5 text-lg text-primary">
         <%= gettext("About") %>
       </.link>
     </li>
     <li>
-      <.link patch={~p"/donate"} class="self-center mr-5 text-lg text-primary">
+      <.link navigate={~p"/donate"} class="self-center mr-5 text-lg text-primary">
         <%= gettext("Donate") %>
       </.link>
     </li>
@@ -50,7 +50,7 @@
   </ul>
 </aside>
 <nav class="container flex justify-between px-4 mx-auto navbar bg-base-100">
-  <.link patch={~p"/"} class="md:w-1/3">
+  <.link navigate={~p"/"} class="md:w-1/3">
     <EasypodcastsWeb.LogoComponent.big />
     <EasypodcastsWeb.LogoComponent.small />
   </.link>
@@ -79,17 +79,17 @@
     <ul class="flex items-center">
       <!-- Navbar menu content here -->
       <li>
-        <.link patch={~p"/status"} class="p-2 link-primary">
+        <.link navigate={~p"/status"} class="p-2 link-primary">
           <%= gettext("Status") %>
         </.link>
       </li>
       <li>
-        <.link patch={~p"/about"} class="p-2 link-primary">
+        <.link navigate={~p"/about"} class="p-2 link-primary">
           <%= gettext("About") %>
         </.link>
       </li>
       <li>
-        <.link patch={~p"/donate"} class="p-2 link-primary">
+        <.link navigate={~p"/donate"} class="p-2 link-primary">
           <%= gettext("Donate") %>
         </.link>
       </li>
