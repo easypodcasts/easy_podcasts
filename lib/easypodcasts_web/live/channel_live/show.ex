@@ -76,14 +76,14 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
         <div class="flex md:flex-col">
           <img
             alt={@channel.title}
-            class="mr-2 w-auto h-32 rounded-lg md:mr-0 md:mb-2 md:w-auto bg-placeholder-big grow-1 md:h-[300px] md:max-w-[300px]"
+            class="mr-2 w-auto h-32 rounded-lg md:mr-0 md:mb-2 md:w-auto bg-placeholder-big grow-1 md:h-[400px] md:max-w-[400px]"
             src={ChannelImage.url({"original.webp", @channel}, :original)}
           />
           <div class="flex flex-col">
             <.link navigate={~p"/#{Utils.slugify(@channel)}"} class="p-1 text-xl md:p-0 text-primary">
               <%= @channel.title %>
             </.link>
-            <div class="mt-2">
+            <div class="mt-2 text-sm">
               <%= for category <- @channel.categories do %>
                 <.link navigate={~p"/?#{[search: "#" <> category]}"} class="text-primary">
                   <%= "##{category}" %>
@@ -92,9 +92,6 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
             </div>
           </div>
         </div>
-        <p class="mt-2 title-font text-md">
-          <%= sanitize(@channel.description) %>
-        </p>
         <button phx-click={JS.add_class("modal-open", to: "#subscribe-modal")} class="self-start mt-2 btn btn-primary">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path
@@ -108,6 +105,9 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
             <%= gettext("Subscribe") %>
           </span>
         </button>
+        <p class="mt-2 title-font text-md">
+          <%= sanitize(@channel.description) %>
+        </p>
       </div>
 
       <div class="modal" id="subscribe-modal" phx-hook="CopyHook">
