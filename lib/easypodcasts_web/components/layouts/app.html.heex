@@ -3,10 +3,11 @@
 <%= live_render(@socket, EasypodcastsWeb.PlayerLive, id: "player", sticky: true) %>
 <aside class="fixed top-0 -right-full z-50 w-full h-full shadow duration-200 ease-in-out bg-base-100" id="mobile-menu">
   <div class="drawer-overlay"></div>
-  <ul class="flex flex-col items-center p-2 space-y-3">
+  <div class="flex flex-col items-center p-2 space-y-3">
     <button
       phx-click={JS.remove_class("-translate-x-full", to: "#mobile-menu")}
       class="self-end mr-2 btn btn-square btn-ghost text-primary"
+      aria-label={gettext("Close mobile menu")}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -19,38 +20,31 @@
         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
       </svg>
     </button>
-    <li>
-      <.link navigate={~p"/status"} class="self-center mr-5 text-lg text-primary">
-        <%= gettext("Status") %>
-      </.link>
-    </li>
-    <li>
-      <.link navigate={~p"/about"} class="self-center mr-5 text-lg text-primary">
-        <%= gettext("About") %>
-      </.link>
-    </li>
-    <li>
-      <.link navigate={~p"/donate"} class="self-center mr-5 text-lg text-primary">
-        <%= gettext("Donate") %>
-      </.link>
-    </li>
-    <li>
-      <a href="https://t.me/soporte_easypodcasts" class="self-center mr-5 text-lg text-primary">
-        <%= gettext("Contact") %>
-      </a>
-    </li>
+    <.link navigate={~p"/status"} class="self-center mr-5 text-lg text-primary">
+      <%= gettext("Status") %>
+    </.link>
+    <.link navigate={~p"/about"} class="self-center mr-5 text-lg text-primary">
+      <%= gettext("About") %>
+    </.link>
+    <.link navigate={~p"/donate"} class="self-center mr-5 text-lg text-primary">
+      <%= gettext("Donate") %>
+    </.link>
+    <a href="https://t.me/soporte_easypodcasts" class="self-center mr-5 text-lg text-primary">
+      <%= gettext("Contact") %>
+    </a>
 
     <EasypodcastsWeb.ThemeComponent.themes />
     <button
       phx-click={JS.add_class("modal-open", to: "#new-podcast") |> JS.focus_first(to: "#new-podcast")}
       class="btn btn-primary"
+      aria-label={gettext("Add Podcast")}
     >
       <%= gettext("Add Podcast") %>
     </button>
-  </ul>
+  </div>
 </aside>
 <nav class="container flex justify-between px-4 mx-auto navbar bg-base-100">
-  <.link navigate={~p"/"} class="md:w-1/3">
+  <.link navigate={~p"/"} class="md:w-1/3" aria-label={gettext("Easypodcasts Home")}>
     <EasypodcastsWeb.LogoComponent.big />
     <EasypodcastsWeb.LogoComponent.small />
   </.link>
@@ -76,41 +70,35 @@
     </form>
   <% end %>
   <div class="hidden w-1/3 lg:flex lg:justify-end">
-    <ul class="flex items-center">
+    <div class="flex items-center">
       <!-- Navbar menu content here -->
-      <li>
-        <.link navigate={~p"/status"} class="p-2 link-primary">
-          <%= gettext("Status") %>
-        </.link>
-      </li>
-      <li>
-        <.link navigate={~p"/about"} class="p-2 link-primary">
-          <%= gettext("About") %>
-        </.link>
-      </li>
-      <li>
-        <.link navigate={~p"/donate"} class="p-2 link-primary">
-          <%= gettext("Donate") %>
-        </.link>
-      </li>
-      <li>
-        <a href="https://t.me/soporte_easypodcasts" class="p-2 link-primary">
-          <%= gettext("Contact") %>
-        </a>
-      </li>
+      <.link navigate={~p"/status"} class="p-2 link-primary">
+        <%= gettext("Status") %>
+      </.link>
+      <.link navigate={~p"/about"} class="p-2 link-primary">
+        <%= gettext("About") %>
+      </.link>
+      <.link navigate={~p"/donate"} class="p-2 link-primary">
+        <%= gettext("Donate") %>
+      </.link>
+      <a href="https://t.me/soporte_easypodcasts" class="p-2 link-primary">
+        <%= gettext("Contact") %>
+      </a>
       <EasypodcastsWeb.ThemeComponent.themes />
       <button
         phx-click={JS.add_class("modal-open", to: "#new-podcast") |> JS.focus_first(to: "#new-podcast")}
         class="ml-1 btn btn-primary"
+        aria-label={gettext("Add Podcast")}
       >
         <%= gettext("Add Podcast") %>
       </button>
-    </ul>
+    </div>
   </div>
   <div class="flex-none lg:hidden">
     <button
       phx-click={JS.add_class("-translate-x-full", to: "#mobile-menu")}
       class="btn btn-square btn-ghost text-primary"
+      aria-label={gettext("Open mobile menu")}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

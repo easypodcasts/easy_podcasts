@@ -31,7 +31,6 @@ defmodule EasypodcastsWeb.ChannelLive.Index do
                     class="w-24 rounded-l-lg md:mb-2 md:w-full md:rounded-t-lg xl:object-cover"
                     src={ChannelImage.url({"thumb.webp", channel}, :thumb)}
                     alt={channel.title}
-                    loading="lazy"
                   />
                 </.link>
                 <p class="flex-1 px-1 h-5/6 text-sm md:px-2 md:mb-2 md:text-center line-clamp-4 md:line-clamp-6">

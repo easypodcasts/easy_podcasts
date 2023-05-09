@@ -22,6 +22,7 @@ defmodule EasypodcastsWeb.Endpoint do
     at: "/",
     from: :easypodcasts,
     gzip: true,
+    cache_control_for_etags: "public, max-age=86400",
     only: EasypodcastsWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
