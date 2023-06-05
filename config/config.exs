@@ -13,7 +13,10 @@ config :easypodcasts,
 # Configures the endpoint
 config :easypodcasts, EasypodcastsWeb.Endpoint,
   url: [host: "localhost"],
-  render_errors: [view: EasypodcastsWeb.ErrorView, accepts: ~w(html json), layout: false],
+  render_errors: [
+    formats: [html: EasypodcastsWeb.ErrorHTML],
+    layout: false
+  ],
   pubsub_server: Easypodcasts.PubSub,
   live_view: [signing_salt: "lLqSpypW"],
   adapter: Bandit.PhoenixAdapter
