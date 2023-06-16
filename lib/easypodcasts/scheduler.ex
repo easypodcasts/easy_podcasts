@@ -36,7 +36,7 @@ defmodule Easypodcasts.Scheduler do
 
   defp schedule_feed_update() do
     if Mix.env() == :prod do
-      Process.send_after(self(), :feed_update, :timer.hours(2))
+      Process.send_after(self(), :feed_update, :timer.hours(4))
     end
   end
 
