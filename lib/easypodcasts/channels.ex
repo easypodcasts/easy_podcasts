@@ -180,41 +180,53 @@ defmodule Easypodcasts.Channels do
   def process_channel(channel, process_new_episodes \\ false) do
     Logger.info("Processing channel #{channel.title}")
 
-    with {:ok, feed_data} <- Feed.get_feed_data(channel.link),
-         {:episodes, {_, new_episodes = [_ | _]}} <-
-           {:episodes, Episodes.save_new_episodes(channel, feed_data)} do
-      Logger.info("Channel #{channel.title} has #{length(new_episodes)} new episodes")
+    try do
+      with {:ok, feed_data} <- Feed.get_feed_data(channel.link),
+           {:episodes, {_, new_episodes = [_ | _]}} <-
+             {:episodes, Episodes.save_new_episodes(channel, feed_data)} do
+        Logger.info("Channel #{channel.title} has #{length(new_episodes)} new episodes")
 
-      if process_new_episodes do
-        Logger.info("Processing audio from new episodes of #{channel.title}")
+        if process_new_episodes do
+          Logger.info("Processing audio from new episodes of #{channel.title}")
 
-        new_episodes
-        |> Enum.take(3)
-        |> Enum.each(&Episodes.enqueue(&1.id))
+          new_episodes
+          |> Enum.take(3)
+          |> Enum.each(&Episodes.enqueue(&1.id))
 
-        new_episodes
-        |> Enum.each(&Task.start(fn -> Easypodcasts.Telegram.Bot.notify_new_episode(&1) end))
+          new_episodes
+          |> Enum.each(&Task.start(fn -> Easypodcasts.Telegram.Bot.notify_new_episode(&1) end))
+        end
+
+        datetime = DateTime.now!("UTC") |> DateTime.to_naive() |> NaiveDateTime.truncate(:second)
+
+        update_channel(channel, %{updated_at: datetime})
+
+        {:ok, new_episodes}
+      else
+        {:episodes, error} ->
+          Logger.info(
+            "Processing episodes for channel #{channel.title} has failed with error #{inspect(error)} "
+          )
+
+          {:error, channel,
+           gettext(
+             "We can't process that podcast right now. Please create an issue with the feed url or visit our support group."
+           )}
+
+        error ->
+          Logger.info(
+            "Processing channel #{channel.title} has failed with error #{inspect(error)} "
+          )
+
+          {:error, channel,
+           gettext(
+             "We can't process that podcast right now. Please create an issue with the feed url or visit our support group."
+           )}
       end
-
-      datetime = DateTime.now!("UTC") |> DateTime.to_naive() |> NaiveDateTime.truncate(:second)
-
-      update_channel(channel, %{updated_at: datetime})
-
-      {:ok, new_episodes}
-    else
-      {:episodes, error} ->
-        Logger.info(
-          "Processing episodes for channel #{channel.title} has failed with error #{inspect(error)} "
-        )
-
-        {:error, channel,
-         gettext(
-           "We can't process that podcast right now. Please create an issue with the feed url or visit our support group."
-         )}
-
-      error ->
-        Logger.info(
-          "Processing channel #{channel.title} has failed with error #{inspect(error)} "
+    rescue
+      e ->
+        Logger.error(
+          "Processing channel #{channel.title} has failed with error #{Exception.format(:error, e)}"
         )
 
         {:error, channel,
