@@ -57,6 +57,9 @@ defmodule Easypodcasts.Channels do
     from(c in Channel, where: c.id in ^channels, select: c.title) |> Repo.all()
   end
 
+  def count_channels do
+    Repo.one(from(c in Channel, select: count(c)))
+  end
   def get_channel(id), do: Repo.get(Channel, id)
 
   def get_channel_for_feed(id) do

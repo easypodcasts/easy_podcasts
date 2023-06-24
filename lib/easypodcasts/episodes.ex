@@ -76,6 +76,44 @@ defmodule Easypodcasts.Episodes do
     |> Repo.paginate(page: page)
   end
 
+  def get_latest_episodes do
+    Repo.all(
+      from(e in Episode,
+        preload: [:channel],
+        order_by: [{:desc, e.publication_date}],
+        limit: 10
+      )
+    )
+  end
+
+  def get_latest_processed_episodes do
+    Repo.all(
+      from(e in Episode,
+        where: e.status == :done,
+        preload: [:channel],
+        order_by: [{:desc, e.updated_at}],
+        limit: 10
+      )
+    )
+  end
+
+  def count_episodes do
+    Repo.one(from(e in Episode, select: count()))
+  end
+
+  def get_size_stats do
+    Repo.one(
+      from(e in Episode,
+        where: e.status == :done,
+        select: %{
+          total: count(e),
+          original: sum(e.original_size),
+          processed: sum(e.processed_size)
+        }
+      )
+    )
+  end
+
   def queue_state() do
     Repo.all(
       from(e in Episode,

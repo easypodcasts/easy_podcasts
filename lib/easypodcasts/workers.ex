@@ -111,4 +111,14 @@ defmodule Easypodcasts.Workers do
     worker = get_worker!(worker_id)
     {worker.active, worker}
   end
+
+  def get_workers_stats do
+      Repo.all(
+        from(w in Worker,
+          left_join: e in assoc(w, :episodes),
+          group_by: w.id,
+          select_merge: %{episodes: count(w.id)}
+        )
+      )
+  end
 end
