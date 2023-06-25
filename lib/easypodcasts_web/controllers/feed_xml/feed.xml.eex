@@ -9,7 +9,7 @@
 <channel>
   <title><![CDATA[<%= @channel.title %> ]]></title>
   <copyright><%= clear_ampersand(@channel.feed_data["copyright"]) %></copyright>
-  <link><![CDATA[<%= @channel.link %>]]></link>
+  <link><![CDATA[<%= clear_ampersand(@channel.link) %>]]></link>
   <%= if @channel.feed_data["extensions"]["atom"]["link"] do %>
     <%= for link <- @channel.feed_data["extensions"]["atom"]["link"] do %>
   <atom:link href="<%= clear_ampersand(link["attrs"]["href"]) %>" rel="<%= link["attrs"]["rel"] %>" type="<%= link["attrs"]["type"] %>"/>
@@ -57,7 +57,7 @@
   <%= for episode <- @channel.episodes do %>
    <item>
      <title><![CDATA[<%= episode.feed_data["title"] %>]]></title>
-      <link><%= episode.feed_data["link"] %></link>
+      <link><%= clear_ampersand(episode.feed_data["link"]) %></link>
       <guid isPermaLink="false"><%= clear_ampersand(episode.feed_data["guid"]) %></guid>
       <pubDate><%= episode.feed_data["published"] %></pubDate>
       <%= for enclosure <- episode.feed_data["enclosures"] do %>
