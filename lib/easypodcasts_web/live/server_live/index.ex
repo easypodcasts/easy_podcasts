@@ -212,7 +212,7 @@ defmodule EasypodcastsWeb.ServerLive.Index do
             <li>
               <%= gettext("Used:") %>
               <%= if @disk_used do %>
-                <%= @disk_used %> GB %
+                <%= @disk_used %> %
               <% else %>
                 Loading...
               <% end %>
