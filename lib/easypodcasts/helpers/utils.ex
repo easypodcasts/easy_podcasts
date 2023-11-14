@@ -95,7 +95,10 @@ defmodule Easypodcasts.Helpers.Utils do
 
   def format_duration(duration) when is_integer(duration) do
     time = Time.add(Time.new!(0, 0, 0), duration)
-    "#{time.hour}:#{time.minute}:#{time.second}"
+    hour = Integer.to_string(time.hour)
+    minute = String.pad_leading(Integer.to_string(time.minute), 2, "0")
+    second = String.pad_leading(Integer.to_string(time.second), 2, "0")
+    "#{hour}:#{minute}:#{second}"
   end
 
   def map_to_keywordlist(map, keys) do
