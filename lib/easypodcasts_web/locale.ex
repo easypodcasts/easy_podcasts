@@ -60,6 +60,9 @@ defmodule EasypodcastsWeb.Locale.Plug do
 
         [_language] ->
           [tag]
+
+        _ ->
+          [tag]
       end
     end)
   end
