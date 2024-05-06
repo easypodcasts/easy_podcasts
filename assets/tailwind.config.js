@@ -1,7 +1,7 @@
 module.exports = {
   content: ["./js/**/*.js", "../lib/*_web/**/*.*ex"],
   safelist: ["right-0", "opacity-100", "scale-100"],
-  plugins: [require("@tailwindcss/line-clamp"), require("daisyui")],
+  plugins: [require("daisyui")],
   daisyui: {
     darkTheme: "dark",
     themes: [
