@@ -60,6 +60,7 @@ defmodule Easypodcasts.Channels do
   def count_channels do
     Repo.one(from(c in Channel, select: count(c)))
   end
+
   def get_channel(id), do: Repo.get(Channel, id)
 
   def get_channel_for_feed(id) do
@@ -237,6 +238,48 @@ defmodule Easypodcasts.Channels do
            "We can't process that podcast right now. Please create an issue with the feed url or visit our support group."
          )}
     end
+  end
+
+  def find_similar_channels(channel_id) do
+    # Get the categories of the given channel
+    categories =
+      from(c in Channel, where: c.id == ^channel_id, select: c.categories)
+      |> Repo.one()
+
+    # Find channels with overlapping categories, filter out those without common categories,
+    # annotate them with common categories, and order them by the number of common categories
+    query =
+      from(c in Channel,
+        where: c.id != ^channel_id,
+        where:
+          fragment(
+            "ARRAY(SELECT UNNEST(?::text[]) INTERSECT SELECT UNNEST(?::text[])) != '{}'",
+            ^categories,
+            c.categories
+          ),
+        select: %{
+          id: c.id,
+          title: c.title,
+          description: c.description,
+          common_categories:
+            fragment(
+              "ARRAY(SELECT UNNEST(?::text[]) INTERSECT SELECT UNNEST(?::text[]))",
+              ^categories,
+              c.categories
+            )
+        },
+        order_by: [
+          desc:
+            fragment(
+              "cardinality(ARRAY(SELECT UNNEST(?::text[]) INTERSECT SELECT UNNEST(?::text[])))",
+              ^categories,
+              c.categories
+            )
+        ],
+        limit: 3
+      )
+
+    Repo.all(query)
   end
 
   alias Easypodcasts.Channels.Denylist

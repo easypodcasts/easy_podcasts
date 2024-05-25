@@ -26,10 +26,13 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
           |> push_redirect(to: ~p"/")
 
         %Channels.Channel{} = channel ->
+          similar_channels = Channels.find_similar_channels(channel.id)
+
           socket
           |> assign(:channel, channel)
           |> assign(:show_modal, false)
           |> assign(:page_title, "#{channel.title}")
+          |> assign(:similar_channels, similar_channels)
       end
 
     {:ok, socket}
@@ -44,7 +47,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
   def render(assigns) do
     ~H"""
     <div class="flex flex-col p-4 pt-5 xl:flex-row">
-      <.channel_card channel={@channel} socket={@socket} />
+      <.channel_card channel={@channel} socket={@socket} similar_channels={@similar_channels} />
       <section class="mt-5 xl:mt-0 xl:w-1/2 body-font">
         <%= for episode_id <- @episodes_index do %>
           <EasypodcastsWeb.EpisodeLive.Show.episode_card
@@ -108,7 +111,37 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
         <p class="mt-2 title-font text-md">
           <%= sanitize(@channel.description) %>
         </p>
+        <p
+          :if={@similar_channels != []}
+          class="mt-2"
+          phx-click={JS.toggle_class("hidden", to: [".similar-channels", "#chevron-down", "#chevron-right"])}
+        >
+          <span class="text-xl cursor-pointer select-none text-primary">
+            <%= gettext("Similar Podcasts") %>
+            <Heroicons.chevron_down class="inline ml-1 w-3 h-3" id="chevron-down" />
+            <Heroicons.chevron_right class="inline hidden ml-1 w-3 h-3" id="chevron-right" />
+          </span>
+        </p>
+        <div :for={similar_channel <- @similar_channels} class="mt-2 w-full similar-channels">
+          <div class="flex w-auto h-full rounded-lg">
+            <.link navigate={~p"/#{Utils.slugify(similar_channel)}"}>
+              <img
+                class="w-24 rounded-l-lg"
+                src={ChannelImage.url({"thumb.webp", similar_channel}, :thumb)}
+                alt={similar_channel.title}
+              />
+            </.link>
+            <p class="flex-1 px-1 h-5/6 text-sm line-clamp-4">
+              <.link navigate={~p"/#{Utils.slugify(similar_channel)}"} class="text-primary">
+                <%= similar_channel.title %>
+              </.link>
+              <br />
+              <%= sanitize(similar_channel.description) %>
+            </p>
+          </div>
+        </div>
       </div>
+      <div class="divider md:hidden"></div>
 
       <div class="modal" id="subscribe-modal" phx-hook="CopyHook">
         <div class="modal-box">
