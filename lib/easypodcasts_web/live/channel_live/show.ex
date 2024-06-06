@@ -112,7 +112,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
           <%= sanitize(@channel.description) %>
         </p>
         <p
-          :if={@similar_channels != []}
+          :if={assigns[:similar_channels] && assigns[:similar_channels] != []}
           class="mt-2"
           phx-click={JS.toggle_class("hidden", to: [".similar-channels", "#chevron-down", "#chevron-right"])}
         >
@@ -122,7 +122,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
             <Heroicons.chevron_right class="inline hidden ml-1 w-3 h-3" id="chevron-right" />
           </span>
         </p>
-        <div :for={similar_channel <- @similar_channels} class="mt-2 w-full similar-channels">
+        <div :for={similar_channel <- assigns[:similar_channels] || []} class="mt-2 w-full similar-channels">
           <div class="flex w-auto h-full rounded-lg">
             <.link navigate={~p"/#{Utils.slugify(similar_channel)}"}>
               <img
@@ -141,7 +141,7 @@ defmodule EasypodcastsWeb.ChannelLive.Show do
           </div>
         </div>
       </div>
-      <div class="divider md:hidden"></div>
+      <div class="md:hidden divider"></div>
 
       <div class="modal" id="subscribe-modal" phx-hook="CopyHook">
         <div class="modal-box">
