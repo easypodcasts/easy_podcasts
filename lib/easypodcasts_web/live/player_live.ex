@@ -50,7 +50,7 @@ defmodule EasypodcastsWeb.PlayerLive do
           id="player-element"
         >
           <input type="hidden" id="episode-url" value={~p"/#{Utils.slugify(@channel)}/#{Utils.slugify(@episode)}"} />
-          <audio src={EpisodeAudio.url({"episode.opus", @episode})}></audio>
+          <audio src={EpisodeAudio.url({"episode.mp4", @episode})}></audio>
           <div class="flex mb-2">
             <.link navigate={~p"/#{Utils.slugify(@channel)}"}>
               <img

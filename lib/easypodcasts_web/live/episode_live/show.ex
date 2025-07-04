@@ -132,8 +132,8 @@ defmodule EasypodcastsWeb.EpisodeLive.Show do
             </button>
             <a
               class="flex justify-between btn btn-accent"
-              href={EpisodeAudio.url({"episode.opus", @episode})}
-              download={"#{@episode.title}.opus"}
+              href={EpisodeAudio.url({"episode.mp4", @episode})}
+              download={"#{@episode.title}.mp4"}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

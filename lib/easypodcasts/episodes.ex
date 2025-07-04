@@ -229,7 +229,7 @@ defmodule Easypodcasts.Episodes do
 
     with pid when is_pid(pid) <- lookup_worker(episode_id),
          {:worker_validation, true} <- {:worker_validation, Worker.worker_id(pid) == worker_id},
-         {:ok, _} <- EpisodeAudio.store({%{upload | filename: "episode.opus"}, episode}) do
+         {:ok, _} <- EpisodeAudio.store({%{upload | filename: "episode.mp4"}, episode}) do
       size = Utils.get_file_size(upload.path)
 
       episode

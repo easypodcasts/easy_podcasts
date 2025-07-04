@@ -61,7 +61,7 @@
       <guid isPermaLink="false"><%= clear_ampersand(episode.feed_data["guid"]) %></guid>
       <pubDate><%= episode.feed_data["published"] %></pubDate>
       <%= for enclosure <- episode.feed_data["enclosures"] do %>
-        <enclosure url="<%= Easypodcasts.Episodes.EpisodeAudio.url({"episode.opus", episode}) %>" length="<%= episode.processed_size %>" type="<%= enclosure["type"] %>" />
+        <enclosure url="<%= Easypodcasts.Episodes.EpisodeAudio.url({"episode.mp4", episode}) %>" length="<%= episode.processed_size %>" type="<%= enclosure["type"] %>" />
       <% end %>
         <description><![CDATA[<%= episode.feed_data["description"] %>]]></description>
         <content:encoded><![CDATA[<%= episode.feed_data["content"]  %> ]]></content:encoded>

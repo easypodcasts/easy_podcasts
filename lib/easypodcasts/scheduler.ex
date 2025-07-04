@@ -105,7 +105,7 @@ defmodule Easypodcasts.Scheduler do
         "#{@name} Scheduled Task: Disk Maintenance: Removing audio for #{length(&1)} episodes"
       )
     )
-    |> Enum.each(&File.rm("uploads/#{&1.channel_id}/episodes/#{&1.id}/episode.opus"))
+    |> Enum.each(&File.rm("uploads/#{&1.channel_id}/episodes/#{&1.id}/episode.mp4"))
 
     episodes
   end
